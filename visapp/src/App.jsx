@@ -6,6 +6,7 @@ import MenuBar from './MenuBar';
 import About from './About';
 import HowToUse from './HowToUse';
 import Vis from './Vis';
+import Footer from './Footer';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/howtouse" element={<HowToUse />} />
         </Routes>
       </div>
+      <Footer />
     </Router>
   )
 }

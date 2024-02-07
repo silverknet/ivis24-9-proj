@@ -1,12 +1,15 @@
 #root {
   text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 .mainWindow{
   width: 100%;
-  height: 80vh;
+  flex-grow: 1;
   /*background-color: #ffffff;*/
 }
-
 
 /*
 MENU
@@ -33,8 +36,8 @@ MENU
   
 }
 .MenuContainer .Logo{
-  font-family: 'Poppins', 'sans-serif';
-
+  /*font-family: 'Poppins', 'sans-serif';*/
+  font-weight: 600;
   cursor: pointer;
   font-size: 8px;
   color: #65B741;
@@ -48,25 +51,26 @@ MENU
   justify-content: flex-start;
   align-items: center;
   gap: 40px;
-  padding-left: 5vw;
-  padding-right: 5vw;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .ItemContainer .Item {
-  height: 60%;
+  height: 50%;
   display: flex;
   place-items: center;
   justify-content: center;
-  width: 110px;
+  width: 130px;
 }
 .ItemContainer .Item:hover {
   cursor: pointer;
+  background-color: rgb(112, 112, 112, 0.05);
+  border-radius: 5px;
 }
 /*
 ABOUT TO PAGE
 */
 .AboutContainer{
-  width: 100%;
   display: flex;
   justify-content: center;
   margin: 40px;
@@ -84,7 +88,7 @@ ABOUT TO PAGE
 HOW TO PAGE
 */
 .HowToUseContainer{
-  width: 100%;
+
   display: flex;
   justify-content: center;
   margin: 40px;
@@ -93,10 +97,19 @@ HOW TO PAGE
 VIS
 */
 .VisContainer{
-  width: 100%;
   display: flex;
   justify-content: center;
   margin: 40px;
+}
+
+/*
+Footer
+*/
+.FooterContainer{
+  display: flex;
+  justify-content: flex-start;
+  margin: 0px;
+  padding-left: 25px;
 }
 
 @media only screen and (max-width: 600px) {
