@@ -6,7 +6,7 @@ function MenuBar(){
     return (
         <div className="MenuContainer">
             <div className="LogoContainer">
-                <div className="Logo" onClick={() => navigate('/')}><h1>C02vis</h1></div>
+                <div className="Logo" onClick={() => navigate('/')}><h1>Green Policy Makers</h1></div>
             </div>
             <div className="ItemContainer">
                 <div className="Item" onClick={() => navigate('/about')}><p>About</p></div>
