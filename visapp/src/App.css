@@ -1,0 +1,61 @@
+#root {
+  max-width: 1280px;
+  text-align: center;
+}
+
+.MenuContainer{
+  /*background-color: antiquewhite;*/
+
+  width: 100vw;
+  height: 100px;
+  display: flex;
+  justify-content: flex-start;
+}
+.MenuContainer .LogoContainer{
+  /*background-color: aqua;*/
+  width: 300px;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  padding-left: 50px;
+}
+.MenuContainer h1{
+  
+}
+.MenuContainer .ItemContainer{
+  /*background-color: rgb(0, 255, 102);*/
+  min-width: 300px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 40px;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+.ItemContainer .Item {
+  height: 60%;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  width: 110px;
+}
+.ItemContainer .Item:hover {
+  cursor: pointer;
+}
+
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
