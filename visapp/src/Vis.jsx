@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import { csv } from 'd3-fetch'; // Import csv function from d3-fetch
 
@@ -10,8 +10,10 @@ const EmissionsPerCapitaChart = ({ countriesData }) => {
   }, [countriesData]);
 
   const drawChart = () => {
+    if (!countriesData.length) return; // Return if data is empty
+
     const margin = { top: 20, right: 30, bottom: 40, left: 50 };
-    const width = 400 - margin.left - margin.right;
+    const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
     // Sort the countries data based on the latest emissionsPerCapita value
@@ -65,24 +67,28 @@ const EmissionsPerCapitaChart = ({ countriesData }) => {
 };
 
 const Visualization = () => {
+  const [countriesData, setCountriesData] = useState([]);
+
   useEffect(() => {
     csv('src/Data/co2_pcap_cons.csv').then(data => {
+      console.log('CSV Data:', data); // Check if data is loaded
       // Extract the latest value for each country
       const countriesData = data.map(d => ({
         country: d.country,
         '2021': +d['2021'] // Convert to number
       }));
-      // Render the visualization with the latest data
-      return <EmissionsPerCapitaChart countriesData={countriesData} />;
+      // Set the fetched data to state
+      setCountriesData(countriesData);
     });
   }, []);
 
   return (
     <div>
       <h2>Emissions Per Capita</h2>
-      <div><EmissionsPerCapitaChart countriesData={[]} /></div> {/* Empty initial data */}
+      <div><EmissionsPerCapitaChart countriesData={countriesData} /></div>
     </div>
   );
 };
 
 export default Visualization;
+
