@@ -4,9 +4,16 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  --gap: 20px; 
+  --element_color: rgba(124, 124, 124, 0.039);
+  --detail_color: #82BD8C;
+  --detail_color_highlight: rgb(255, 231, 97);
+  
 }
 .mainWindow{
   width: 100%;
+  display: flex;
+  justify-content: center;
   flex-grow: 1;
   /*background-color: #ffffff;*/
 }
@@ -98,41 +105,125 @@ VIS
 */
 .VisContainer{
   display: flex;
-  justify-content: center;
-  gap: 30px;
+  justify-content: space-between;
+  gap: var(--gap);
   flex-direction: row;
-  margin: 40px;
+  flex-grow: 1;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 .SvgBarGraph{
-  width: 65%;
+  width: 100%;
   min-width: 400px;
-  max-width: 900px;
-  height: 600px;
-  background-color: rgba(134, 134, 134, 0.01);
+  background-color: var(--element_color);
   padding: 0px;
   border-radius: 1px;
-  outline-style: solid;
+  /* outline-style: solid;
   outline-width: 1px;
-  outline-color: rgba(134, 134, 134, 0.351);
+  outline-color: rgba(134, 134, 134, 0.351); */
 }
 .SvgBarGraph Rect{
-  fill: #6ec8d7e3;
+  /* fill: #6ec8d7e3; */
+  fill: var(--detail_color);
   filter: drop-shadow(0px 0px 3px #00000008);
   transition: fill 0.05s; 
 }
 .SvgBarGraph Rect:hover{
-  fill: #b5edfae3;
+  /* fill: #b5edfae3; */
+  fill: var(--detail_color_highlight);
   filter: drop-shadow(0px 0px 3px #00000008);
   transition: 0.0s;
+  cursor: pointer;
 }
 .SideBar{
-  height: 600px;
-  width: 30%;
-
-  border-radius: 1px;
+  height: 100%;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.SideBar label{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  text-align: left;
+}
+.SideBar .Component{
+  height: calc(50% - 15px);
+  width: 100%;
+  /* border-radius: 1px;
   outline-style: solid;
   outline-width: 1px;
-  outline-color: rgba(134, 134, 134, 0.351);
+  outline-color: rgba(134, 134, 134, 0.351); */
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--element_color);
+  opacity: 1;
+
+  transition: height 0.2s , opacity 0.2s ;
+
+}
+.SideBar .display{
+  height: 100%;
+}
+.SideBar .no-display{
+  height: 0%;
+  /*display: none;*/
+  visibility: hidden;
+  opacity: 0;
+
+  transition: height 0.2s , opacity 0.2s ;
+
+}
+.SideBar .SelectBox{
+  height: 100px;
+  background-color: var(--detail_color);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:#ffffff;
+  font-weight: 800;
+  font-size: 20px;
+}
+.SideBar .SelectBox:hover {
+  cursor: pointer;
+}
+
+/*
+Middle SideBar
+*/
+.SideBar .DetailsFlag{
+  width: 150px;  
+  height: 100px; 
+  object-fit: cover;
+  border-radius: 20px;
+  order: 0;
+}
+.SideBar .PageHeader{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+ 
+  /* padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px; */
+  width: 100%;
+  height: 350px;
+}
+.SideBar .PageContent{
+  overflow: hidden;
+  height: 100%;
+}
+.SideBar .PageHeader h1{
+  font-size: 40px;
+  order: 1;
+  margin: 0px;
 }
 
 /*
