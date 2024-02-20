@@ -17,7 +17,6 @@ const Settings = {
     percentage: [0.2,0.44,0.36]
 }
 
-
 function Vis(){
 
     const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
@@ -29,6 +28,14 @@ function Vis(){
         electric: false
     });
     const [rightDisplay, setRightDisplay] = useState(0);
+
+    //FIX LATER
+    const coEmissions = {
+        meat: 0.3,
+        flight: 0.1,
+        electric: 0.25
+    };
+    const [reduction, setReductionSize] = useState(1);
 
     const svgRef = useRef();
 
@@ -44,9 +51,10 @@ function Vis(){
 
     
       
-    // useEffect(() => {
-    //     console.log(policyState);
-    // },[policyState]);
+    useEffect(() => {
+        // console.log(policyState);
+        setReductionSize(1-(coEmissions["meat"]*policyState["meat"]+coEmissions["flight"]*policyState["flight"]+coEmissions["electric"]*policyState["electric"]));
+    },[policyState, reduction]);
 
     // update on rescale
     useEffect(() => {
@@ -136,14 +144,14 @@ function Vis(){
             update => update.attr('class', 'first'),
             exit => exit.remove()
         ).attr('width', () => { return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size)})
-        .attr('height', function(d) { return Math.max(0, y_scale(d['2022'])); })
+        .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction; })
         .attr("x", function(d, i) { return (bar_window_size.width / countryData.length) * i + Settings.border})
-        .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']) + Settings.border })
+        .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction) + Settings.border })
         .on('click', (p_e,d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open upp middle display when selecting country
         });
-    }, [svgSize, rightDisplay, countryData, selectedCountry]);
+    }, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
 
     return (
         <div className="VisContainer">
