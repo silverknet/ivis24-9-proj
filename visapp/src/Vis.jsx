@@ -43,7 +43,7 @@ function Vis(){
     useEffect(() => {
         csv('/data/merged_data.csv').then(data2 => {
             const filteredAndSorted = data2
-            .filter(d => Number(d['2022']) > 3) 
+            .filter(d => Number(d['2022']) > 5) 
             .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
         setCountryData(filteredAndSorted); 
         }).catch(error => console.error('Error loading the CSV file:', error));
@@ -113,19 +113,19 @@ function Vis(){
 
         const gx = svg.selectAll(".x-axis").data([null]); 
 
-        gx.enter()
-        .append("g")
-            .attr("class", "x-axis")
-        .merge(gx)
-            .attr("transform", `translate(${Settings.border},${Settings.border + bar_window_size.height + 5})`)
-            .call(xAxis.ticks(svgSize.width > 600 ? countryData.length : countryData.length / 2))
-            .call(g => g.select(".domain").remove())
-            .selectAll(".tick")
-            .each(function(d, i, nodes) {
-                if (i === nodes.length - 1) { 
-                    select(this).remove(); 
-                }
-            });
+        // gx.enter()
+        // .append("g")
+        //     .attr("class", "x-axis")
+        // .merge(gx)
+        //     .attr("transform", `translate(${Settings.border},${Settings.border + bar_window_size.height + 5})`)
+        //     .call(xAxis.ticks(svgSize.width > 600 ? countryData.length : countryData.length / 2))
+        //     .call(g => g.select(".domain").remove())
+        //     .selectAll(".tick")
+        //     .each(function(d, i, nodes) {
+        //         if (i === nodes.length - 1) { 
+        //             select(this).remove(); 
+        //         }
+        //     });
 
         // svg.selectAll('.first').data(data).join(
         //     enter => enter.append('rect').attr('class', 'first'),
@@ -139,6 +139,23 @@ function Vis(){
         const expandedData = countryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
         console.log(expandedData);
 
+        // X-axis flags
+        svg.selectAll('.small_flag')
+        .data(countryData)
+        .join(
+            enter => enter.append("image")
+                            .attr('class', 'small_flag'),
+            update => update,
+            exit => exit.remove()
+        )
+        .attr('x',bar_window_size.height + Settings.border + 5)
+        .attr('y', (d, i) => 3- Settings.border - bar_width + (-i * bar_width))
+        .attr('height', bar_width * Settings.bar_size)
+        .attr('width', 17)
+        .attr('transform', 'rotate(-270)')
+        .attr("href", d => d.Flag_image_url);
+
+        // Rectangles
         svg.selectAll('.first').data(countryData).join(
             enter => enter.append('rect').attr('class', 'first'),
             update => update.attr('class', 'first'),
@@ -149,7 +166,7 @@ function Vis(){
         .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction) + Settings.border })
         .on('click', (p_e,d) => {
             setSelectedCountry(d);
-            setRightDisplay(1); //open upp middle display when selecting country
+            setRightDisplay(1); //open up middle display when selecting country
         });
     }, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
 

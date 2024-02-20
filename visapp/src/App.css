@@ -236,6 +236,15 @@ Middle SideBar
   text-align: left;
   justify-content: space-evenly;
 }
+
+/*
+x-axis flags
+*/
+.small_flag{
+  object-fit: cover;
+  border-radius: 20px;
+  order: 0;
+}
 /*
 Footer
 */
