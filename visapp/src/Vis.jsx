@@ -28,6 +28,7 @@ function Vis(){
     });
     const [rightDisplay, setRightDisplay] = useState(0);
     const [continentFilter, setContinentFilter] = useState('All');
+    console.log(countryData);
 
     const svgRef = useRef();
 
@@ -72,18 +73,20 @@ function Vis(){
 
     useEffect(()=>{
         const svg = select(svgRef.current);
-        const filteredCountryData = continentFilter === 'All' ? countryData : countryData.filter(countryData => countryData.continent === continentFilter);
+        // console.log(countryData.continent)
+        const filteredCountryData = continentFilter === 'All' ? countryData : countryData.filter(country => country.continent === continentFilter);
+        console.log(filteredCountryData.continent)
 
 
         const bar_window_size = {width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2}
         const bar_width = bar_window_size.width / filteredCountryData.length;
         const y_scale = scaleLinear([0, Settings.y_max],[0, bar_window_size.height]);
         const reverse_y_scale = scaleLinear([0, Settings.y_max],[bar_window_size.height, 0]);
-        
+        /*
         filteredCountryData.forEach(country => {
             console.log(`Country: ${country.country}, Continent: ${country.continent}`);
         });
-        
+        */
 
     
 
@@ -148,7 +151,6 @@ function Vis(){
         .on('click', (p_e,d) => {
             setSelectedCountry(d);
         });
-        console.log(selectedCountry);
 
     }, [svgSize, rightDisplay, countryData, selectedCountry, continentFilter]);
 
