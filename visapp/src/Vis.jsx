@@ -10,9 +10,11 @@ import SideBarMiddle from './SideBarMiddle';
 
 
 const Settings = {
-    bar_size: 0.80, // bar fill percentage
+    bar_size: 0.8, // bar fill percentage
     border: 50,
-    y_max: 50
+    y_max: 50,
+    partitions: 3,
+    percentage: [0.2,0.44,0.36]
 }
 
 
@@ -125,6 +127,9 @@ function Vis(){
         // .attr('height', function(d) { return Math.max(0, y_scale(d)); })
         // .attr("x", function(d, i) { return (bar_window_size.width / data.length) * i + Settings.border})
         // .attr("y", (d) => {return y_scale(Settings.y_max - d) + Settings.border });
+        const n = 4;
+        const expandedData = countryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
+        console.log(expandedData);
 
         svg.selectAll('.first').data(countryData).join(
             enter => enter.append('rect').attr('class', 'first'),
@@ -136,9 +141,8 @@ function Vis(){
         .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']) + Settings.border })
         .on('click', (p_e,d) => {
             setSelectedCountry(d);
+            setRightDisplay(1); //open upp middle display when selecting country
         });
-        console.log(selectedCountry);
-
     }, [svgSize, rightDisplay, countryData, selectedCountry]);
 
     return (

@@ -145,11 +145,11 @@ VIS
 .SideBar label{
   padding-top: 0px;
   padding-bottom: 0px;
-  padding-left: 0px;
+  padding-left: 20px;
   text-align: left;
+  font-weight: 600;
 }
 .SideBar .Component{
-  height: calc(50% - 15px);
   width: 100%;
   /* border-radius: 1px;
   outline-style: solid;
@@ -163,6 +163,8 @@ VIS
   opacity: 1;
 
   transition: height 0.2s , opacity 0.2s ;
+
+  box-sizing: border-box;
 
 }
 .SideBar .display{
@@ -225,7 +227,15 @@ Middle SideBar
   order: 1;
   margin: 0px;
 }
-
+.SideBar .BottomContainer{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1;
+  align-items: flex-start;
+  text-align: left;
+  justify-content: space-evenly;
+}
 /*
 Footer
 */
