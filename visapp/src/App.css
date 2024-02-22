@@ -226,11 +226,21 @@ Middle SideBar
   overflow: hidden;
   height: 100%;
 }
-.SideBar .PageHeader h1{
+
+.SideBar .PageHeader{
+  display: flex;
+  flex-direction: row;
+}
+
+.PageHeader span{
   font-size: 40px;
   order: 1;
   margin: 0px;
+  min-width: 150px;
+  height: 100px;
+  font-weight: bold;
 }
+
 .SideBar .BottomContainer{
   display: flex;
   flex-direction: column;

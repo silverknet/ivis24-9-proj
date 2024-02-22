@@ -167,7 +167,6 @@ function Vis(){
         .on('click', (p_e,d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
-            attr("fill", "#ffe761");
         });
     }, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
 

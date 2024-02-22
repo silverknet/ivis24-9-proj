@@ -7,17 +7,17 @@ function SideBarMiddle(props) {
     return props.selectedCountry.Flag_image_url;
   }
   else{
-    console.log("slay");
     return noflag;
   }
  }
   return ( 
     <>
       <div className='PageHeader'>
-        <h1>{props.selectedCountry.country}</h1>
-        <img className='DetailsFlag' src={showFlag()}/>
+        <span>{props.selectedCountry.country}</span>
+        <span><img className='DetailsFlag' src={showFlag()}/></span>
       </div>
       <div className='PageContent'>
+        Continent: {props.selectedCountry.continent}
       </div>
     </>
   );
