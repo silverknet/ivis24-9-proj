@@ -21,6 +21,7 @@ function SideBarBottom(props) {
             onChange={() => handleToggle(key)}
             name={key}
             checked={props.policyState[key]}
+            className='checkboxColor'
           />
           {checkBoxData[key]}
         </label>
