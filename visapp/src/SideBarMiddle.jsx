@@ -1,14 +1,23 @@
 import { useState } from 'react';
+import noflag from "./assets/noflag.png"
 
 function SideBarMiddle(props) {
- 
-  return (
+ function showFlag(){
+  if(props.selectedCountry.Flag_image_url){
+    return props.selectedCountry.Flag_image_url;
+  }
+  else{
+    return noflag;
+  }
+ }
+  return ( 
     <>
       <div className='PageHeader'>
-        <h1>{props.selectedCountry.country}</h1>
-        <img className='DetailsFlag' src={props.selectedCountry.Flag_image_url}/>
+        <span>{props.selectedCountry.country}</span>
+        <span><img className='DetailsFlag' src={showFlag()}/></span>
       </div>
       <div className='PageContent'>
+        Continent: {props.selectedCountry.continent}
       </div>
     </>
   );
