@@ -21,6 +21,8 @@ function Vis(){
 
     const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
     const [countryData, setCountryData] = useState([]); // State to store the loaded CSV data
+    const [meatData, setMeatData] = useState(0);
+    const [foodData, setFoodData] = useState(0);
     const [selectedCountry, setSelectedCountry] = useState({}); 
     const [policyState, setPolicyState] = useState({
         meat: false,
@@ -31,11 +33,11 @@ function Vis(){
 
     //FIX LATER
     const coEmissions = {
-        meat: 0.3,
+        meat: 0.2,
         flight: 0.1,
         electric: 0.25
     };
-    const [reduction, setReductionSize] = useState(1);
+    const [reduction, setReduction] = useState({});
 
     const svgRef = useRef();
 
@@ -49,11 +51,50 @@ function Vis(){
         }).catch(error => console.error('Error loading the CSV file:', error));
     }, []); 
 
-    
+    // Load meat data
+    //poultry,beef,mutton,pork,other,fish
+    useEffect(() => {
+        csv('/data/per-capita-meat-type.csv').then(data => {
+          // Convert data to dictionary format
+          const meatDictionary = {};
+          data.forEach(row => {
+            const country = row['country'];
+            const meatValues = Object.keys(row).filter(key => key !== 'country').map(key => row[key]);
+            meatDictionary[country] = meatValues;
+          });
+          setMeatData(meatDictionary);
+        }).catch(error => console.error('Error loading the meat consumption file:', error));
+      }, []);
+
+    useEffect(() => {
+        csv('/data/co2-per-food-kg.csv').then(data => {
+          // Convert data to dictionary format
+          const co2Dictionary = {};
+          data.forEach(row => {
+            const food = row['food'];
+            const foodValues = parseFloat(row['co2pkg']);
+            co2Dictionary[food] = foodValues;
+          });
+          setFoodData(co2Dictionary);
+        }).catch(error => console.error('Error loading the food co2 file:', error));
+      }, []);
       
     useEffect(() => {
-        // console.log(policyState);
-        setReductionSize(1-(coEmissions["meat"]*policyState["meat"]+coEmissions["flight"]*policyState["flight"]+coEmissions["electric"]*policyState["electric"]));
+        const reductionDict = {}
+        countryData.forEach(row => {
+            if(meatData != 0 && foodData != 0){
+                const c = row["country"];
+                // TODO: if the country isn't in the list, use values of continent instead
+                var meatco2 = coEmissions["meat"];
+                if(meatData[c] !== undefined){
+                    meatco2 = meatData[c][0]*foodData["Poultry"] + meatData[c][1]*foodData["Beef (beef herd)"] + meatData[c][2]*foodData["Mutton"] + meatData[c][3]*foodData["Pork"] + meatData[c][5]*foodData["Fish (farmed)"];
+                    meatco2 = meatco2*0.001/row["2022"];
+                } 
+                reductionDict[c] = 1-(meatco2*policyState["meat"]+coEmissions["flight"]*policyState["flight"]+coEmissions["electric"]*policyState["electric"])
+            }
+        })
+
+        setReduction(reductionDict);
     },[policyState, reduction]);
 
     // update on rescale
@@ -161,9 +202,9 @@ function Vis(){
             update => update.attr('class', 'first'),
             exit => exit.remove()
         ).attr('width', () => { return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size)})
-        .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction; })
+        .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction[d["country"]]; })
         .attr("x", function(d, i) { return (bar_window_size.width / countryData.length) * i + Settings.border})
-        .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction) + Settings.border })
+        .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction[d["country"]]) + Settings.border })
         .on('click', (p_e,d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
