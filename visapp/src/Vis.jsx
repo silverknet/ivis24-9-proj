@@ -134,11 +134,11 @@ function Vis(){
         const bar_width = bar_window_size.width / filteredCountryData.length;
         const y_scale = scaleLinear([0, Settings.y_max],[0, bar_window_size.height]);
         const reverse_y_scale = scaleLinear([0, Settings.y_max],[bar_window_size.height, 0]);
-        /*
+        
         filteredCountryData.forEach(country => {
             console.log(`Country: ${country.country}, Continent: ${country.continent}`);
         });
-        */
+        
 
     
 
@@ -169,7 +169,6 @@ function Vis(){
 
         const gx = svg.selectAll(".x-axis").data([null]); 
 
-        >>>>>>> HEAD
         // gx.enter()
         // .append("g")
         //     .attr("class", "x-axis")
@@ -197,7 +196,6 @@ function Vis(){
                     select(this).remove(); 
                 }
             });
-            >>>>>>> Filtering
 
         // svg.selectAll('.first').data(data).join(
         //     enter => enter.append('rect').attr('class', 'first'),
@@ -211,7 +209,6 @@ function Vis(){
         const expandedData = countryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
         console.log(expandedData);
 
-        >>>>>>> HEAD
         // X-axis flags
         svg.selectAll('.small_flag')
         .data(countryData)
@@ -246,17 +243,12 @@ function Vis(){
         .attr('height', function(d) { return Math.max(0, y_scale(d['2022'])); })
         .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border})
         .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']) + Settings.border })
->>>>>>> Filtering
         .on('click', (p_e,d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
         });
-        >>>>>>> HEAD
-    }, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
-
-
-    }, [svgSize, rightDisplay, countryData, selectedCountry, continentFilter]);
->>>>>>> Filtering
+    }, [svgSize, rightDisplay, countryData, selectedCountry, reduction,continentFilter]);
+ 
 
   return (
     <div className="VisContainer">
