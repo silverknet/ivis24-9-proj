@@ -23,6 +23,7 @@ function Vis(){
     const [countryData, setCountryData] = useState([]); // State to store the loaded CSV data
     const [meatData, setMeatData] = useState(0);
     const [foodData, setFoodData] = useState(0);
+    const [flightData, setFlightData] = useState(0);
     const [selectedCountry, setSelectedCountry] = useState({}); 
     const [policyState, setPolicyState] = useState({
         meat: false,
@@ -34,7 +35,7 @@ function Vis(){
     //FIX LATER
     const coEmissions = {
         meat: 0.2,
-        flight: 0.1,
+        flight: 0.05,
         electric: 0.25
     };
     const [reduction, setReduction] = useState({});
@@ -78,19 +79,39 @@ function Vis(){
           setFoodData(co2Dictionary);
         }).catch(error => console.error('Error loading the food co2 file:', error));
       }, []);
+
+      useEffect(() => {
+        csv('/data/per-capita-co2-aviation-adjusted.csv').then(data => {
+          // Convert data to dictionary format
+          const co2Dictionary = {};
+          data.forEach(row => {
+            const country = row['Country'];
+            const flightkg = parseFloat(row['kgCO2']);
+            co2Dictionary[country] = flightkg;
+          });
+          setFlightData(co2Dictionary);
+        }).catch(error => console.error('Error loading the flight file:', error));
+      }, []);
       
     useEffect(() => {
         const reductionDict = {}
         countryData.forEach(row => {
-            if(meatData != 0 && foodData != 0){
+            if(meatData != 0 && foodData != 0 && flightData != 0){
                 const c = row["country"];
                 // TODO: if the country isn't in the list, use values of continent instead
                 var meatco2 = coEmissions["meat"];
+                var flightco2 = coEmissions["flight"];
                 if(meatData[c] !== undefined){
                     meatco2 = meatData[c][0]*foodData["Poultry"] + meatData[c][1]*foodData["Beef (beef herd)"] + meatData[c][2]*foodData["Mutton"] + meatData[c][3]*foodData["Pork"] + meatData[c][5]*foodData["Fish (farmed)"];
                     meatco2 = meatco2*0.001/row["2022"];
                 } 
-                reductionDict[c] = 1-(meatco2*policyState["meat"]+coEmissions["flight"]*policyState["flight"]+coEmissions["electric"]*policyState["electric"])
+                
+                if (flightData[c] !== undefined){
+                    flightco2 = flightData[c]
+                    flightco2 = flightco2*0.001/row["2022"]
+                }
+
+                reductionDict[c] = 1-(meatco2*policyState["meat"]+flightco2*policyState["flight"]+coEmissions["electric"]*policyState["electric"])
             }
         })
 
@@ -178,7 +199,7 @@ function Vis(){
         // .attr("y", (d) => {return y_scale(Settings.y_max - d) + Settings.border });
         const n = 4;
         const expandedData = countryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
-        console.log(expandedData);
+        // console.log(expandedData);
 
         // X-axis flags
         svg.selectAll('.small_flag')
