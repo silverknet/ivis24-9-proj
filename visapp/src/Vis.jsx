@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { scaleOrdinal, stack, select, scaleLinear, axisBottom, axisLeft, axisRight, csv, schemePiYG, color } from "d3";
+import { scaleOrdinal, stack, select, scaleLinear, axisBottom, axisLeft, axisRight, csv, schemePiYG, color, selectAll } from "d3";
 
 import data from "./test_data.json";
 import data2 from "./test_data2.json";
@@ -26,6 +26,7 @@ function Vis() {
 		electric: false,
 	});
 	const [rightDisplay, setRightDisplay] = useState(0);
+	const [stackedData, setStackedData] = useState([]);
 
 	//FIX LATER
 	const coEmissions = {
@@ -44,11 +45,15 @@ function Vis() {
 				const filteredAndSorted = data2.filter((d) => Number(d["2022"]) > 5).sort((a, b) => Number(a["2022"]) - Number(b["2022"]));
 				const latest_year_data = filteredAndSorted.map((d) => d["2022"]);
 				const splitData = latest_year_data.map((d) => {
-					return { meat: d * coEmissions["meat"], flight: d * coEmissions["flight"], electric: d * coEmissions["electric"] };
+					return {
+						meat: d * coEmissions["meat"],
+						flight: d * coEmissions["flight"],
+						electric: d * coEmissions["electric"],
+					};
 				});
 				const stackedData = stack().keys(Object.keys(splitData[0]))(splitData);
-				// debugger;
-				setCountryData(stackedData);
+				setCountryData(filteredAndSorted);
+				setStackedData(stackedData);
 			})
 			.catch((error) => console.error("Error loading the CSV file:", error));
 	}, []);
@@ -90,7 +95,10 @@ function Vis() {
 
 		const bar_window_size = { width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2 };
 		const bar_width = bar_window_size.width / countryData.length;
-		const y_scale = scaleLinear()
+
+		const y_scale = scaleLinear([0, Settings.y_max], [0, bar_window_size.height]);
+
+		const y_scale_stacked = scaleLinear()
 			.domain([0, 60])
 			.range([bar_window_size.height + 50, 0]);
 		const reverse_y_scale = scaleLinear([0, Settings.y_max], [bar_window_size.height, 0]);
@@ -141,62 +149,58 @@ function Vis() {
 		// const expandedData = countryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
 
 		// X-axis flags
+		// Rectangles
 		svg
-			.selectAll(".small_flag")
+			.selectAll(".first")
 			.data(countryData)
 			.join(
-				(enter) => enter.append("image").attr("class", "small_flag"),
-				(update) => update,
+				(enter) => enter.append("rect").attr("class", "first"),
+				(update) => update.attr("class", "first"),
 				(exit) => exit.remove()
 			)
-			.attr("x", bar_window_size.height + Settings.border + 5)
-			.attr("y", (d, i) => 3 - Settings.border - bar_width + -i * bar_width)
-			.attr("height", bar_width * Settings.bar_size)
-			.attr("width", 17)
-			.attr("transform", "rotate(-270)")
-			.attr("href", (d) => d.Flag_image_url);
-
-		// // Rectangles
-		// svg.selectAll('.first').data(countryData).join(
-		//     enter => enter.append('rect').attr('class', 'first'),
-		//     update => update.attr('class', 'first'),
-		//     exit => exit.remove()
-		// ).attr('width', () => { return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size)})
-		// .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction; })
-		// .attr("x", function(d, i) { return (bar_window_size.width / countryData.length) * i + Settings.border})
-		// .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction) + Settings.border })
-		// .on('click', (p_e,d) => {
-		//     setSelectedCountry(d);
-		//     setRightDisplay(1); //open up middle display when selecting country
-		// });
-		// const color = scaleOrdinal().domain(Object.keys(countryData[0][0].data)).range(["#e41a1c", "#377eb8", "#4daf4a"]);
+			.style("pointer-events", "all") // Enable pointer events on the element
+			.attr("width", () => {
+				return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
+			})
+			.attr("height", function (d) {
+				return Math.max(0, y_scale(d["2022"]));
+			})
+			.attr("x", function (d, i) {
+				return (bar_window_size.width / countryData.length) * i + Settings.border;
+			})
+			.attr("y", (d) => {
+				return y_scale(Settings.y_max - d["2022"]) + Settings.border;
+			})
+			.raise()
+			.on("click", (p_e, d) => {
+				setSelectedCountry(d);
+				setRightDisplay(1); //open up middle display when selecting country
+			});
 
 		// stacked rectangles
 		svg
 			.append("g")
-			.selectAll("g")
-			.data(countryData)
+			.selectAll(".stacked")
+			.data(stackedData)
 			.join("g")
-			.attr("fill", (d) => color(d.key))
+			.attr("fill", (d, i) => ["red", "green", "blue"][i % 3]) // Assigning colors based on index
 			.selectAll("rect")
 			.data((d) => d)
 			.join("rect")
 			.attr("x", function (d, i) {
-				return (bar_window_size.width / countryData[0].length) * i + Settings.border;
+				return (bar_window_size.width / countryData.length) * i + Settings.border;
 			})
 			.attr("y", (d) => {
-				return y_scale(d[1]);
+				return y_scale_stacked(d[1]);
 			})
 			.attr("width", () => {
-				return Math.max(0, (bar_window_size.width / countryData[0].length) * Settings.bar_size);
+				return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
 			})
 			.attr("height", function (d) {
-				return y_scale(d[0]) - y_scale(d[1]);
-			})
-			.on("click", (_, d) => {
-				setSelectedCountry(d);
-				setRightDisplay(1); //open up middle display when selecting country
+				return y_scale_stacked(d[0]) - y_scale_stacked(d[1]);
 			});
+
+		selectAll(".first").raise();
 	}, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
 
 	return (
