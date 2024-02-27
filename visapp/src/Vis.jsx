@@ -46,6 +46,7 @@ function Vis() {
 				const latest_year_data = filteredAndSorted.map((d) => d["2022"]);
 				const splitData = latest_year_data.map((d) => {
 					return {
+						other: d - (d * coEmissions["meat"] + d * coEmissions["flight"] + d * coEmissions["electric"]),
 						meat: d * coEmissions["meat"],
 						flight: d * coEmissions["flight"],
 						electric: d * coEmissions["electric"],
@@ -99,7 +100,7 @@ function Vis() {
 		const y_scale = scaleLinear([0, Settings.y_max], [0, bar_window_size.height]);
 
 		const y_scale_stacked = scaleLinear()
-			.domain([0, 60])
+			.domain([0, Settings.y_max + 4])
 			.range([bar_window_size.height + 50, 0]);
 		const reverse_y_scale = scaleLinear([0, Settings.y_max], [bar_window_size.height, 0]);
 
@@ -183,7 +184,7 @@ function Vis() {
 			.selectAll(".stacked")
 			.data(stackedData)
 			.join("g")
-			.attr("fill", (d, i) => ["red", "green", "blue"][i % 3]) // Assigning colors based on index
+			.attr("fill", (d, i) => ["yellow", "red", "green", "blue"][i % 4]) // Assigning colors based on index
 			.selectAll("rect")
 			.data((d) => d)
 			.join("rect")
