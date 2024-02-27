@@ -185,6 +185,7 @@ VIS
 	color: #ffffff;
 	font-weight: 800;
 	font-size: 20px;
+	border-radius: 5px;
 }
 .SideBar .SelectBox:hover {
 	cursor: pointer;
@@ -199,6 +200,7 @@ Middle SideBar
 	object-fit: cover;
 	border-radius: 20px;
 	order: 0;
+	filter: drop-shadow(5px 5px 0 #00000008);
 }
 .SideBar .PageHeader {
 	align-items: center;
@@ -218,11 +220,21 @@ Middle SideBar
 	overflow: hidden;
 	height: 100%;
 }
-.SideBar .PageHeader h1 {
+
+.SideBar .PageHeader {
+	display: flex;
+	flex-direction: row;
+}
+
+.PageHeader span {
 	font-size: 40px;
 	order: 1;
 	margin: 0px;
+	min-width: 150px;
+	height: 100px;
+	font-weight: bold;
 }
+
 .SideBar .BottomContainer {
 	display: flex;
 	flex-direction: column;
@@ -233,6 +245,10 @@ Middle SideBar
 	justify-content: space-evenly;
 }
 
+.BottomContainer .checkboxColor {
+	filter: hue-rotate(230deg);
+}
+
 /*
 x-axis flags
 */
@@ -240,6 +256,7 @@ x-axis flags
 	object-fit: cover;
 	border-radius: 20px;
 	order: 0;
+	filter: drop-shadow(2px 2px 0 #00000008);
 }
 /*
 Footer

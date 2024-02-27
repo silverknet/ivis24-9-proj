@@ -16,9 +16,19 @@ const Settings = {
 	percentage: [0.2, 0.44, 0.36],
 };
 
+//FIX LATER
+const coEmissions = {
+	meat: 0.2,
+	flight: 0.05,
+	electric: 0.25,
+};
+
 function Vis() {
 	const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
 	const [countryData, setCountryData] = useState([]); // State to store the loaded CSV data
+	const [meatData, setMeatData] = useState(0);
+	const [foodData, setFoodData] = useState(0);
+	const [flightData, setFlightData] = useState(0);
 	const [selectedCountry, setSelectedCountry] = useState({});
 	const [policyState, setPolicyState] = useState({
 		meat: false,
@@ -28,13 +38,7 @@ function Vis() {
 	const [rightDisplay, setRightDisplay] = useState(0);
 	const [stackedData, setStackedData] = useState([]);
 
-	//FIX LATER
-	const coEmissions = {
-		meat: 0.3,
-		flight: 0.1,
-		electric: 0.25,
-	};
-	const [reduction, setReductionSize] = useState(1);
+	const [reduction, setReduction] = useState({});
 
 	const svgRef = useRef();
 
@@ -59,15 +63,85 @@ function Vis() {
 			.catch((error) => console.error("Error loading the CSV file:", error));
 	}, []);
 
+	// Load meat data
+	//poultry,beef,mutton,pork,other,fish
 	useEffect(() => {
-		// console.log(policyState);
-		setReductionSize(
-			1 -
-				(coEmissions["meat"] * policyState["meat"] +
-					coEmissions["flight"] * policyState["flight"] +
-					coEmissions["electric"] * policyState["electric"])
-		);
-	}, [policyState, reduction]);
+		csv("/data/per-capita-meat-type.csv")
+			.then((data) => {
+				// Convert data to dictionary format
+				const meatDictionary = {};
+				data.forEach((row) => {
+					const country = row["country"];
+					const meatValues = Object.keys(row)
+						.filter((key) => key !== "country")
+						.map((key) => row[key]);
+					meatDictionary[country] = meatValues;
+				});
+				setMeatData(meatDictionary);
+			})
+			.catch((error) => console.error("Error loading the meat consumption file:", error));
+	}, []);
+
+	useEffect(() => {
+		csv("/data/co2-per-food-kg.csv")
+			.then((data) => {
+				// Convert data to dictionary format
+				const co2Dictionary = {};
+				data.forEach((row) => {
+					const food = row["food"];
+					const foodValues = parseFloat(row["co2pkg"]);
+					co2Dictionary[food] = foodValues;
+				});
+				setFoodData(co2Dictionary);
+			})
+			.catch((error) => console.error("Error loading the food co2 file:", error));
+	}, []);
+
+	useEffect(() => {
+		csv("/data/per-capita-co2-aviation-adjusted.csv")
+			.then((data) => {
+				// Convert data to dictionary format
+				const co2Dictionary = {};
+				data.forEach((row) => {
+					const country = row["Country"];
+					const flightkg = parseFloat(row["kgCO2"]);
+					co2Dictionary[country] = flightkg;
+				});
+				setFlightData(co2Dictionary);
+			})
+			.catch((error) => console.error("Error loading the flight file:", error));
+	}, []);
+
+	useEffect(() => {
+		const reductionDict = {};
+		countryData.forEach((row) => {
+			if (meatData != 0 && foodData != 0 && flightData != 0) {
+				const c = row["country"];
+				// TODO: if the country isn't in the list, use values of continent instead
+				var meatco2 = coEmissions["meat"];
+				var flightco2 = coEmissions["flight"];
+				if (meatData[c] !== undefined) {
+					meatco2 =
+						meatData[c][0] * foodData["Poultry"] +
+						meatData[c][1] * foodData["Beef (beef herd)"] +
+						meatData[c][2] * foodData["Mutton"] +
+						meatData[c][3] * foodData["Pork"] +
+						meatData[c][5] * foodData["Fish (farmed)"];
+					meatco2 = (meatco2 * 0.001) / row["2022"];
+				}
+
+				if (flightData[c] !== undefined) {
+					flightco2 = flightData[c];
+					flightco2 = (flightco2 * 0.001) / row["2022"];
+				}
+
+				reductionDict[c] =
+					1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + coEmissions["electric"] * policyState["electric"]);
+			}
+		});
+
+		setReduction(reductionDict);
+	}, [countryData, flightData, foodData, meatData, policyState]);
 
 	// update on rescale
 	useEffect(() => {
@@ -98,10 +172,10 @@ function Vis() {
 		const bar_width = bar_window_size.width / countryData.length;
 
 		const y_scale = scaleLinear([0, Settings.y_max], [0, bar_window_size.height]);
-
 		const y_scale_stacked = scaleLinear()
 			.domain([0, Settings.y_max + 4])
 			.range([bar_window_size.height + 50, 0]);
+
 		const reverse_y_scale = scaleLinear([0, Settings.y_max], [bar_window_size.height, 0]);
 
 		const yAxis = axisRight(reverse_y_scale);
@@ -146,10 +220,26 @@ function Vis() {
 		// .attr('height', function(d) { return Math.max(0, y_scale(d)); })
 		// .attr("x", function(d, i) { return (bar_window_size.width / data.length) * i + Settings.border})
 		// .attr("y", (d) => {return y_scale(Settings.y_max - d) + Settings.border });
-		// const n = 4;
-		// const expandedData = countryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
+		const n = 4;
+		const expandedData = countryData.flatMap((d) => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
+		// console.log(expandedData);
 
 		// X-axis flags
+		svg
+			.selectAll(".small_flag")
+			.data(countryData)
+			.join(
+				(enter) => enter.append("image").attr("class", "small_flag"),
+				(update) => update,
+				(exit) => exit.remove()
+			)
+			.attr("x", bar_window_size.height + Settings.border + 5)
+			.attr("y", (d, i) => 3 - Settings.border - bar_width + -i * bar_width)
+			.attr("height", bar_width * Settings.bar_size)
+			.attr("width", 17)
+			.attr("transform", "rotate(-270)")
+			.attr("href", (d) => d.Flag_image_url);
+
 		// Rectangles
 		svg
 			.selectAll(".first")
