@@ -1,258 +1,252 @@
 #root {
-  text-align: center;
+	text-align: center;
 
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  --gap: 20px; 
-  --element_color: rgba(124, 124, 124, 0.039);
-  --detail_color: #82BD8C;
-  --detail_color_highlight: rgb(255, 231, 97);
-  
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	--gap: 20px;
+	--element_color: rgba(124, 124, 124, 0.039);
+	/* --detail_color: #82BD8C; */
+	--detail_color_highlight: rgb(255, 231, 97);
 }
-.mainWindow{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-grow: 1;
-  /*background-color: #ffffff;*/
+.mainWindow {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	flex-grow: 1;
+	/*background-color: #ffffff;*/
 }
 
 /*
 MENU
 */
-.MenuContainer{
-  /*background-color: antiquewhite;*/
-  width: 100vw;
-  height: 100px;
-  display: flex;
-  justify-content: flex-start;
+.MenuContainer {
+	/*background-color: antiquewhite;*/
+	width: 100vw;
+	height: 100px;
+	display: flex;
+	justify-content: flex-start;
 }
 
-.MenuContainer .LogoContainer{
-  /*background-color: aqua;*/
-  width: 204px;
-  min-width: 204px;
-  display: flex;
-  align-items: center;
-  padding-left: 50px;  
-  padding-right: 50px;
-
+.MenuContainer .LogoContainer {
+	/*background-color: aqua;*/
+	width: 204px;
+	min-width: 204px;
+	display: flex;
+	align-items: center;
+	padding-left: 50px;
+	padding-right: 50px;
 }
-.MenuContainer h1{
-  
+.MenuContainer h1 {
 }
-.MenuContainer .Logo{
-  /*font-family: 'Poppins', 'sans-serif';*/
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 8px;
-  color: #65B741;
+.MenuContainer .Logo {
+	/*font-family: 'Poppins', 'sans-serif';*/
+	font-weight: 600;
+	cursor: pointer;
+	font-size: 8px;
+	color: #65b741;
 }
-.MenuContainer .ItemContainer{
-  /*background-color: rgb(0, 255, 102);*/
-  font-family: 'Poppins', 'sans-serif';
-  font-weight: 600;
-  min-width: 300px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 40px;
-  padding-left: 15px;
-  padding-right: 15px;
+.MenuContainer .ItemContainer {
+	/*background-color: rgb(0, 255, 102);*/
+	font-family: "Poppins", "sans-serif";
+	font-weight: 600;
+	min-width: 300px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 40px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 .ItemContainer .Item {
-  height: 50%;
-  display: flex;
-  place-items: center;
-  justify-content: center;
-  width: 130px;
+	height: 50%;
+	display: flex;
+	place-items: center;
+	justify-content: center;
+	width: 130px;
 }
 .ItemContainer .Item:hover {
-  cursor: pointer;
-  background-color: rgb(112, 112, 112, 0.05);
-  border-radius: 5px;
+	cursor: pointer;
+	background-color: rgb(112, 112, 112, 0.05);
+	border-radius: 5px;
 }
 /*
 ABOUT PAGE
 */
-.AboutContainer{
-  display: flex;
-  justify-content: center;
-  margin: 40px;
+.AboutContainer {
+	display: flex;
+	justify-content: center;
+	margin: 40px;
 }
-.mainText{
-  width: 400px;
-  font-family: Dosis;
-  line-height: 25px;
-  letter-spacing: 1px;
-  padding-bottom: 50px;
-  height: fit-content;
+.mainText {
+	width: 400px;
+	font-family: Dosis;
+	line-height: 25px;
+	letter-spacing: 1px;
+	padding-bottom: 50px;
+	height: fit-content;
 }
 
 /*
 HOW TO PAGE
 */
-.HowToUseContainer{
-
-  display: flex;
-  justify-content: center;
-  margin: 40px;
+.HowToUseContainer {
+	display: flex;
+	justify-content: center;
+	margin: 40px;
 }
 /*
 VIS
 */
-.VisContainer{
-  display: flex;
-  justify-content: space-between;
-  gap: var(--gap);
-  flex-direction: row;
-  flex-grow: 1;
-  margin-left: 20px;
-  margin-right: 20px;
+.VisContainer {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--gap);
+	flex-direction: row;
+	flex-grow: 1;
+	margin-left: 20px;
+	margin-right: 20px;
 }
-.SvgBarGraph{
-  width: 100%;
-  min-width: 400px;
-  background-color: var(--element_color);
-  padding: 0px;
-  border-radius: 1px;
-  /* outline-style: solid;
+.SvgBarGraph {
+	width: 100%;
+	min-width: 400px;
+	background-color: var(--element_color);
+	padding: 0px;
+	border-radius: 1px;
+	/* outline-style: solid;
   outline-width: 1px;
   outline-color: rgba(134, 134, 134, 0.351); */
 }
-.SvgBarGraph Rect{
-  /* fill: #6ec8d7e3; */
-  fill: var(--detail_color);
-  filter: drop-shadow(0px 0px 3px #00000008);
-  transition: fill 0.05s; 
+.SvgBarGraph Rect {
+	/* fill: #6ec8d7e3; */
+	fill: var(--detail_color);
+	filter: drop-shadow(0px 0px 3px #00000008);
+	transition: fill 0.05s;
 }
-.SvgBarGraph Rect:hover{
-  /* fill: #b5edfae3; */
-  fill: var(--detail_color_highlight);
-  filter: drop-shadow(0px 0px 3px #00000008);
-  transition: 0.0s;
-  cursor: pointer;
+.SvgBarGraph Rect:hover {
+	/* fill: #b5edfae3; */
+	fill: var(--detail_color_highlight);
+	filter: drop-shadow(0px 0px 3px #00000008);
+	transition: 0s;
+	cursor: pointer;
 }
-.SideBar{
-  height: 100%;
-  width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.SideBar {
+	height: 100%;
+	width: 600px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
 }
-.SideBar label{
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-left: 20px;
-  text-align: left;
-  font-weight: 600;
+.SideBar label {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 20px;
+	text-align: left;
+	font-weight: 600;
 }
-.SideBar .Component{
-  width: 100%;
-  /* border-radius: 1px;
+.SideBar .Component {
+	width: 100%;
+	/* border-radius: 1px;
   outline-style: solid;
   outline-width: 1px;
   outline-color: rgba(134, 134, 134, 0.351); */
 
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-  background-color: var(--element_color);
-  opacity: 1;
+	background-color: var(--element_color);
+	opacity: 1;
 
-  transition: height 0.2s , opacity 0.2s ;
+	transition: height 0.2s, opacity 0.2s;
 
-  box-sizing: border-box;
-
+	box-sizing: border-box;
 }
-.SideBar .display{
-  height: 100%;
+.SideBar .display {
+	height: 100%;
 }
-.SideBar .no-display{
-  height: 0%;
-  /*display: none;*/
-  visibility: hidden;
-  opacity: 0;
+.SideBar .no-display {
+	height: 0%;
+	/*display: none;*/
+	visibility: hidden;
+	opacity: 0;
 
-  transition: height 0.2s , opacity 0.2s ;
-
+	transition: height 0.2s, opacity 0.2s;
 }
-.SideBar .SelectBox{
-  height: 100px;
-  background-color: var(--detail_color);
+.SideBar .SelectBox {
+	height: 100px;
+	background-color: var(--detail_color);
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color:#ffffff;
-  font-weight: 800;
-  font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #ffffff;
+	font-weight: 800;
+	font-size: 20px;
 }
 .SideBar .SelectBox:hover {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 /*
 Middle SideBar
 */
-.SideBar .DetailsFlag{
-  width: 150px;  
-  height: 100px; 
-  object-fit: cover;
-  border-radius: 20px;
-  order: 0;
+.SideBar .DetailsFlag {
+	width: 150px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 20px;
+	order: 0;
 }
-.SideBar .PageHeader{
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
- 
-  /* padding-left: 40px;
+.SideBar .PageHeader {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	gap: 12px;
+
+	/* padding-left: 40px;
   padding-right: 40px;
   padding-top: 20px;
   padding-bottom: 20px; */
-  width: 100%;
-  height: 350px;
+	width: 100%;
+	height: 350px;
 }
-.SideBar .PageContent{
-  overflow: hidden;
-  height: 100%;
+.SideBar .PageContent {
+	overflow: hidden;
+	height: 100%;
 }
-.SideBar .PageHeader h1{
-  font-size: 40px;
-  order: 1;
-  margin: 0px;
+.SideBar .PageHeader h1 {
+	font-size: 40px;
+	order: 1;
+	margin: 0px;
 }
-.SideBar .BottomContainer{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  flex-grow: 1;
-  align-items: flex-start;
-  text-align: left;
-  justify-content: space-evenly;
+.SideBar .BottomContainer {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	flex-grow: 1;
+	align-items: flex-start;
+	text-align: left;
+	justify-content: space-evenly;
 }
 
 /*
 x-axis flags
 */
-.small_flag{
-  object-fit: cover;
-  border-radius: 20px;
-  order: 0;
+.small_flag {
+	object-fit: cover;
+	border-radius: 20px;
+	order: 0;
 }
 /*
 Footer
 */
-.FooterContainer{
-  display: flex;
-  justify-content: flex-start;
-  margin: 0px;
-  padding-left: 25px;
+.FooterContainer {
+	display: flex;
+	justify-content: flex-start;
+	margin: 0px;
+	padding-left: 25px;
 }
 
 @media only screen and (max-width: 600px) {
