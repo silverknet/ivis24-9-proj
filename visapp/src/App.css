@@ -118,19 +118,21 @@ VIS
   outline-width: 1px;
   outline-color: rgba(134, 134, 134, 0.351); */
 }
-.SvgBarGraph Rect {
-	/* fill: #6ec8d7e3; */
-	fill: var(--detail_color);
+.first {
+	fill: #6ec8d7e3;
 	filter: drop-shadow(0px 0px 3px #00000008);
 	transition: fill 0.05s;
+	opacity: 0;
 }
-.SvgBarGraph Rect:hover {
-	/* fill: #b5edfae3; */
-	fill: var(--detail_color_highlight);
+
+.first:hover {
+	fill: rgb(255, 231, 97);
 	filter: drop-shadow(0px 0px 3px #00000008);
 	transition: 0s;
+	opacity: 1;
 	cursor: pointer;
 }
+
 .SideBar {
 	height: 100%;
 	width: 600px;
