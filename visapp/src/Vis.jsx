@@ -232,19 +232,51 @@ function Vis(){
         });
     }, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
 
+    const continents = ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Oceania'];
+    const [selectedContinents, setSelectedContinents] = useState([]);
+
+    const handleToggleContinent = (continent) => {
+        const updatedSelectedContinents = selectedContinents.includes(continent)
+            ? selectedContinents.filter((c) => c !== continent)
+            : [...selectedContinents, continent];
+        setSelectedContinents(updatedSelectedContinents);
+    };
+
+    const handleSelectAll = () => {
+        setSelectedContinents(continents);
+    };
+
+    const handleDeselectAll = () => {
+        setSelectedContinents([]);
+    };
+
+    const filteredCountries = countryData.filter((country) =>
+        selectedContinents.length === 0 ? true : selectedContinents.includes(country.continent)
+    );
+
+
     return (
         <div className="VisContainer">
-            <svg className="SvgBarGraph" ref={svgRef}></svg>  
-            <div className='SideBar'>  
-                <div className='SelectBox' onClick={() => setRightDisplay(0)}>Pick & Choose</div>
-                <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop/></div>
-                
-                <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
-                <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
+            <svg className="SvgBarGraph" ref={svgRef}></svg>
+            <div className="SideBar">
+                {/* SideBarTop component with necessary props */}
+                <div className="SelectBox" onClick={() => setRightDisplay(0)}>
+                    Pick & Choose
+                </div>
+                <div
+                    className={`Component SideBarTop ${rightDisplay === 0 ? 'display' : 'no-display'}`}
+                >
+                    <SideBarTop
+                        continents={continents}
+                        selectedContinents={selectedContinents}
+                        handleToggleContinent={handleToggleContinent}
+                        handleSelectAll={handleSelectAll}
+                        handleDeselectAll={handleDeselectAll}
+                    />
+                </div>
 
-                <div className='SelectBox' onClick={() => setRightDisplay(2)}>Consumption Bans</div>
-                <div className={`Component SideBarBottom ${rightDisplay === 2 ? "display" : "no-display"}`}><SideBarBottom setPolicyState={setPolicyState} policyState={policyState}/></div>  {/* Corrected the class to `SideBarBottom` and condition to `rightDisplay === 2` for `SideBarBottom` */}
-            </div>  
+                {/* Rest of your components... */}
+            </div>
         </div>
     );
 }
