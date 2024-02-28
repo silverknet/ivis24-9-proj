@@ -1,21 +1,22 @@
 import React from 'react';
+import './App.css'
 
 function SideBarTop({ continents, selectedContinents, handleToggleContinent, handleSelectAll, handleDeselectAll }) {
     return (
-        <div>
-            <div>
-                <button onClick={handleSelectAll}>Select All</button>
-                <button onClick={handleDeselectAll}>Deselect All</button>
+        <div className="sidebar-top-container">
+            <div className="button-group">
+                <button className="select-button" onClick={handleSelectAll}>Select All</button>
+                <button className="select-button" onClick={handleDeselectAll}>Deselect All</button>
             </div>
             {continents.map((continent) => (
-                <div key={continent}>
+                <div key={continent} className="continent-item">
                     <label>
                         <input
                             type="checkbox"
                             checked={selectedContinents.includes(continent)}
                             onChange={() => handleToggleContinent(continent)}
                         />
-                        {continent}
+                        <span className="continent-name">{continent}</span>
                     </label>
                 </div>
             ))}
@@ -24,3 +25,4 @@ function SideBarTop({ continents, selectedContinents, handleToggleContinent, han
 }
 
 export default SideBarTop;
+
