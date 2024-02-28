@@ -274,8 +274,12 @@ function Vis(){
                         handleDeselectAll={handleDeselectAll}
                     />
                 </div>
+                
+                <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
+                <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
 
-                {/* Rest of your components... */}
+                <div className='SelectBox' onClick={() => setRightDisplay(2)}>Consumption Bans</div>
+                <div className={`Component SideBarBottom ${rightDisplay === 2 ? "display" : "no-display"}`}><SideBarBottom setPolicyState={setPolicyState} policyState={policyState}/></div>  {/* Corrected the class to `SideBarBottom` and condition to `rightDisplay === 2` for `SideBarBottom` */}
             </div>
         </div>
     );
