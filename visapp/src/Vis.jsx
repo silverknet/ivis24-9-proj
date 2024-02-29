@@ -12,7 +12,7 @@ import SideBarMiddle from './SideBarMiddle';
 const Settings = {
     bar_size: 0.8, // bar fill percentage
     border: 50,
-    y_max: 50,
+    y_max: 30,
     partitions: 3,
     percentage: [0.2,0.44,0.36],
     flaglimit: 70
@@ -293,6 +293,47 @@ function Vis(){
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
         });
+
+        svg.append('line')
+        .attr('x1', Settings.border)  // Starting x-coordinate
+        .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate
+        .attr('x2', bar_window_size.width + Settings.border)  // Ending x-coordinate
+        .attr('y2', Settings.border + reverse_y_scale(2.3))  // Ending y-coordinate
+        .attr('stroke', 'green')  // Line color
+        .attr('stroke-width', 2)  // Line thickness
+        .attr('stroke-dasharray', '5 5');  // Dashed line style
+
+        const tooltip = svg.append('g')
+            .attr('class', 'tooltip')
+            .style('display', 'none');
+
+        // Add a tooltip background rectangle
+
+        // Add the tooltip text
+        const tooltipText = tooltip.append('text')
+            .attr('x', Settings.border + 10)
+            .attr('y', reverse_y_scale(2.3) - 80);
+
+        // Add text for the parallel line
+        const targetText = svg.append('text')
+            .attr('x', Settings.border + 10) // Adjust the position as needed
+            .attr('y', reverse_y_scale(2.3) - 60) // Adjust the position as needed
+            .text('The global average emissions per capita needed to reach the 1.5°C goal')
+            .attr('fill', 'green')
+            .style('cursor', 'pointer') // Change cursor to pointer on hover
+            .on('mouseover', showTooltip)
+            .on('mouseout', hideTooltip);
+
+        // Function to show the tooltip
+        function showTooltip() {
+            tooltip.style('display', 'block');
+            tooltipText.text('Target goal: 2.3 tonnes CO2 per capita');
+        }
+
+        // Function to hide the tooltip
+        function hideTooltip() {
+            tooltip.style('display', 'none');
+        }
     }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents]);
 
     return (
