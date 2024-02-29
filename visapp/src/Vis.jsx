@@ -14,22 +14,38 @@ const Settings = {
     border: 50,
     y_max: 50,
     partitions: 3,
-    percentage: [0.2,0.44,0.36]
+    percentage: [0.2,0.44,0.36],
+    flaglimit: 70
 }
 
 function Vis(){
+    const [isCountryDataLoaded, setIsCountryDataLoaded] = useState(false);
+    const [isMeatDataLoaded, setIsMeatDataLoaded] = useState(false);
+    const [isFoodDataLoaded, setIsFoodDataLoaded] = useState(false);
+    const [isFlightDataLoaded, setIsFlightDataLoaded] = useState(false);
+    const [allDataLoaded, setAllDataLoaded] = useState(false);
+
+    useEffect(() => {
+        if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded) {
+            setAllDataLoaded(true);
+        }
+    }, [isCountryDataLoaded, isMeatDataLoaded, isFoodDataLoaded, isFlightDataLoaded]);
+
 
     const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
     const [countryData, setCountryData] = useState([]); // State to store the loaded CSV data
+    const [filteredCountryData, setFilteredCountryData] = useState([]);
     const [meatData, setMeatData] = useState(0);
     const [foodData, setFoodData] = useState(0);
     const [flightData, setFlightData] = useState(0);
     const [selectedCountry, setSelectedCountry] = useState({}); 
+    const [filterRange, setFilterRange] = useState({min: 0, max: 30});
     const [policyState, setPolicyState] = useState({
         meat: false,
         flight: false,
         electric: false
     });
+    // state for which right side menu item is visible
     const [rightDisplay, setRightDisplay] = useState(0);
 
     //FIX LATER
@@ -40,58 +56,79 @@ function Vis(){
     };
     const [reduction, setReduction] = useState({});
 
+    const [activeContinents, setActiveContinents] = useState({
+        'Europe': true,
+        'Asia': false,
+        'Africa': false,
+        'North America': true,
+        'South America': false,
+        'Oceania': false,
+    });
+    const continentColors = {
+        'Europe': '#6A8CAF', // Soft Blue
+        'Asia': '#EAB464', // Warm Amber
+        'Africa': '#9CBFA7', // Sage Green
+        'North America': '#C68B8B', // Dusty Rose
+        'South America': '#F2D096', // Peach
+        'Oceania': '#92B4A7' // Seafoam Green
+    };
+       
+    
+
     const svgRef = useRef();
 
-    // Load CSV data
+    // Load COUNTRY data
     useEffect(() => {
-        csv('/data/merged_data.csv').then(data2 => {
+        csv('/data/dataset_bothcodeandurl.csv').then(data2 => {
             const filteredAndSorted = data2
-            .filter(d => Number(d['2022']) > 5) 
-            .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
-        setCountryData(filteredAndSorted); 
-        }).catch(error => console.error('Error loading the CSV file:', error));
-    }, []); 
+                .filter(d => Number(d['2022']) > 0)
+                .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
+            setCountryData(filteredAndSorted);
+            setIsCountryDataLoaded(true); // Update loading state
+        }).catch(error => console.error('Error loading the COUNTRY file:', error));
+    }, []);
 
     // Load meat data
-    //poultry,beef,mutton,pork,other,fish
     useEffect(() => {
         csv('/data/per-capita-meat-type.csv').then(data => {
-          // Convert data to dictionary format
-          const meatDictionary = {};
-          data.forEach(row => {
-            const country = row['country'];
-            const meatValues = Object.keys(row).filter(key => key !== 'country').map(key => row[key]);
-            meatDictionary[country] = meatValues;
-          });
-          setMeatData(meatDictionary);
+            const meatDictionary = {};
+            data.forEach(row => {
+                const country = row['country'];
+                const meatValues = Object.keys(row).filter(key => key !== 'country').map(key => row[key]);
+                meatDictionary[country] = meatValues;
+            });
+            setMeatData(meatDictionary);
+            setIsMeatDataLoaded(true); // Update loading state
         }).catch(error => console.error('Error loading the meat consumption file:', error));
-      }, []);
+    }, []);
 
+    // Load food CO2 data
     useEffect(() => {
         csv('/data/co2-per-food-kg.csv').then(data => {
-          // Convert data to dictionary format
-          const co2Dictionary = {};
-          data.forEach(row => {
-            const food = row['food'];
-            const foodValues = parseFloat(row['co2pkg']);
-            co2Dictionary[food] = foodValues;
-          });
-          setFoodData(co2Dictionary);
+            const co2Dictionary = {};
+            data.forEach(row => {
+                const food = row['food'];
+                const foodValues = parseFloat(row['co2pkg']);
+                co2Dictionary[food] = foodValues;
+            });
+            setFoodData(co2Dictionary);
+            setIsFoodDataLoaded(true); // Update loading state
         }).catch(error => console.error('Error loading the food co2 file:', error));
-      }, []);
+    }, []);
 
-      useEffect(() => {
+    // Load flight data
+    useEffect(() => {
         csv('/data/per-capita-co2-aviation-adjusted.csv').then(data => {
-          // Convert data to dictionary format
-          const co2Dictionary = {};
-          data.forEach(row => {
-            const country = row['Country'];
-            const flightkg = parseFloat(row['kgCO2']);
-            co2Dictionary[country] = flightkg;
-          });
-          setFlightData(co2Dictionary);
+            const co2Dictionary = {};
+            data.forEach(row => {
+                const country = row['Country'];
+                const flightkg = parseFloat(row['kgCO2']);
+                co2Dictionary[country] = flightkg;
+            });
+            setFlightData(co2Dictionary);
+            setIsFlightDataLoaded(true); // Update loading state
         }).catch(error => console.error('Error loading the flight file:', error));
-      }, []);
+    }, []);
       
     useEffect(() => {
         const reductionDict = {}
@@ -114,9 +151,19 @@ function Vis(){
                 reductionDict[c] = 1-(meatco2*policyState["meat"]+flightco2*policyState["flight"]+coEmissions["electric"]*policyState["electric"])
             }
         })
-
         setReduction(reductionDict);
-    },[policyState, reduction]);
+    },[policyState, allDataLoaded]);
+
+    useEffect(() => {
+        const filteredData = countryData.filter(country => 
+            activeContinents[country['continent']] &&
+            country['2022'] <= filterRange.max &&
+            country['2022'] >= filterRange.min
+        );
+    
+        setFilteredCountryData(filteredData);
+    }, [activeContinents, filterRange, allDataLoaded]);
+
 
     // update on rescale
     useEffect(() => {
@@ -128,11 +175,9 @@ function Vis(){
                 });
             }
         });
-
         if (svgRef.current) {
             resizeObserver.observe(svgRef.current);
         }
-
         return () => {
             if (svgRef.current) {
                 resizeObserver.unobserve(svgRef.current);
@@ -142,17 +187,18 @@ function Vis(){
 
 
     useEffect(()=>{
+
         const svg = select(svgRef.current);
 
         const bar_window_size = {width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2}
-        const bar_width = bar_window_size.width / countryData.length;
+        const bar_width = bar_window_size.width / filteredCountryData.length;
         const y_scale = scaleLinear([0, Settings.y_max],[0, bar_window_size.height]);
         const reverse_y_scale = scaleLinear([0, Settings.y_max],[bar_window_size.height, 0]);
 
         const yAxis = axisRight(reverse_y_scale);
 
         // this one should be replaced with countries
-        const xAxis = axisBottom(scaleLinear([1, countryData.length + 1],[0, bar_window_size.width ]));
+        const xAxis = axisBottom(scaleLinear([1, filteredCountryData.length + 1],[0, bar_window_size.width ]));
 
         const gy = svg.selectAll(".y-axis").data([null]);
 
@@ -174,7 +220,6 @@ function Vis(){
                     .attr("dy", -4));
 
         const gx = svg.selectAll(".x-axis").data([null]); 
-
         // gx.enter()
         // .append("g")
         //     .attr("class", "x-axis")
@@ -188,7 +233,6 @@ function Vis(){
         //             select(this).remove(); 
         //         }
         //     });
-
         // svg.selectAll('.first').data(data).join(
         //     enter => enter.append('rect').attr('class', 'first'),
         //     update => update.attr('class', 'first'),
@@ -197,47 +241,66 @@ function Vis(){
         // .attr('height', function(d) { return Math.max(0, y_scale(d)); })
         // .attr("x", function(d, i) { return (bar_window_size.width / data.length) * i + Settings.border})
         // .attr("y", (d) => {return y_scale(Settings.y_max - d) + Settings.border });
+
         const n = 4;
-        const expandedData = countryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
-        // console.log(expandedData);
+        const expandedData = filteredCountryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
+
 
         // X-axis flags
-        svg.selectAll('.small_flag')
-        .data(countryData)
-        .join(
-            enter => enter.append("image")
-                            .attr('class', 'small_flag'),
-            update => update,
-            exit => exit.remove()
-        )
-        .attr('x',bar_window_size.height + Settings.border + 5)
-        .attr('y', (d, i) => 3- Settings.border - bar_width + (-i * bar_width))
-        .attr('height', bar_width * Settings.bar_size)
-        .attr('width', 17)
-        .attr('transform', 'rotate(-270)')
-        .attr("href", d => d.Flag_image_url);
+        // Maximum flag dimensions
+        if(filteredCountryData.length < Settings.flaglimit){ // only show flags under some length
+            const maxFlagWidth = 30;
+            const maxFlagHeight = 15; 
+
+            const flagWidthPercentage = 1.1;
+            const flagAspectRatio = 2; // Width:Height ratio
+
+            let flagWidth = bar_width * Settings.bar_size * flagWidthPercentage;
+            let flagHeight = flagWidth / flagAspectRatio; // Maintain aspect ratio
+
+            flagWidth = Math.min(flagWidth, maxFlagWidth);
+            flagHeight = Math.min(flagHeight, maxFlagHeight);
+        
+            svg.selectAll('.small_flag')
+                .data(filteredCountryData)
+                .join(
+                    enter => enter.append("image")
+                                    .attr('class', 'small_flag'),
+                    update => update,
+                    exit => exit.remove()
+                )
+                .attr('x', (d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2)
+                .attr('y', bar_window_size.height + Settings.border + 10) 
+                .attr('width', flagWidth)
+                .attr('height', flagHeight) 
+                .attr("href", d => d.Flag_image_url);
+        }else{
+            svg.selectAll('.small_flag').remove();
+        }
+
 
         // Rectangles
-        svg.selectAll('.first').data(countryData).join(
+        svg.selectAll('.first').data(filteredCountryData).join(
             enter => enter.append('rect').attr('class', 'first'),
             update => update.attr('class', 'first'),
             exit => exit.remove()
-        ).attr('width', () => { return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size)})
+        ).attr('width', () => { return Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size)})
         .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction[d["country"]]; })
-        .attr("x", function(d, i) { return (bar_window_size.width / countryData.length) * i + Settings.border})
+        .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border})
         .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction[d["country"]]) + Settings.border })
-        .on('click', (p_e,d) => {
+        .attr('fill', d => {return continentColors[d['continent']]}) // Change '#hexColor' to your desired color
+        .on('click', (p_e, d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
         });
-    }, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
+    }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents]);
 
     return (
         <div className="VisContainer">
             <svg className="SvgBarGraph" ref={svgRef}></svg>  
             <div className='SideBar'>  
                 <div className='SelectBox' onClick={() => setRightDisplay(0)}>Pick & Choose</div>
-                <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop/></div>
+                <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop activeContinents={activeContinents} setActiveContinents={setActiveContinents} filterRange={filterRange} setFilterRange={setFilterRange}/></div>
                 
                 <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
                 <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
