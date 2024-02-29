@@ -1,5 +1,5 @@
 import {useRef, useEffect, useState} from 'react'
-import {select, scaleLinear, axisBottom, axisLeft, axisRight, csv} from 'd3'
+import {select, scaleLinear, axisBottom, axisLeft, axisRight, csv, line, text} from 'd3'
 
 import data from './test_data.json'; 
 import data2 from './test_data2.json'; 
@@ -148,13 +148,58 @@ function Vis(){
         const bar_width = bar_window_size.width / countryData.length;
         const y_scale = scaleLinear([0, Settings.y_max],[0, bar_window_size.height]);
         const reverse_y_scale = scaleLinear([0, Settings.y_max],[bar_window_size.height, 0]);
-
+    // this one should be replaced with countries
         const yAxis = axisRight(reverse_y_scale);
 
-        // this one should be replaced with countries
-        const xAxis = axisBottom(scaleLinear([1, countryData.length + 1],[0, bar_window_size.width ]));
-
         const gy = svg.selectAll(".y-axis").data([null]);
+
+        // Appends line but currently doesnt do it exaxtly the right place (should be 2.3)
+// Add a tooltip container
+
+svg.append('line')
+.attr('x1', Settings.border)  // Starting x-coordinate
+.attr('y1', reverse_y_scale(0.7))  // Starting y-coordinate
+.attr('x2', bar_window_size.width + Settings.border)  // Ending x-coordinate
+.attr('y2', reverse_y_scale(0.7))  // Ending y-coordinate
+.attr('stroke', 'green')  // Line color
+.attr('stroke-width', 2)  // Line thickness
+.attr('stroke-dasharray', '5 5');  // Dashed line style
+
+const tooltip = svg.append('g')
+    .attr('class', 'tooltip')
+    .style('display', 'none');
+
+// Add a tooltip background rectangle
+
+// Add the tooltip text
+const tooltipText = tooltip.append('text')
+    .attr('x', Settings.border + 10)
+    .attr('y', reverse_y_scale(2.3) - 80);
+
+// Add text for the parallel line
+const targetText = svg.append('text')
+    .attr('x', Settings.border + 10) // Adjust the position as needed
+    .attr('y', reverse_y_scale(2.3) - 60) // Adjust the position as needed
+    .text('The global average emissions per capita needed to reach the 1.5°C goal')
+    .attr('fill', 'green')
+    .style('cursor', 'pointer') // Change cursor to pointer on hover
+    .on('mouseover', showTooltip)
+    .on('mouseout', hideTooltip);
+
+// Function to show the tooltip
+function showTooltip() {
+    tooltip.style('display', 'block');
+    tooltipText.text('Target goal: 2.3 tonnes CO2 per capita');
+}
+
+// Function to hide the tooltip
+function hideTooltip() {
+    tooltip.style('display', 'none');
+}
+
+
+
+        
 
         gy.enter()
             .append("g")
@@ -173,7 +218,7 @@ function Vis(){
                     .attr("x", 4)
                     .attr("dy", -4));
 
-        const gx = svg.selectAll(".x-axis").data([null]); 
+        const gx = svg.selectAll(".x-axis").data([null]);  
 
         // gx.enter()
         // .append("g")
@@ -230,21 +275,60 @@ function Vis(){
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
         });
+        
+
+ 
     }, [svgSize, rightDisplay, countryData, selectedCountry, reduction]);
+
+    const continents = ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Oceania'];
+    const [selectedContinents, setSelectedContinents] = useState([]);
+
+    const handleToggleContinent = (continent) => {
+        const updatedSelectedContinents = selectedContinents.includes(continent)
+            ? selectedContinents.filter((c) => c !== continent)
+            : [...selectedContinents, continent];
+        setSelectedContinents(updatedSelectedContinents);
+    };
+
+    const handleSelectAll = () => {
+        setSelectedContinents(continents);
+    };
+
+    const handleDeselectAll = () => {
+        setSelectedContinents([]);
+    };
+
+    const filteredCountries = countryData.filter((country) =>
+        selectedContinents.length === 0 ? true : selectedContinents.includes(country.continent)
+    );
+
 
     return (
         <div className="VisContainer">
-            <svg className="SvgBarGraph" ref={svgRef}></svg>  
-            <div className='SideBar'>  
-                <div className='SelectBox' onClick={() => setRightDisplay(0)}>Pick & Choose</div>
-                <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop/></div>
+            <svg className="SvgBarGraph" ref={svgRef}></svg>
+            <div className="SideBar">
+                {/* SideBarTop component with necessary props */}
+                <div className="SelectBox" onClick={() => setRightDisplay(0)}>
+                    Pick & Choose
+                </div>
+                <div
+                    className={`Component SideBarTop ${rightDisplay === 0 ? 'display' : 'no-display'}`}
+                >
+                    <SideBarTop
+                        continents={continents}
+                        selectedContinents={selectedContinents}
+                        handleToggleContinent={handleToggleContinent}
+                        handleSelectAll={handleSelectAll}
+                        handleDeselectAll={handleDeselectAll}
+                    />
+                </div>
                 
                 <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
                 <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
 
                 <div className='SelectBox' onClick={() => setRightDisplay(2)}>Consumption Bans</div>
                 <div className={`Component SideBarBottom ${rightDisplay === 2 ? "display" : "no-display"}`}><SideBarBottom setPolicyState={setPolicyState} policyState={policyState}/></div>  {/* Corrected the class to `SideBarBottom` and condition to `rightDisplay === 2` for `SideBarBottom` */}
-            </div>  
+            </div>
         </div>
     );
 }
