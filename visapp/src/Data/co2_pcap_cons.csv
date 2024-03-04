@@ -1,5 +1,4 @@
 ﻿country,continent,flag_code,2022
-country,continent,flag_code,2022
 Afghanistan,Asia,AF,0.284
 Angola,Africa,AO,1.23
 Albania,Europe,AL,2.1
@@ -36,7 +35,7 @@ China,Asia,CN,7.38
 Cote d'Ivoire,Africa,CI,0.596
 Cameroon,Africa,CM,0.408
 Democratic Republic of Congo,Africa,CD,0.026
-"Congo, Rep.",Africa,CG,0.674
+Congo,Africa,CG,0.674
 Colombia,South America,CO,2.39
 Comoros,Africa,KM,0.287
 Cape Verde,Africa,CV,1.26
@@ -72,7 +71,7 @@ Greece,Europe,GR,5.27
 Grenada,North America,GD,2.45
 Guatemala,North America,GT,1.34
 Guyana,South America,GY,3.15
-"Hong Kong, China",Asia,HK,10.2
+Hong Kong,Asia,HK,10.2
 Honduras,North America,HN,0.876
 Croatia,Europe,HR,5.94
 Haiti,North America,HT,0.272
@@ -90,17 +89,17 @@ Jordan,Asia,JO,2.9
 Japan,Asia,JP,9.99
 Kazakhstan,Asia,KZ,9.66
 Kenya,Africa,KE,0.562
-Kyrgyz Republic,Asia,KG,2.81
+Kyrgyzstan,Asia,KG,2.81
 Cambodia,Asia,KH,2.55
 Kiribati,Oceania,KI,0.65
-St. Kitts and Nevis,North America,KN,4.66
+Saint Kitts and Nevis,North America,KN,4.66
 South Korea,Asia,KR,13.5
 Kuwait,Asia,KW,24
-Lao,Asia,LA,3.3
+Laos,Asia,LA,3.3
 Lebanon,Asia,LB,3.92
 Liberia,Africa,LR,0.354
 Libya,Africa,LY,8.84
-St. Lucia,North America,LC,2.34
+Saint Lucia,North America,LC,2.34
 Liechtenstein,Europe,LI,3.89
 Sri Lanka,Asia,LK,1.76
 Lesotho,Africa,LS,1.38
@@ -185,7 +184,7 @@ Ukraine,Europe,UA,4.35
 Uruguay,South America,UY,3.21
 United States,North America,US,16.4
 Uzbekistan,Asia,UZ,2.8
-St. Vincent and the Grenadines,VC,North America,2.05
+Saint Vincent and the Grenadines,VC,North America,2.05
 Venezuela,South America,VE,0.673
 Vietnam,Asia,VN,2.17
 Vanuatu,Oceania,VU,0.572
