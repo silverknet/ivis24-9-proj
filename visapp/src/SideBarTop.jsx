@@ -31,7 +31,7 @@ function SideBarTop(props) {
                     type="range"
                     min="0"
                     max="30"
-                    step="0.1"
+                    step="0.01"
                     value={props.filterRange.min}
                     onChange={(e) =>
                     props.setFilterRange((prev) => ({ ...prev, min: parseFloat(Math.min(e.target.value, props.filterRange.max)) }))
@@ -44,7 +44,7 @@ function SideBarTop(props) {
                     type="range"
                     min="0"
                     max="30" 
-                    step="0.1"
+                    step="0.01"
                     value={props.filterRange.max}
                     onChange={(e) =>
                     props.setFilterRange((prev) => ({ ...prev, max: parseFloat(Math.max(e.target.value, props.filterRange.min)) }))

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { select, scaleLinear, axisBottom, axisLeft, axisRight, csv, line, text } from "d3";
+import { select, scaleLinear, axisBottom, axisLeft, axisRight, csv, line, text , count} from "d3";
 
 import data from "./test_data.json";
 import data2 from "./test_data2.json";
@@ -45,7 +45,7 @@ function Vis(){
         electric: false
     });
     // state for which right side menu item is visible
-    const [rightDisplay, setRightDisplay] = useState(0);
+    const [rightDisplay, setRightDisplay] = useState(1);
 
     //FIX LATER
     const coEmissions = {
@@ -64,12 +64,12 @@ function Vis(){
         'Oceania': false,
     });
     const continentColors = {
-        'Europe': '#6A8CAF', // Soft Blue
-        'Asia': '#EAB464', // Warm Amber
-        'Africa': '#9CBFA7', // Sage Green
-        'North America': '#C68B8B', // Dusty Rose
-        'South America': '#F2D096', // Peach
-        'Oceania': '#92B4A7' // Seafoam Green
+        'Europe': '#6A8CAF',
+        'Asia': '#EAB464', 
+        'Africa': '#9CBFA7', 
+        'North America': '#C68B8B', 
+        'South America': '#F2D096', 
+        'Oceania': '#92B4A7'
     };
        
     
@@ -83,12 +83,12 @@ function Vis(){
         'Oceania': false,
     });
     const continentColors = {
-        'Europe': '#6A8CAF', // Soft Blue
-        'Asia': '#EAB464', // Warm Amber
-        'Africa': '#9CBFA7', // Sage Green
-        'North America': '#C68B8B', // Dusty Rose
-        'South America': '#F2D096', // Peach
-        'Oceania': '#92B4A7' // Seafoam Green
+        'Europe': '#6A8CAF',
+        'Asia': '#EAB464', 
+        'Africa': '#9CBFA7', 
+        'North America': '#C68B8B', 
+        'South America': '#F2D096', 
+        'Oceania': '#92B4A7'
     };
        
     
@@ -103,8 +103,11 @@ function Vis(){
                 .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
             setCountryData(filteredAndSorted);
             setIsCountryDataLoaded(true); // Update loading state
+            console.log("only one time");
+            setSelectedCountry(filteredAndSorted[169]);
         }).catch(error => console.error('Error loading the COUNTRY file:', error));
     }, []);
+
 
     // Load meat data
     useEffect(() => {
@@ -270,38 +273,6 @@ function Vis(){
 			.attr("stroke-width", 2) // Line thickness
 			.attr("stroke-dasharray", "5 5"); // Dashed line style
 
-		const tooltip = svg.append("g").attr("class", "tooltip").style("display", "none");
-
-		// Add a tooltip background rectangle
-
-		// Add the tooltip text
-		const tooltipText = tooltip
-			.append("text")
-			.attr("x", Settings.border + 10)
-			.attr("y", reverse_y_scale(2.3) - 80);
-
-		// Add text for the parallel line
-		const targetText = svg
-			.append("text")
-			.attr("x", Settings.border + 10) // Adjust the position as needed
-			.attr("y", reverse_y_scale(2.3) - 60) // Adjust the position as needed
-			.text("The global average emissions per capita needed to reach the 1.5°C goal")
-			.attr("fill", "green")
-			.style("cursor", "pointer") // Change cursor to pointer on hover
-			.on("mouseover", showTooltip)
-			.on("mouseout", hideTooltip);
-
-		// Function to show the tooltip
-		function showTooltip() {
-			tooltip.style("display", "block");
-			tooltipText.text("Target goal: 2.3 tonnes CO2 per capita");
-		}
-
-		// Function to hide the tooltip
-		function hideTooltip() {
-			tooltip.style("display", "none");
-		}
-
 		gy.enter()
 			.append("g")
 			.attr("class", "y-axis")
@@ -376,7 +347,7 @@ function Vis(){
         // Rectangles
         svg.selectAll('.first').data(filteredCountryData).join(
             enter => enter.append('rect').attr('class', 'first'),
-            update => update.attr('class', 'first'),
+            update => update,
             exit => exit.remove()
         ).attr('width', () => { return Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size)})
         .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction[d["country"]]; })
@@ -393,7 +364,7 @@ function Vis(){
         .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate
         .attr('x2', bar_window_size.width + Settings.border)  // Ending x-coordinate
         .attr('y2', Settings.border + reverse_y_scale(2.3))  // Ending y-coordinate
-        .attr('stroke', 'green')  // Line color
+        .attr('stroke', 'yellow')  // Line color
         .attr('stroke-width', 2)  // Line thickness
         .attr('stroke-dasharray', '5 5');  // Dashed line style
 
@@ -438,7 +409,7 @@ function Vis(){
                 <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop activeContinents={activeContinents} setActiveContinents={setActiveContinents} filterRange={filterRange} setFilterRange={setFilterRange}/></div>
                 
                 <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
-                <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
+                <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry} countryData={countryData}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
 
                 <div className='SelectBox' onClick={() => setRightDisplay(2)}>Consumption Bans</div>
                 <div className={`Component SideBarBottom ${rightDisplay === 2 ? "display" : "no-display"}`}><SideBarBottom setPolicyState={setPolicyState} policyState={policyState}/></div>  {/* Corrected the class to `SideBarBottom` and condition to `rightDisplay === 2` for `SideBarBottom` */}
