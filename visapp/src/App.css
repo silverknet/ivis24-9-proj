@@ -252,8 +252,12 @@ Middle SideBar
 }
 
 .BottomContainer .checkboxColor {
-  filter: hue-rotate(230deg);
+  filter: hue-rotate(230deg) grayscale(1); 
 }
+.sidebar-top-container .checkboxColor {
+  filter: hue-rotate(230deg) grayscale(1); 
+}
+
 
 /*
 x-axis flags
@@ -273,6 +277,38 @@ Footer
   margin: 0px;
   padding-left: 25px;
 }
+
+.sidebar-top-container {
+  padding: 10px;
+}
+
+.button-group {
+  margin-bottom: 10px;
+}
+
+.select-button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  background-color: #6e6e6e;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.continent-item {
+  margin-bottom: 5px;
+}
+
+.continent-item label {
+  display: flex;
+  align-items: center;
+}
+
+.continent-name {
+  margin-left: 5px;
+}
+
 
 @media only screen and (max-width: 600px) {
 }
