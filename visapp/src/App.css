@@ -320,11 +320,21 @@ Middle SideBar
 Small details graph
 */
 .CountryDetailGraph{
-  background-color: #edf3ea;
   width: 90%;
-  height: 180px;
+  height: 240px;
+  background-color: #9b9b9b07;
+  border-radius: 10px;
 }
-
+.CountryDetailGraph .x-axis text,
+.CountryDetailGraph .y-axis text {
+  font-family: 'Dosis', sans-serif; 
+  font-size: 14px; /* Example size */
+}
+.CountryDetailGraph .x-axis-label,
+.CountryDetailGraph .y-axis-label {
+  font-family: 'Dosis', sans-serif; 
+  font-weight: 600;
+}
 
 /*
 x-axis flags
