@@ -1,13 +1,12 @@
-import {useRef, useEffect, useState} from 'react'
-import {select, scaleLinear, axisBottom, axisLeft, axisRight, csv} from 'd3'
+import { useRef, useEffect, useState } from "react";
+import { select, scaleLinear, axisBottom, axisLeft, axisRight, csv, line, text } from "d3";
 
-import data from './test_data.json'; 
-import data2 from './test_data2.json'; 
+import data from "./test_data.json";
+import data2 from "./test_data2.json";
 
-import SideBarTop from './SideBarTop';
-import SideBarBottom from './SideBarBottom';
-import SideBarMiddle from './SideBarMiddle';
-
+import SideBarTop from "./SideBarTop";
+import SideBarBottom from "./SideBarBottom";
+import SideBarMiddle from "./SideBarMiddle";
 
 const Settings = {
     bar_size: 0.8, // bar fill percentage
@@ -75,7 +74,26 @@ function Vis(){
        
     
 
-    const svgRef = useRef();
+    const [activeContinents, setActiveContinents] = useState({
+        'Europe': true,
+        'Asia': false,
+        'Africa': false,
+        'North America': true,
+        'South America': false,
+        'Oceania': false,
+    });
+    const continentColors = {
+        'Europe': '#6A8CAF', // Soft Blue
+        'Asia': '#EAB464', // Warm Amber
+        'Africa': '#9CBFA7', // Sage Green
+        'North America': '#C68B8B', // Dusty Rose
+        'South America': '#F2D096', // Peach
+        'Oceania': '#92B4A7' // Seafoam Green
+    };
+       
+    
+
+	const svgRef = useRef();
 
     // Load COUNTRY data
     useEffect(() => {
@@ -116,6 +134,43 @@ function Vis(){
         }).catch(error => console.error('Error loading the food co2 file:', error));
     }, []);
 
+	useEffect(() => {
+		csv("/data/per-capita-co2-aviation-adjusted.csv")
+			.then((data) => {
+				// Convert data to dictionary format
+				const co2Dictionary = {};
+				data.forEach((row) => {
+					const country = row["Country"];
+					const flightkg = parseFloat(row["kgCO2"]);
+					co2Dictionary[country] = flightkg;
+				});
+				setFlightData(co2Dictionary);
+			})
+			.catch((error) => console.error("Error loading the flight file:", error));
+	}, []);
+
+	useEffect(() => {
+		const reductionDict = {};
+		countryData.forEach((row) => {
+			if (meatData != 0 && foodData != 0 && flightData != 0) {
+				const c = row["country"];
+				// TODO: if the country isn't in the list, use values of continent instead
+				var meatco2 = coEmissions["meat"];
+				var flightco2 = coEmissions["flight"];
+				if (meatData[c] !== undefined) {
+					meatco2 =
+						meatData[c][0] * foodData["Poultry"] +
+						meatData[c][1] * foodData["Beef (beef herd)"] +
+						meatData[c][2] * foodData["Mutton"] +
+						meatData[c][3] * foodData["Pork"] +
+						meatData[c][5] * foodData["Fish (farmed)"];
+					meatco2 = (meatco2 * 0.001) / row["2022"];
+				}
+
+				if (flightData[c] !== undefined) {
+					flightco2 = flightData[c];
+					flightco2 = (flightco2 * 0.001) / row["2022"];
+				}
     // Load flight data
     useEffect(() => {
         csv('/data/per-capita-co2-aviation-adjusted.csv').then(data => {
@@ -200,24 +255,63 @@ function Vis(){
         // this one should be replaced with countries
         const xAxis = axisBottom(scaleLinear([1, filteredCountryData.length + 1],[0, bar_window_size.width ]));
 
-        const gy = svg.selectAll(".y-axis").data([null]);
+		const gy = svg.selectAll(".y-axis").data([null]);
 
-        gy.enter()
-            .append("g")
-                .attr("class", "y-axis")
-            .merge(gy)
-                .attr("transform", `translate(${Settings.border - 25},${Settings.border})`)
-                .call(yAxis.tickSize(bar_window_size.width + 25))
-                .call(g => g.select(".domain").remove())
-                .call(g => g.selectAll(".tick line")
-                    .attr("stroke-opacity", 0.5)
-                    .attr("stroke-dasharray", "2,2"))
-                .call(g => g.select(".tick:first-of-type line")
-                    .attr("stroke-opacity", 0.5)
-                    .attr("stroke-dasharray", null))
-                .call(g => g.selectAll(".tick text")
-                    .attr("x", 4)
-                    .attr("dy", -4));
+		// Appends line but currently doesnt do it exaxtly the right place (should be 2.3)
+		// Add a tooltip container
+
+		svg
+			.append("line")
+			.attr("x1", Settings.border) // Starting x-coordinate
+			.attr("y1", reverse_y_scale(0.7)) // Starting y-coordinate
+			.attr("x2", bar_window_size.width + Settings.border) // Ending x-coordinate
+			.attr("y2", reverse_y_scale(0.7)) // Ending y-coordinate
+			.attr("stroke", "green") // Line color
+			.attr("stroke-width", 2) // Line thickness
+			.attr("stroke-dasharray", "5 5"); // Dashed line style
+
+		const tooltip = svg.append("g").attr("class", "tooltip").style("display", "none");
+
+		// Add a tooltip background rectangle
+
+		// Add the tooltip text
+		const tooltipText = tooltip
+			.append("text")
+			.attr("x", Settings.border + 10)
+			.attr("y", reverse_y_scale(2.3) - 80);
+
+		// Add text for the parallel line
+		const targetText = svg
+			.append("text")
+			.attr("x", Settings.border + 10) // Adjust the position as needed
+			.attr("y", reverse_y_scale(2.3) - 60) // Adjust the position as needed
+			.text("The global average emissions per capita needed to reach the 1.5°C goal")
+			.attr("fill", "green")
+			.style("cursor", "pointer") // Change cursor to pointer on hover
+			.on("mouseover", showTooltip)
+			.on("mouseout", hideTooltip);
+
+		// Function to show the tooltip
+		function showTooltip() {
+			tooltip.style("display", "block");
+			tooltipText.text("Target goal: 2.3 tonnes CO2 per capita");
+		}
+
+		// Function to hide the tooltip
+		function hideTooltip() {
+			tooltip.style("display", "none");
+		}
+
+		gy.enter()
+			.append("g")
+			.attr("class", "y-axis")
+			.merge(gy)
+			.attr("transform", `translate(${Settings.border - 25},${Settings.border})`)
+			.call(yAxis.tickSize(bar_window_size.width + 25))
+			.call((g) => g.select(".domain").remove())
+			.call((g) => g.selectAll(".tick line").attr("stroke-opacity", 0.5).attr("stroke-dasharray", "2,2"))
+			.call((g) => g.select(".tick:first-of-type line").attr("stroke-opacity", 0.5).attr("stroke-dasharray", null))
+			.call((g) => g.selectAll(".tick text").attr("x", 4).attr("dy", -4));
 
         const gx = svg.selectAll(".x-axis").data([null]); 
         // gx.enter()
@@ -273,7 +367,7 @@ function Vis(){
                 .attr('y', bar_window_size.height + Settings.border + 10) 
                 .attr('width', flagWidth)
                 .attr('height', flagHeight) 
-                .attr("href", d => d.Flag_image_url);
+				.attr("href", (d) => (d.Code ? `https://flagcdn.com/${d.Code.toLowerCase()}.svg` : console.log(d.country)));
         }else{
             svg.selectAll('.small_flag').remove();
         }
@@ -288,7 +382,7 @@ function Vis(){
         .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction[d["country"]]; })
         .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border})
         .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction[d["country"]]) + Settings.border })
-        .attr('fill', d => {return continentColors[d['continent']]}) // Change '#hexColor' to your desired color
+        .attr('fill', d => {return continentColors[d['continent']]}) 
         .on('click', (p_e, d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
