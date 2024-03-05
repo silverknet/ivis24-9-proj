@@ -71,26 +71,6 @@ function Vis(){
         'South America': '#F2D096', 
         'Oceania': '#92B4A7'
     };
-       
-    
-
-    const [activeContinents, setActiveContinents] = useState({
-        'Europe': true,
-        'Asia': false,
-        'Africa': false,
-        'North America': true,
-        'South America': false,
-        'Oceania': false,
-    });
-    const continentColors = {
-        'Europe': '#6A8CAF',
-        'Asia': '#EAB464', 
-        'Africa': '#9CBFA7', 
-        'North America': '#C68B8B', 
-        'South America': '#F2D096', 
-        'Oceania': '#92B4A7'
-    };
-       
     
 
 	const svgRef = useRef();
@@ -103,7 +83,6 @@ function Vis(){
                 .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
             setCountryData(filteredAndSorted);
             setIsCountryDataLoaded(true); // Update loading state
-            console.log("only one time");
             setSelectedCountry(filteredAndSorted[169]);
         }).catch(error => console.error('Error loading the COUNTRY file:', error));
     }, []);
@@ -140,54 +119,17 @@ function Vis(){
 	useEffect(() => {
 		csv("/data/per-capita-co2-aviation-adjusted.csv")
 			.then((data) => {
-				// Convert data to dictionary format
 				const co2Dictionary = {};
-				data.forEach((row) => {
-					const country = row["Country"];
-					const flightkg = parseFloat(row["kgCO2"]);
-					co2Dictionary[country] = flightkg;
-				});
-				setFlightData(co2Dictionary);
+                data.forEach(row => {
+                    const country = row['Country'];
+                    const flightkg = parseFloat(row['kgCO2']);
+                    co2Dictionary[country] = flightkg;
+                });
+                setFlightData(co2Dictionary);
+                setIsFlightDataLoaded(true); // Update loading state
 			})
 			.catch((error) => console.error("Error loading the flight file:", error));
 	}, []);
-
-	useEffect(() => {
-		const reductionDict = {};
-		countryData.forEach((row) => {
-			if (meatData != 0 && foodData != 0 && flightData != 0) {
-				const c = row["country"];
-				// TODO: if the country isn't in the list, use values of continent instead
-				var meatco2 = coEmissions["meat"];
-				var flightco2 = coEmissions["flight"];
-				if (meatData[c] !== undefined) {
-					meatco2 =
-						meatData[c][0] * foodData["Poultry"] +
-						meatData[c][1] * foodData["Beef (beef herd)"] +
-						meatData[c][2] * foodData["Mutton"] +
-						meatData[c][3] * foodData["Pork"] +
-						meatData[c][5] * foodData["Fish (farmed)"];
-					meatco2 = (meatco2 * 0.001) / row["2022"];
-				}
-
-				if (flightData[c] !== undefined) {
-					flightco2 = flightData[c];
-					flightco2 = (flightco2 * 0.001) / row["2022"];
-				}
-    // Load flight data
-    useEffect(() => {
-        csv('/data/per-capita-co2-aviation-adjusted.csv').then(data => {
-            const co2Dictionary = {};
-            data.forEach(row => {
-                const country = row['Country'];
-                const flightkg = parseFloat(row['kgCO2']);
-                co2Dictionary[country] = flightkg;
-            });
-            setFlightData(co2Dictionary);
-            setIsFlightDataLoaded(true); // Update loading state
-        }).catch(error => console.error('Error loading the flight file:', error));
-    }, []);
-      
     useEffect(() => {
         const reductionDict = {}
         countryData.forEach(row => {
@@ -260,18 +202,6 @@ function Vis(){
 
 		const gy = svg.selectAll(".y-axis").data([null]);
 
-		// Appends line but currently doesnt do it exaxtly the right place (should be 2.3)
-		// Add a tooltip container
-
-		svg
-			.append("line")
-			.attr("x1", Settings.border) // Starting x-coordinate
-			.attr("y1", reverse_y_scale(0.7)) // Starting y-coordinate
-			.attr("x2", bar_window_size.width + Settings.border) // Ending x-coordinate
-			.attr("y2", reverse_y_scale(0.7)) // Ending y-coordinate
-			.attr("stroke", "green") // Line color
-			.attr("stroke-width", 2) // Line thickness
-			.attr("stroke-dasharray", "5 5"); // Dashed line style
 
 		gy.enter()
 			.append("g")
@@ -359,18 +289,12 @@ function Vis(){
             setRightDisplay(1); //open up middle display when selecting country
         });
 
-        svg.append('line')
-        .attr('x1', Settings.border)  // Starting x-coordinate
-        .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate
-        .attr('x2', bar_window_size.width + Settings.border)  // Ending x-coordinate
-        .attr('y2', Settings.border + reverse_y_scale(2.3))  // Ending y-coordinate
-        .attr('stroke', 'yellow')  // Line color
-        .attr('stroke-width', 2)  // Line thickness
-        .attr('stroke-dasharray', '5 5');  // Dashed line style
+        // Appends line but currently doesnt do it exaxtly the right place (should be 2.3)
+		// Add a tooltip container
 
-        const tooltip = svg.append('g')
-            .attr('class', 'tooltip')
-            .style('display', 'none');
+		const tooltip = svg.append('g')
+        .attr('class', 'tooltip')
+        .style('display', 'none');
 
         // Add a tooltip background rectangle
 
@@ -399,6 +323,17 @@ function Vis(){
         function hideTooltip() {
             tooltip.style('display', 'none');
         }
+
+        svg.append('line')
+            .attr('x1', Settings.border)  // Starting x-coordinate
+            .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate
+            .attr('x2', bar_window_size.width + Settings.border)  // Ending x-coordinate
+            .attr('y2', Settings.border + reverse_y_scale(2.3))  // Ending y-coordinate
+            .attr('stroke', 'yellow')  // Line color
+            .attr('stroke-width', 2)  // Line thickness
+            .attr('stroke-dasharray', '5 5');  // Dashed line style
+
+        
     }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents]);
 
     return (
