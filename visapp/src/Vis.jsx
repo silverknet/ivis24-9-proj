@@ -71,6 +71,12 @@ function Vis(){
         'South America': '#F2D096', 
         'Oceania': '#92B4A7'
     };
+
+    const handleSearch = (query) => {
+    const filteredData = countryData.filter(country => country.country.toLowerCase().includes(query.toLowerCase()));
+    setFilteredCountryData(filteredData);
+};
+
     
 
 	const svgRef = useRef();
@@ -203,6 +209,7 @@ function Vis(){
 		const gy = svg.selectAll(".y-axis").data([null]);
 
 
+
 		gy.enter()
 			.append("g")
 			.attr("class", "y-axis")
@@ -333,6 +340,8 @@ function Vis(){
             .attr('stroke-width', 2)  // Line thickness
             .attr('stroke-dasharray', '5 5');  // Dashed line style
 
+
+
         
     }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents]);
 
@@ -341,7 +350,7 @@ function Vis(){
             <svg className="SvgBarGraph" ref={svgRef}></svg>  
             <div className='SideBar'>  
                 <div className='SelectBox' onClick={() => setRightDisplay(0)}>Pick & Choose</div>
-                <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop activeContinents={activeContinents} setActiveContinents={setActiveContinents} filterRange={filterRange} setFilterRange={setFilterRange}/></div>
+                <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop activeContinents={activeContinents} setActiveContinents={setActiveContinents} filterRange={filterRange} setFilterRange={setFilterRange} handleSearch={handleSearch} /></div>
                 
                 <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
                 <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry} countryData={countryData}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
