@@ -22,23 +22,16 @@ function CountryDetailGraph(props) {
     const end = useRef(0);
 
     useEffect(() => {
-        console.log(props.countryData);
         try {
             const data = props.countryData;
             start.current = Object.keys(props.countryData[0]).indexOf('1800');
             end.current = start.current + 223;
-            console.log(start.current, " --- ", end.current)
         } catch (error) {
-            console.error("Error loading data:", error.message);
         }
     }, [props.countryData]);
 
     useEffect( () => {
-        console.log("selected country change");
-        console.log(Object.values(props.selectedCountry));
-        console.log(start.current, " - ", end.current);
         const this_country_history_data = Object.values(props.selectedCountry).slice(start.current, end.current).slice(-Settings.amount).map(Number)
-        console.log(this_country_history_data);
         const svg = select(svgRef.current);
 
         const xScale = scaleLinear()

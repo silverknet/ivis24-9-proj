@@ -137,6 +137,24 @@ function Vis(){
 			})
 			.catch((error) => console.error("Error loading the flight file:", error));
 	}, []);
+
+    // useEffect(() => {
+    //     const handleKeyPress = (event) => {
+    //         console.log(filteredCountryData)
+    //         if (event.key === 'ArrowRight') {
+    //         setSelectedCountry(filteredCountryData[filteredCountryData.findIndex(d => d['country'] === selectedCountry['country']) + 1]);
+    //         }
+    //         if (event.key === 'ArrowLeft') {
+    //         setSelectedCountry(filteredCountryData[filteredCountryData.findIndex(d => d['country'] === selectedCountry['country']) - 1]);
+    //         }
+    //     };
+    
+    //     window.addEventListener('keydown', handleKeyPress);
+    //     return () => {
+    //       window.removeEventListener('keydown', handleKeyPress);
+    //     };
+    //   }, []);
+
     useEffect(() => {
         const reductionDict = {}
         countryData.forEach(row => {
@@ -194,6 +212,7 @@ function Vis(){
 
 
     useEffect(()=>{
+        console.log('re-render');
 
         const svg = select(svgRef.current);
 
@@ -291,7 +310,7 @@ function Vis(){
         .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction[d["country"]]; })
         .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border})
         .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction[d["country"]]) + Settings.border })
-        .attr('fill', d => {return continentColors[d['continent']]}) 
+        .attr('fill', d => {return d === selectedCountry ? '#fdff80' : continentColors[d['continent']]}) 
         .on('click', (p_e, d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
@@ -311,10 +330,22 @@ function Vis(){
             .attr('x', Settings.border + 10)
             .attr('y', reverse_y_scale(2.3) - 80);
 
+        const backgroundWidth = 430; 
+        const backgroundHeight = 20; 
+        // Text background
+        const textBackground = svg.append('rect')
+            .attr('class', 'textBackground')
+            .style('opacity', '0.5')
+            .attr('x', Settings.border - 3) 
+            .attr('y', Settings.border + reverse_y_scale(2.3) - backgroundHeight -5)
+            .attr('width', backgroundWidth)
+            .attr('height', backgroundHeight)
+            .attr('fill', 'white');
+
         // Add text for the parallel line
         const targetText = svg.append('text')
-            .attr('x', Settings.border + 10) // Adjust the position as needed
-            .attr('y', reverse_y_scale(2.3) - 60) // Adjust the position as needed
+            .attr('x', Settings.border ) // Adjust the position as needed
+            .attr('y', Settings.border + reverse_y_scale(2.3) -10) // Adjust the position as needed
             .text('The global average emissions per capita needed to reach the 1.5°C goal')
             .attr('fill', 'green')
             .style('cursor', 'pointer') // Change cursor to pointer on hover
@@ -337,14 +368,14 @@ function Vis(){
             .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate
             .attr('x2', bar_window_size.width + Settings.border)  // Ending x-coordinate
             .attr('y2', Settings.border + reverse_y_scale(2.3))  // Ending y-coordinate
-            .attr('stroke', 'yellow')  // Line color
+            .attr('stroke', 'green')  // Line color
             .attr('stroke-width', 2)  // Line thickness
             .attr('stroke-dasharray', '5 5');  // Dashed line style
 
 
 
         
-    }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents]);
+    }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry]);
 
     return (
         <div className="VisContainer">
