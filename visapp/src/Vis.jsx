@@ -73,8 +73,9 @@ function Vis(){
     };
 
     const handleSearch = (query) => {
-    const filteredData = countryData.filter(country => country.country.toLowerCase().includes(query.toLowerCase()));
-    setFilteredCountryData(filteredData);
+    const filteredData = countryData.filter(country => activeContinents[country['continent']] && country['2022'] <= filterRange.max && country['2022'] >= filterRange.min);
+    const filteredData2 = filteredData.filter(country => country.country.toLowerCase().includes(query.toLowerCase()));
+    setFilteredCountryData(filteredData2);
 };
 
     
