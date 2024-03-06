@@ -21,6 +21,8 @@ function Vis(){
 
     const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
     const [countryData, setCountryData] = useState([]); // State to store the loaded CSV data
+    const [ogCountryData, setOgCountryData] = useState([])// State to store the loaded CSV data
+
     const [meatData, setMeatData] = useState(0);
     const [foodData, setFoodData] = useState(0);
     const [flightData, setFlightData] = useState(0);
@@ -48,7 +50,8 @@ function Vis(){
             const filteredAndSorted = data2
             .filter(d => Number(d['2022']) > 5) 
             .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
-        setCountryData(filteredAndSorted); 
+        setCountryData(filteredAndSorted);
+        setOgCountryData(filteredAndSorted);
         }).catch(error => console.error('Error loading the CSV file:', error));
     }, []); 
 
@@ -302,6 +305,22 @@ function hideTooltip() {
         selectedContinents.length === 0 ? true : selectedContinents.includes(country.continent)
     );
 
+    // Inside the Vis component
+// Inside the Vis component
+// Inside the Vis component
+const handleSearch = (query) => {
+    if (query.trim() === '') {
+        // If the search query is empty, show all countries
+        setCountryData(ogCountryData);
+    } else {
+        // Filter countries based on the search query
+        //setCountryData(ogCountryData);
+        const filteredCountries = countryData.filter(country => country.country.toLowerCase().includes(query.toLowerCase()));
+        setCountryData(filteredCountries);
+    }
+};
+
+
 
     return (
         <div className="VisContainer">
@@ -314,13 +333,15 @@ function hideTooltip() {
                 <div
                     className={`Component SideBarTop ${rightDisplay === 0 ? 'display' : 'no-display'}`}
                 >
-                    <SideBarTop
-                        continents={continents}
-                        selectedContinents={selectedContinents}
-                        handleToggleContinent={handleToggleContinent}
-                        handleSelectAll={handleSelectAll}
-                        handleDeselectAll={handleDeselectAll}
-                    />
+                <SideBarTop
+    continents={continents}
+    selectedContinents={selectedContinents}
+    handleToggleContinent={handleToggleContinent}
+    handleSelectAll={handleSelectAll}
+    handleDeselectAll={handleDeselectAll}
+    handleSearch={handleSearch} // Pass the handleSearch function
+/>
+
                 </div>
                 
                 <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
