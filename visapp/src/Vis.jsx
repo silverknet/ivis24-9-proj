@@ -84,7 +84,7 @@ function Vis(){
 
     // Load COUNTRY data
     useEffect(() => {
-        csv('/data/dataset_bothcodeandurl.csv').then(data2 => {
+        csv('/data/co2_pcap_cons.csv').then(data2 => {
             const filteredAndSorted = data2
                 .filter(d => Number(d['2022']) > 0)
                 .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
@@ -212,7 +212,6 @@ function Vis(){
 
 
     useEffect(()=>{
-        console.log('re-render');
 
         const svg = select(svgRef.current);
 
@@ -302,13 +301,16 @@ function Vis(){
 
 
         // Rectangles
+
+        const absolute_bar_width = Math.min(40, Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size));
+
         svg.selectAll('.first').data(filteredCountryData).join(
             enter => enter.append('rect').attr('class', 'first'),
             update => update,
             exit => exit.remove()
-        ).attr('width', () => { return Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size)})
+        ).attr('width', () => { return absolute_bar_width})
         .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction[d["country"]]; })
-        .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border})
+        .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
         .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction[d["country"]]) + Settings.border })
         .attr('fill', d => {return d === selectedCountry ? '#fdff80' : continentColors[d['continent']]}) 
         .on('click', (p_e, d) => {

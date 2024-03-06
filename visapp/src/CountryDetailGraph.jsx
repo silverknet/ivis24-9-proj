@@ -6,7 +6,7 @@ const Settings = {
     height: 240,
     width: 400,
     border: 60,
-    amount: 20,
+    amount: 30,
     max: 9,
     current_year: 2022
 }
@@ -24,8 +24,8 @@ function CountryDetailGraph(props) {
     useEffect(() => {
         try {
             const data = props.countryData;
-            start.current = Object.keys(props.countryData[0]).indexOf('1800');
-            end.current = start.current + 223;
+            start.current = Object.keys(props.countryData[0]).indexOf('1992');
+            end.current = start.current + 31;
         } catch (error) {
         }
     }, [props.countryData]);
