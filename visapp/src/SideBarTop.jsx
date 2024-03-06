@@ -42,7 +42,20 @@ function SideBarTop(props) {
             </div>
             <h2>Change Co2 emission range</h2>
             <div className='emissionFilter'>
-            <div className='filterSliderItem'>
+                <div className='filterSliderItem'>
+                    <label>Minimum Co2/c: {props.filterRange.min}</label>
+                    <input
+                        type="range"
+                        min="0"
+                        max="30"
+                        step="0.01"
+                        value={props.filterRange.min}
+                        onChange={(e) =>
+                            props.setFilterRange((prev) => ({ ...prev, min: parseFloat(Math.min(e.target.value, props.filterRange.max)) }))
+                        }
+                    />
+                </div>
+                <div className='filterSliderItem'>
                     <label>Maximum Co2/c: {props.filterRange.max}</label>
                     <input
                         type="range"
