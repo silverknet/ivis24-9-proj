@@ -8,8 +8,11 @@
   --element_color: rgba(124, 124, 124, 0.039);
   --detail_color: #82BD8C;
   --detail_color_highlight: rgb(255, 231, 97);
-  
+
 }
+
+
+
 .mainWindow{
   width: 100%;
   display: flex;
@@ -47,7 +50,7 @@ MENU
   font-weight: 600;
   cursor: pointer;
   font-size: 8px;
-  color: #65B741;
+  color: #82BD8C;;
 }
 .MenuContainer .ItemContainer{
   /*background-color: rgb(0, 255, 102);*/
@@ -199,6 +202,16 @@ VIS
 /*
 Middle SideBar
 */
+#tooltip {
+  border: 1px solid #ccc;
+  position: absolute;
+  padding: 3px;
+  background-color: #fff;
+  display: none;
+  pointer-events: none;
+  border-radius: 5px;
+}
+
 .SideBar .DetailsFlag{
   width: 150px;  
   height: 100px; 

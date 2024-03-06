@@ -1,5 +1,5 @@
 import {useRef, useEffect, useState} from 'react'
-import { select, line, scaleLinear, axisBottom, axisLeft } from 'd3';
+import { select, line, scaleLinear, axisBottom, axisLeft, pointer} from 'd3';
 
 const Settings = {
     resolution: 1,
@@ -120,6 +120,16 @@ function CountryDetailGraph(props) {
         .x((_, index) => xScale(index))
         .y(value => yScale(value));
 
+        const tooltip = select("#tooltip")
+        const tooltipCircle = svg
+            .append("circle")
+            .attr("r", 3)
+            .attr("fill", "#fdff80")
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .style("opacity", 0)
+            .style('pointer-events', 'none');
+
         svg.selectAll(".line")
         .data([this_country_history_data]) // Wrap the data in an array so it's treated as a single entity
         .join(
@@ -127,7 +137,7 @@ function CountryDetailGraph(props) {
             .attr("class", "line")
             .attr("d", myLine)
             .attr("fill", "none")
-            .attr("stroke", "red")
+            .attr("stroke", "#82BD8C")
             .attr("stroke-width", 3),
             update => update.call(update => update.transition() // Start a transition for a smooth update
             .attr("d", myLine) // Update the line path
@@ -135,7 +145,33 @@ function CountryDetailGraph(props) {
             exit => exit.remove()
         );
 
+        svg
+        .on('touchmouse mousemove', function(event){
+            const mousePos = pointer(event, this)
+            //console.log(mousePos)
+            const hover_year = Math.floor(xScale.invert(mousePos[0])+1)
+            const hover_value = this_country_history_data[hover_year];
+            //console.log(year);
+            //console.log(year+Settings.current_year-Settings.amount + " " + this_country_history_data[year])
+            
+            if(hover_value != undefined && hover_year+Settings.current_year-Settings.amount < 2022){
+                tooltipCircle.style('opacity', 1).attr('cx',xScale(hover_year)).attr('cy', yScale(hover_value))
+                tooltip.select(".CO2Val").text(hover_value + " Tons");
+                tooltip.select(".historyYear").text("Year "+ (hover_year+Settings.current_year-Settings.amount))
+                tooltip.style("display", "block").style("top", `${yScale(hover_value) + 255 }px`).style("left", `${xScale(hover_year) + 600}px`);
+            }
+            
+            
+          })
+        .on('mouseleave', function(event){
+            tooltipCircle.style("opacity", 0);
+            tooltip.style("display", "none");
+        })
+
     }, [props.selectedCountry]);
+    
+    
+
     
 
   return (
@@ -144,6 +180,10 @@ function CountryDetailGraph(props) {
             <g className='x-axis' />
             <g className='y-axis' />
         </svg>
+        <div id="tooltip">
+            <div className='CO2Val'></div>
+            <div className='historyYear'></div>
+        </div>
     </div>
   )
 }
