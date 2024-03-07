@@ -23,13 +23,14 @@ function Vis(){
     const [isMeatDataLoaded, setIsMeatDataLoaded] = useState(false);
     const [isFoodDataLoaded, setIsFoodDataLoaded] = useState(false);
     const [isFlightDataLoaded, setIsFlightDataLoaded] = useState(false);
+    const [isTransportDataLoaded, setIsTransportDataLoaded] = useState(false);
     const [allDataLoaded, setAllDataLoaded] = useState(false);
 
     useEffect(() => {
-        if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded) {
+        if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded && isTransportDataLoaded) {
             setAllDataLoaded(true);
         }
-    }, [isCountryDataLoaded, isMeatDataLoaded, isFoodDataLoaded, isFlightDataLoaded]);
+    }, [isCountryDataLoaded, isMeatDataLoaded, isFoodDataLoaded, isFlightDataLoaded, isTransportDataLoaded]);
 
 
     const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
@@ -38,6 +39,7 @@ function Vis(){
     const [meatData, setMeatData] = useState(0);
     const [foodData, setFoodData] = useState(0);
     const [flightData, setFlightData] = useState(0);
+    const [transportData, setTransportData] = useState(0);
     const [selectedCountry, setSelectedCountry] = useState({}); 
     const [filterRange, setFilterRange] = useState({min: 0, max: 30});
     const [policyState, setPolicyState] = useState({
@@ -139,6 +141,21 @@ function Vis(){
 			.catch((error) => console.error("Error loading the flight file:", error));
 	}, []);
 
+    useEffect(() => {
+		csv("/data/per-capita-transport-co2.csv")
+			.then((data) => {
+				const tDictionary = {};
+                data.forEach(row => {
+                    const country = row['country'];
+                    const transporttonnes = parseFloat(row['transportco2']);
+                    tDictionary[country] = transporttonnes;
+                });
+                setTransportData(tDictionary);
+                setIsTransportDataLoaded(true); // Update loading state
+			})
+			.catch((error) => console.error("Error loading the transport file:", error));
+	}, []);
+
     // useEffect(() => {
     //     const handleKeyPress = (event) => {
     //         console.log(filteredCountryData)
@@ -159,11 +176,12 @@ function Vis(){
     useEffect(() => {
         const reductionDict = {}
         countryData.forEach(row => {
-            if(meatData != 0 && foodData != 0 && flightData != 0){
+            if(allDataLoaded){
                 const c = row["country"];
                 // TODO: if the country isn't in the list, use values of continent instead
                 var meatco2 = coEmissions["meat"];
                 var flightco2 = coEmissions["flight"];
+                var transportco2 = coEmissions["electric"];
                 if(meatData[c] !== undefined){
                     meatco2 = meatData[c][0]*foodData["Poultry"] + meatData[c][1]*foodData["Beef (beef herd)"] + meatData[c][2]*foodData["Mutton"] + meatData[c][3]*foodData["Pork"] + meatData[c][5]*foodData["Fish (farmed)"];
                     meatco2 = meatco2*0.001/row["2022"];
@@ -174,7 +192,12 @@ function Vis(){
                     flightco2 = flightco2*0.001/row["2022"]
                 }
 
-                reductionDict[c] = 1-(meatco2*policyState["meat"]+flightco2*policyState["flight"]+coEmissions["electric"]*policyState["electric"])
+                if (transportData[c] !== undefined){
+                    transportco2 = transportData[c]
+                    transportco2 = transportco2/row["2022"]
+                }
+
+                reductionDict[c] = 1-(meatco2*policyState["meat"]+flightco2*policyState["flight"]+transportco2*policyState["electric"])
             }
         })
         setReduction(reductionDict);
