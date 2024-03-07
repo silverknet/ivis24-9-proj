@@ -14,7 +14,8 @@ const Settings = {
     y_max: 30,
     partitions: 3,
     percentage: [0.2,0.44,0.36],
-    flaglimit: 70
+    flaglimit: 70,
+    maxBarSize: 150
 }
 
 function Vis(){
@@ -301,8 +302,8 @@ function Vis(){
 
 
         // Rectangles
-
-        const absolute_bar_width = Math.min(40, Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size));
+        
+        const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size));
 
         svg.selectAll('.first').data(filteredCountryData).join(
             enter => enter.append('rect').attr('class', 'first'),
