@@ -15,7 +15,8 @@ const Settings = {
     partitions: 3,
     percentage: [0.2,0.44,0.36],
     flaglimit: 70,
-    maxBarSize: 150
+    maxBarSize: 150,
+    rescale_speed: 0.04
 }
 
 function Vis(){
@@ -25,6 +26,9 @@ function Vis(){
     const [isFlightDataLoaded, setIsFlightDataLoaded] = useState(false);
     const [isTransportDataLoaded, setIsTransportDataLoaded] = useState(false);
     const [allDataLoaded, setAllDataLoaded] = useState(false);
+    
+    const rescaleModeRef = useRef(false);
+    const [yMaxState, setYMaxState] = useState(30);
 
     useEffect(() => {
         if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded && isTransportDataLoaded) {
@@ -173,6 +177,7 @@ function Vis(){
     //     };
     //   }, []);
 
+
     useEffect(() => {
         const reductionDict = {}
         countryData.forEach(row => {
@@ -234,15 +239,58 @@ function Vis(){
         };
     }, []);
 
+    // this is for the y-axis scaling,
+    const y_scale_start_value = useRef(null);
+    const y_scale_old_max = useRef(null);
 
+    useEffect(() => {
+        const handleMouseUp = () => {
+            rescaleModeRef.current = false;
+            y_scale_start_value.current = null;
+        };
+        document.addEventListener('mouseup', handleMouseUp);
+    
+        return () => {
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, []);
+    
+    useEffect(() => {
+        const handleMouseMove = (event) => {
+            if (!rescaleModeRef.current) return;
+    
+            if (y_scale_start_value.current == null) {
+                y_scale_start_value.current = event.clientY;
+                y_scale_old_max.current = yMaxState;
+                return;
+            }
+    
+            const delta = event.clientY - y_scale_start_value.current;
+            setYMaxState(Math.max(1,y_scale_old_max.current + (delta * Settings.rescale_speed * (yMaxState > 200 ? yMaxState/100 : 1))));
+        };
+    
+        document.addEventListener('mousemove', handleMouseMove);
+    
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, [yMaxState]);
+    
+    useEffect(() => {
+        if (!rescaleModeRef.current) {
+            y_scale_old_max.current = yMaxState;
+        }
+    }, [yMaxState]);
+    
+
+    // *** MAIN UPDATE USEEFFECT ***
     useEffect(()=>{
-
         const svg = select(svgRef.current);
 
         const bar_window_size = {width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2}
         const bar_width = bar_window_size.width / filteredCountryData.length;
-        const y_scale = scaleLinear([0, Settings.y_max],[0, bar_window_size.height]);
-        const reverse_y_scale = scaleLinear([0, Settings.y_max],[bar_window_size.height, 0]);
+        const y_scale = scaleLinear([0, yMaxState],[0, bar_window_size.height]);
+        const reverse_y_scale = scaleLinear([0, yMaxState],[bar_window_size.height, 0]);
 
         const yAxis = axisRight(reverse_y_scale);
 
@@ -250,9 +298,6 @@ function Vis(){
         const xAxis = axisBottom(scaleLinear([1, filteredCountryData.length + 1],[0, bar_window_size.width ]));
 
 		const gy = svg.selectAll(".y-axis").data([null]);
-
-
-
 		gy.enter()
 			.append("g")
 			.attr("class", "y-axis")
@@ -285,7 +330,7 @@ function Vis(){
         // ).attr('width', () => { return Math.max(0, (bar_window_size.width / data.length) * Settings.bar_size)})
         // .attr('height', function(d) { return Math.max(0, y_scale(d)); })
         // .attr("x", function(d, i) { return (bar_window_size.width / data.length) * i + Settings.border})
-        // .attr("y", (d) => {return y_scale(Settings.y_max - d) + Settings.border });
+        // .attr("y", (d) => {return y_scale(yMaxState - d) + Settings.border });
 
         const n = 4;
         const expandedData = filteredCountryData.flatMap(d => Array.from({ length: n }, (_, i) => ({ ...d, index: i })));
@@ -323,9 +368,25 @@ function Vis(){
             svg.selectAll('.small_flag').remove();
         }
 
+        // y scale rectangle
+        let rectangle = svg.select('.y-scale-rect');
+
+        if (rectangle.empty()) {
+            rectangle = svg.append('rect').attr('class', 'y-scale-rect');
+        }
+
+        rectangle
+            .attr('height', `${svgSize.height - Settings.border * 1}`)
+            .attr('width', 39)
+            .attr('transform', `translate(${Settings.border-35}, ${0})`)   
+            .attr('fill', "red")
+            .style("opacity", "0.0")
+            .on('mousedown', function() {
+                rescaleModeRef.current = true;
+                select(this).attr('fill', 'blue');
+            });
 
         // Rectangles
-        
         const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size));
 
         svg.selectAll('.first').data(filteredCountryData).join(
@@ -333,18 +394,16 @@ function Vis(){
             update => update,
             exit => exit.remove()
         ).attr('width', () => { return absolute_bar_width})
-        .attr('height', function(d) { return Math.max(0, y_scale(d['2022']))*reduction[d["country"]]; })
+        .attr('height', function(d) { return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d['2022']))*reduction[d["country"]]); })
         .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
-        .attr("y", (d) => {return y_scale(Settings.y_max - d['2022']*reduction[d["country"]]) + Settings.border })
+        .attr("y", (d) => {return ((y_scale(d['2022']))*reduction[d["country"]]) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - d['2022']*reduction[d["country"]]) + Settings.border })
         .attr('fill', d => {return d === selectedCountry ? '#fdff80' : continentColors[d['continent']]}) 
         .on('click', (p_e, d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
         });
 
-        // Appends line but currently doesnt do it exaxtly the right place (should be 2.3)
 		// Add a tooltip container
-
 		const tooltip = svg.append('g')
         .attr('class', 'tooltip')
         .style('display', 'none');
@@ -358,25 +417,35 @@ function Vis(){
 
         const backgroundWidth = 430; 
         const backgroundHeight = 20; 
+        const textBackground = svg.selectAll(".textBackground").data([null]);
+        
         // Text background
-        const textBackground = svg.append('rect')
+        textBackground.enter().append('rect')
             .attr('class', 'textBackground')
             .style('opacity', '0.5')
+            .attr('fill', 'white')
+        .merge(textBackground)
             .attr('x', Settings.border - 3) 
-            .attr('y', Settings.border + reverse_y_scale(2.3) - backgroundHeight -5)
+            .attr('y', Settings.border + reverse_y_scale(2.3) - backgroundHeight - 5)
             .attr('width', backgroundWidth)
             .attr('height', backgroundHeight)
-            .attr('fill', 'white');
+            .raise(); 
 
         // Add text for the parallel line
-        const targetText = svg.append('text')
-            .attr('x', Settings.border ) // Adjust the position as needed
-            .attr('y', Settings.border + reverse_y_scale(2.3) -10) // Adjust the position as needed
-            .text('The global average emissions per capita needed to reach the 1.5°C goal')
+        const targetText = svg.selectAll(".targetText").data([null]); 
+        targetText.enter().append('text')
+            .attr('class', 'targetText') 
             .attr('fill', 'green')
-            .style('cursor', 'pointer') // Change cursor to pointer on hover
+            .style('cursor', 'pointer')
+            .style('z-order', '-1')
             .on('mouseover', showTooltip)
-            .on('mouseout', hideTooltip);
+            .on('mouseout', hideTooltip)
+            .text('The global average emissions per capita needed to reach the 1.5°C goal')
+        .merge(targetText)
+            .attr('x', Settings.border) // Adjust the position as needed
+            .attr('y', Settings.border + reverse_y_scale(2.3) - 10)  // Adjust the position as needed
+            .raise(); 
+
 
         // Function to show the tooltip
         function showTooltip() {
@@ -389,19 +458,26 @@ function Vis(){
             tooltip.style('display', 'none');
         }
 
-        svg.append('line')
+        // Bind a single-element array to prepare for the enter-update-exit pattern
+        var co2_line = svg.selectAll(".co2_line").data([null]);
+
+        // Enter selection: append the line if it doesn't exist
+        co2_line.enter().append('line')
+            .attr('class', 'co2_line')
+            .attr('stroke', 'green')  // Line color
+            .attr('stroke-width', 2)  // Line thickness
+            .attr('stroke-dasharray', '5 5')  // Dashed line style
+        .merge(co2_line)  // Merge enter and update selections
             .attr('x1', Settings.border)  // Starting x-coordinate
             .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate
             .attr('x2', bar_window_size.width + Settings.border)  // Ending x-coordinate
             .attr('y2', Settings.border + reverse_y_scale(2.3))  // Ending y-coordinate
-            .attr('stroke', 'green')  // Line color
-            .attr('stroke-width', 2)  // Line thickness
-            .attr('stroke-dasharray', '5 5');  // Dashed line style
+            .raise(); 
 
 
 
         
-    }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry]);
+    }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
 
     return (
         <div className="VisContainer">
