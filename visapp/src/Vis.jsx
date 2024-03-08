@@ -8,6 +8,8 @@ import SideBarTop from "./SideBarTop";
 import SideBarBottom from "./SideBarBottom";
 import SideBarMiddle from "./SideBarMiddle";
 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 const Settings = {
     bar_size: 0.8, // bar fill percentage
     border: 50,
@@ -480,18 +482,47 @@ function Vis(){
     }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
 
     return (
+        // <Router>
+		// 	<MenuBar/>
+		// 	<div className="mainWindow">
+		// 		<Routes>
+		// 			<Route path="/" element={<Vis />} />
+		// 			<Route path="/about" element={<About />} />
+		// 			<Route path="/howtouse" element={<HowToUse />} />
+		// 		</Routes>
+		// 	</div>
+		// 	<Footer />
+		// </Router>
         <div className="VisContainer">
             <svg className="SvgBarGraph" ref={svgRef}></svg>  
-            <div className='SideBar'>  
-                <div className='SelectBox' onClick={() => setRightDisplay(0)}>Pick & Choose</div>
-                <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop activeContinents={activeContinents} setActiveContinents={setActiveContinents} filterRange={filterRange} setFilterRange={setFilterRange} handleSearch={handleSearch} /></div>
-                
-                <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
-                <div className={`Component SideBarMiddle ${rightDisplay === 1 ? "display" : "no-display"}`}><SideBarMiddle selectedCountry={selectedCountry} countryData={countryData}/></div>  {/* Corrected the condition to `rightDisplay === 1` for `SideBarMiddle` */}
-
-                <div className='SelectBox' onClick={() => setRightDisplay(2)}>Consumption Bans</div>
-                <div className={`Component SideBarBottom ${rightDisplay === 2 ? "display" : "no-display"}`}><SideBarBottom setPolicyState={setPolicyState} policyState={policyState}/></div>  {/* Corrected the class to `SideBarBottom` and condition to `rightDisplay === 2` for `SideBarBottom` */}
-            </div>  
+            <div className='SideBar'> 
+                <div className="Menu">
+                    <div className={`SelectBox ${rightDisplay === 0 ? 'selected' : ''}`} onClick={() => setRightDisplay(0)}>Filter</div>
+                    <div className={`SelectBox ${rightDisplay === 1 ? 'selected' : ''}`} onClick={() => setRightDisplay(1)}>Country</div>
+                    <div className={`SelectBox ${rightDisplay === 2 ? 'selected' : ''}`} onClick={() => setRightDisplay(2)}>Restrictions</div>
+                </div>
+                {rightDisplay === 0 && (
+                    <SideBarTop
+                        activeContinents={activeContinents}
+                        setActiveContinents={setActiveContinents}
+                        filterRange={filterRange}
+                        setFilterRange={setFilterRange}
+                        handleSearch={handleSearch}
+                    />
+                )}
+                {rightDisplay === 1 && (
+                    <SideBarMiddle
+                        selectedCountry={selectedCountry}
+                        countryData={countryData}
+                    />
+                )}
+                {rightDisplay === 2 && (
+                    <SideBarBottom
+                        setPolicyState={setPolicyState}
+                        policyState={policyState}
+                    />
+                )}
+            </div>   
         </div>
     );
 }
