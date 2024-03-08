@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
 	return (
 		<Router>
+			<MenuBar/>
 			<div className="mainWindow">
 				<Routes>
 					<Route path="/" element={<Vis />} />

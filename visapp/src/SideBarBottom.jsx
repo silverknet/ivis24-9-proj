@@ -13,7 +13,11 @@ function SideBarBottom(props) {
   };
 
   return (
-    <div className='BottomContainer'>
+    <div className='BottomContainer Container'>
+      <div className="ElementComponent">
+        <h1>Apply restrictions</h1>
+      </div>
+      <div className='ElementComponent'>
       {Object.keys(checkBoxData).map(key => (
         <label key={key}>
           <input
@@ -26,6 +30,7 @@ function SideBarBottom(props) {
           {checkBoxData[key]}
         </label>
       ))}
+      </div>
     </div>
   );
 }

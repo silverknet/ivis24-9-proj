@@ -123,7 +123,7 @@ VIS
   margin-right: 20px;
 }
 .SvgBarGraph{
-  width: 100%;
+  flex-grow: 1;
   min-width: 400px;
   background-color: var(--element_color);
   padding: 0px;
@@ -146,54 +146,23 @@ VIS
   cursor: pointer;
 }
 
+/*SIDEBAR*/
 .SideBar{
-  height: 100%;
-  width: 600px;
+  width: 450px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 20px;
 }
-.SideBar label{
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-left: 20px;
-  text-align: left;
-  font-weight: 600;
-}
-.SideBar .Component{
+.SideBar .Menu{
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
   width: 100%;
-  /* border-radius: 1px;
-  outline-style: solid;
-  outline-width: 1px;
-  outline-color: rgba(134, 134, 134, 0.351); */
-
-  display: flex;
-  flex-direction: column;
-
-  background-color: var(--element_color);
-  opacity: 1;
-
-  transition: height 0.2s , opacity 0.2s ;
-
-  box-sizing: border-box;
-}
-.SideBar .display{
-  height: 100%;
-}
-
-.SideBar .no-display{
-  height: 0%;
-  /*display: none;*/
-  visibility: hidden;
-  opacity: 0;
-  overflow: hidden;
-  transition: height 0.2s , opacity 0.2s ;
-
 }
 .SideBar .SelectBox{
+  flex: 1;
   height: 60px;
   background-color: var(--detail_color);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,8 +171,16 @@ VIS
   font-size: 20px;
   border-radius: 5px;
 }
+.Menu .selected{
+  background-color: #007bff00;
+  color: var(--detail_color);
+}
+
 .SideBar .SelectBox:hover {
   cursor: pointer;
+}
+.SideBar .selected:hover {
+  cursor:default;
 }
 
 /*
@@ -242,17 +219,11 @@ Middle SideBar
   width: 100%;
   height: 150px;
 }
-.SideBar .PageContent{
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: left;
-}
+
 
 .SideBar .PageHeader{
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
 }
 
 .PageHeader span{
@@ -263,26 +234,28 @@ Middle SideBar
   font-weight: bold;
 }
 
-.SideBar .BottomContainer{
+.Container{
   display: flex;
   flex-direction: column;
-  width: 100%;
-  flex-grow: 1;
-  align-items: flex-start;
-  text-align: left;
-  justify-content: space-evenly;
+  align-items: center;
+  flex: 1;
+  background-color: var(--element_color);
 }
-
-.SideBar .TopContainer{
-  height: 100%;
+.ElementComponent{
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
   flex-direction: column;
+  gap: 15px;
   width: 100%;
-  flex-grow: 1;
-  align-items: flex-start;
-  text-align: left;
-  justify-content: flex-start;
-  gap: 10px;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border-top: none;
+  border-right: none; 
+  border-left: none; 
+  border-bottom: 1px solid #00000020; 
 }
 
 .BottomContainer .checkboxColor {
@@ -295,13 +268,27 @@ Middle SideBar
   flex-direction: column;
   gap: 3px;
   padding-top: 5px;
-  padding-bottom: 15px;
-  height: 80px;
-  border-top: none;
-  border-right: none; 
-  border-left: none; 
-  border-bottom: 1px solid #00000020; 
+  padding-bottom: 5px;
+  height: 100px;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 70%;
 }
+.continent-item {
+  margin-bottom: 5px;  
+  flex: 1;
+  width: 120px;
+}
+
+.continent-item label {
+  display: flex;
+  align-items: center;
+}
+
+.continent-name {
+  margin-left: 5px;
+}
+
 .TopContainer .emissionFilter{
   width: 100%;
   display: flex;
@@ -309,12 +296,7 @@ Middle SideBar
   justify-content: center;
   gap: 3px;
   padding-top: 5px;
-  padding-bottom: 10px;
-  height: 80px;
-  border-top: none;
-  border-right: none; 
-  border-left: none; 
-  border-bottom: 1px solid #00000020; 
+  padding-bottom: 5px;
 }
 .TopContainer .emissionFilter input{
   width: 120px;
@@ -331,9 +313,15 @@ Middle SideBar
   width: 100%;
 }
 .SideBar h2{
-  margin: auto;
-  margin-top: 10px;
+  margin-top: 0px;
   margin-bottom: 0px;
+}
+
+.searchContainer{
+  margin-bottom: 20px;
+}
+.searchContainer input{
+  height:20px;
 }
 
 /*
@@ -400,18 +388,6 @@ Footer
   cursor: pointer;
 }
 
-.continent-item {
-  margin-bottom: 5px;
-}
-
-.continent-item label {
-  display: flex;
-  align-items: center;
-}
-
-.continent-name {
-  margin-left: 5px;
-}
 
 
 @media only screen and (max-width: 600px) {
