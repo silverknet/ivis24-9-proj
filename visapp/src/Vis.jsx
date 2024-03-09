@@ -503,76 +503,90 @@ function Vis() {
 		// 		setRightDisplay(1); //open up middle display when selecting country
 		// 	});
 
-		// stacked rectangles
-		svg
-			.append("g")
-			.selectAll(".stacked")
-			.data(stackedData)
-			.join("g")
-			.attr("fill", (d, i) => ["yellow", "red", "green", "blue"][i % 4]) // Assigning colors based on index
-			.selectAll("rect")
-			.data((d) => d)
-			.join("rect")
-			.attr("x", function (d, i) {
-				return (bar_window_size.width / countryData.length) * i + Settings.border;
-			})
-			.attr("y", (d) => {
-				return y_scale_stacked(d[1]);
-			})
-			.attr("width", () => {
-				return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
-			})
-			.attr("height", function (d) {
-				return y_scale_stacked(d[0]) - y_scale_stacked(d[1]);
-			});
+		// stacked rectangles        
+        // Assuming 'svg' is already defined and appended to the DOM
+        // Assuming 'stackedData' is your data array ready for use
 
-		selectAll(".first").raise();
+        // Bind the stacked data to the group elements
+        const seriesGroups = svg.selectAll(".stacked")
+        .data(stackedData, d => d.key); // Use a unique identifier for each series
 
-		// Add a tooltip container
-		const tooltip = svg.append("g").attr("class", "tooltip").style("display", "none");
+        // Enter selection for the groups
+        const enteredSeriesGroups = seriesGroups.enter()
+        .append("g")
+        .attr("class", "stacked")
+        .attr("fill", (d, i) => ["yellow", "red", "green", "blue"][i % 4]); // Set the fill color here
 
-		// Add a tooltip background rectangle
+        seriesGroups.attr("fill", (d, i) => ["yellow", "red", "green", "blue"][i % 4]);
 
-		// Add the tooltip text
-		const tooltipText = tooltip
-			.append("text")
-			.attr("x", Settings.border + 10)
-			.attr("y", reverse_y_scale(2.3) - 80);
+        seriesGroups.exit().remove();
 
-		const backgroundWidth = 430;
-		const backgroundHeight = 20;
-		const textBackground = svg.selectAll(".textBackground").data([null]);
+        enteredSeriesGroups.merge(seriesGroups).each(function(seriesData) {
+        const rects = select(this).selectAll("rect")
+            .data(seriesData, d => d.data.key); // Assuming each data point has a unique 'key' property
 
-		// Text background
-		textBackground
-			.enter()
-			.append("rect")
-			.attr("class", "textBackground")
-			.style("opacity", "0.5")
-			.attr("fill", "white")
-			.merge(textBackground)
-			.attr("x", Settings.border - 3)
-			.attr("y", Settings.border + reverse_y_scale(2.3) - backgroundHeight - 5)
-			.attr("width", backgroundWidth)
-			.attr("height", backgroundHeight)
-			.raise();
+        rects.enter()
+            .append("rect")
+            .attr("x", (d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2)
+            .attr("y", d => y_scale_stacked(d[1]))
+            .attr("width", absolute_bar_width)
+            .attr("height", d => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
 
-		// Add text for the parallel line
-		const targetText = svg.selectAll(".targetText").data([null]);
-		targetText
-			.enter()
-			.append("text")
-			.attr("class", "targetText")
-			.attr("fill", "green")
-			.style("cursor", "pointer")
-			.style("z-order", "-1")
-			.on("mouseover", showTooltip)
-			.on("mouseout", hideTooltip)
-			.text("The global average emissions per capita needed to reach the 1.5°C goal")
-			.merge(targetText)
-			.attr("x", Settings.border) // Adjust the position as needed
-			.attr("y", Settings.border + reverse_y_scale(2.3) - 10) // Adjust the position as needed
-			.raise();
+        rects.attr("x", (d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2)
+            .attr("y", d => y_scale_stacked(d[1]))
+            .attr("width", absolute_bar_width)
+            .attr("height", d => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
+
+        rects.exit().remove();
+        });
+
+        selectAll(".first").raise();
+
+        // Add a tooltip container
+        const tooltip = svg.append("g").attr("class", "tooltip").style("display", "none");
+
+        // Add a tooltip background rectangle
+
+        // Add the tooltip text
+        const tooltipText = tooltip
+            .append("text")
+            .attr("x", Settings.border + 10)
+            .attr("y", reverse_y_scale(2.3) - 80);
+
+        const backgroundWidth = 430;
+        const backgroundHeight = 20;
+        const textBackground = svg.selectAll(".textBackground").data([null]);
+
+        // Text background
+        textBackground
+            .enter()
+            .append("rect")
+            .attr("class", "textBackground")
+            .style("opacity", "0.5")
+            .attr("fill", "white")
+            .merge(textBackground)
+            .attr("x", Settings.border - 3)
+            .attr("y", Settings.border + reverse_y_scale(2.3) - backgroundHeight - 5)
+            .attr("width", backgroundWidth)
+            .attr("height", backgroundHeight)
+            .raise();
+
+        // Add text for the parallel line
+        const targetText = svg.selectAll(".targetText").data([null]);
+        targetText
+            .enter()
+            .append("text")
+            .attr("class", "targetText")
+            .attr("fill", "green")
+            .style("cursor", "pointer")
+            .style("z-order", "-1")
+            .on("mouseover", showTooltip)
+            .on("mouseout", hideTooltip)
+            .text("The global average emissions per capita needed to reach the 1.5°C goal")
+            .merge(targetText)
+            .attr("x", Settings.border) // Adjust the position as needed
+            .attr("y", Settings.border + reverse_y_scale(2.3) - 10) // Adjust the position as needed
+            .raise();
 
 		// Function to show the tooltip
 		function showTooltip() {
