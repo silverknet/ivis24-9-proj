@@ -29,6 +29,8 @@ function SideBarMiddle(props) {
       </div>
       <div className="ElementComponent">
         <h3>Continent: {props.selectedCountry.continent}</h3>
+        <h3>Population: {props.selectedCountry['population_2022']}</h3>
+        <h3>GDP per capita: {props.selectedCountry['GDP_2022']}</h3>
       </div>
 
       <div className="ElementComponent">

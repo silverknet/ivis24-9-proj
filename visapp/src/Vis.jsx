@@ -94,6 +94,7 @@ function Vis(){
     // Load COUNTRY data
     useEffect(() => {
         csv('/data/co2_pcap_cons.csv').then(data2 => {
+            console.log(data2);
             const filteredAndSorted = data2
                 .filter(d => Number(d['2022']) > 0)
                 .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
