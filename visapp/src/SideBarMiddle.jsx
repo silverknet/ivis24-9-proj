@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import noflag from "./assets/noflag.png"
+import { useState } from "react";
+import CountryDetailGraph from './CountryDetailGraph';
+
+import noflag from "./assets/noflag.png";
 
 function SideBarMiddle(props) {
  function showFlag(){
@@ -11,15 +13,28 @@ function SideBarMiddle(props) {
   }
  }
   return ( 
-    <>
-      <div className='PageHeader'>
-        <span>{props.selectedCountry.country}</span>
-        <span><img className='DetailsFlag' src={showFlag()}/></span>
+    <div className='MiddleContainer Container'>
+      <div className="ElementComponent">
+        <div className='PageHeader '>
+          <span>
+            {props.selectedCountry.country}
+          </span>
+          <img
+            className="DetailsFlag"
+            src={props.selectedCountry.Code ? `https://flagcdn.com/${props.selectedCountry.Code.toLowerCase()}.svg` : noflag}
+            alt={props.selectedCountry.country}
+          />
+        </div>
+        
       </div>
-      <div className='PageContent'>
-        Continent: {props.selectedCountry.continent}
+      <div className="ElementComponent">
+        <h3>Continent: {props.selectedCountry.continent}</h3>
       </div>
-    </>
+
+      <div className="ElementComponent">
+        <CountryDetailGraph countryData={props.countryData} selectedCountry={props.selectedCountry}/>
+      </div>
+    </div>
   );
 }
 

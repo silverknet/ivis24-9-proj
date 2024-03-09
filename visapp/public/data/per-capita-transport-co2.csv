@@ -1,0 +1,204 @@
+country,transportco2
+Afghanistan,0.08364929
+Africa,0.24595101
+Albania,0.5336868
+Algeria,0.9313797
+Angola,0.16841921
+Antigua and Barbuda,2.1581492
+Argentina,0.8386618
+Armenia,0.80552894
+Asia,0.51550406
+Australia,3.608485
+Austria,2.4371953
+Azerbaijan,0.6631047
+Bahamas,1.3284851
+Bahrain,2.2267675
+Bangladesh,0.06187995
+Barbados,1.4249886
+Belarus,1.1013371
+Belgium,1.80942
+Belize,1.2660439
+Benin,0.4880124
+Bhutan,0.5048465
+Bolivia,0.733066
+Bosnia and Herzegovina,1.0969108
+Botswana,0.8364737
+Brazil,0.8560655
+Brunei,2.7165546
+Bulgaria,1.2823855
+Burkina Faso,0.11708605
+Burundi,0.04664397
+Cambodia,0.40861472
+Cameroon,0.12910001
+Canada,4.182777
+Cape Verde,0.49772933
+Central African Republic,0.041175183
+Chad,0.06548628
+Chile,1.3196673
+China,0.62889415
+Colombia,0.52915084
+Comoros,0.23568289
+Congo,0.20167714
+Cook Islands,2.346041
+Costa Rica,0.97597027
+Cote d'Ivoire,0.1551556
+Croatia,1.3937463
+Cuba,0.13538991
+Cyprus,1.4302568
+Czech Republic,1.6703144
+Democratic Republic of Congo,0.024985684
+Denmark,1.896788
+Djibouti,0.12842128
+Dominica,0.6943384
+Dominican Republic,0.6345646
+Timor-Leste,0.16923103
+Ecuador,0.900015
+Egypt,0.4798766
+El Salvador,0.50693387
+Equatorial Guinea,0.26941395
+Eritrea,0.061869547
+Estonia,1.6924305
+Eswatini,0.60135704
+Ethiopia,0.063144825
+Europe,1.4793782
+European Union (27),1.5750391
+Fiji,0.5758178
+Finland,1.866364
+France,1.6513635
+Gabon,0.08287595
+Gambia,0.03107997
+Georgia,1.0010855
+Germany,1.707809
+Ghana,0.2846453
+Greece,1.4116888
+Grenada,0.8085905
+Guatemala,0.49358636
+Guinea,0.15599966
+Guinea-Bissau,0.059528563
+Guyana,1.09131
+Haiti,0.1255881
+High-income countries,2.5598865
+Honduras,0.3487535
+Hungary,1.2583878
+Iceland,2.318085
+India,0.19303386
+Indonesia,0.4650222
+Iran,1.4758817
+Iraq,0.6760347
+Ireland,2.0096548
+Israel,1.8612645
+Italy,1.3557853
+Jamaica,0.59565216
+Japan,1.4428548
+Jordan,0.65240926
+Kazakhstan,1.090138
+Kenya,0.2000547
+Kiribati,0.15813652
+Kuwait,2.981343
+Kyrgyzstan,0.21479
+Laos,0.3333608
+Latvia,1.5972109
+Lebanon,1.1160312
+Lesotho,0.23956303
+Liberia,0.12186514
+Libya,2.5112917
+Lithuania,2.16646
+Low-income countries,0.08983344
+Lower-middle-income countries,0.28707537
+Luxembourg,7.4079833
+Madagascar,0.042160932
+Malawi,0.05986461
+Malaysia,1.7930729
+Maldives,1.6522467
+Mali,0.07067457
+Malta,1.1254182
+Marshall Islands,1.6115294
+Mauritania,0.37789494
+Mauritius,0.7782221
+Mexico,0.8427098
+Micronesia,0.5351457
+Moldova,0.65481347
+Mongolia,0.84690714
+Montenegro,1.0968782
+Morocco,0.45354477
+Mozambique,0.10520157
+Myanmar,0.11249794
+Namibia,0.74725837
+Nauru,0.81043845
+Nepal,0.18058766
+Netherlands,1.4809663
+New Zealand,2.7306154
+Nicaragua,0.32120073
+Niger,0.046437763
+Nigeria,0.24471097
+Niue,0.0
+North America,3.0538828
+North Korea,0.18633439
+North Macedonia,0.9284356
+Norway,2.2268336
+Oceania,2.4798698
+Oman,2.2119968
+Pakistan,0.19718593
+Palau,5.5558643
+Panama,0.8546031
+Papua New Guinea,0.12820984
+Paraguay,1.0440117
+Peru,0.5981126
+Philippines,0.25367457
+Poland,1.5972575
+Portugal,1.3934493
+Qatar,4.278381
+Romania,0.92582875
+Russia,1.6070889
+Rwanda,0.044118654
+Saint Kitts and Nevis,1.468552
+Saint Lucia,1.1715808
+Saint Vincent and the Grenadines,1.0511831
+Samoa,0.5583109
+Sao Tome and Principe,0.13720559
+Saudi Arabia,3.4086072
+Senegal,0.17461541
+Serbia,0.8915454
+Seychelles,1.6106874
+Sierra Leone,0.0813702
+Singapore,1.0440155
+Slovak Republic,1.2809985
+Slovenia,2.124999
+Solomon Islands,0.20254688
+Somalia,0.008465855
+South Africa,0.7659613
+South America,0.81734735
+South Korea,1.9083922
+South Sudan,0.08485583
+Spain,1.5630077
+Sri Lanka,0.40939298
+Sudan,0.23357081
+Suriname,1.3342822
+Sweden,1.4572328
+Switzerland,1.6715654
+Syria,0.24984834
+Tajikistan,0.17708924
+Tanzania,0.107123435
+Thailand,1.0234252
+Togo,0.13029188
+Tonga,0.7599867
+Trinidad and Tobago,1.5215968
+Tunisia,0.58297676
+Turkey,0.93729836
+Turkmenistan,1.9326633
+Tuvalu,0.0
+Uganda,0.076343425
+Ukraine,0.49419644
+United Arab Emirates,3.3066711
+United Kingdom,1.408153
+United States,4.4886317
+Upper-middle-income countries,0.77674127
+Uruguay,1.023596
+Uzbekistan,0.47007364
+Vanuatu,0.25666198
+Venezuela,0.82167864
+Vietnam,0.37900156
+World,0.9052879
+Yemen,0.0839424
+Zambia,0.13155311
+Zimbabwe,0.13210239
