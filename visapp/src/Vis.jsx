@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { selectAll, stack, select, scaleLinear, axisBottom, axisLeft, axisRight, csv, line, text, count } from "d3";
+import { selectAll, stack, select, scaleLinear, axisBottom, axisLeft, axisRight, csv, line, text, count, color } from "d3";
 
 import data from "./test_data.json";
 import data2 from "./test_data2.json";
@@ -48,16 +48,17 @@ function Vis() {
 	const [selectedCountry, setSelectedCountry] = useState({});
 	const [filterRange, setFilterRange] = useState({ min: 0, max: 30 });
 	const [policyState, setPolicyState] = useState({
+		other: false,
 		meat: false,
 		flight: false,
-		electric: false,
+		transport: false,
 	});
 	// state for which right side menu item is visible
 	const [rightDisplay, setRightDisplay] = useState(1);
 
 	// data needed for stacked rectangles
-	const [stackedData, setStackedData] = useState([]);
-	const [filteredStackedData, setFilteredStackedData] = useState([]);
+	const [splitData, setSplitData] = useState([]);
+	const [stackDataPolicyState, setStackedDataPolicyState] = useState([]);
 
 	//FIX LATER
 	const coEmissions = {
@@ -235,8 +236,8 @@ function Vis() {
 				};
 			}
 		});
-		const stackedData = stack().keys(Object.keys(splitData[0]))(splitData);
-		setStackedData(stackedData);
+
+		setSplitData(splitData);
 
 		setReduction(reductionDict);
 	}, [policyState, allDataLoaded]);
@@ -282,7 +283,10 @@ function Vis() {
 					}
 
 					return {
-						other: row["2022"] - (meatco2 + flightco2 + transportco2),
+						other:
+							row["2022"] - (meatco2 + flightco2 + transportco2) > 0
+								? row["2022"] - (meatco2 + flightco2 + transportco2)
+								: row["2022"] - (meatco2 + flightco2 + transportco2) * -1,
 						meat: meatco2,
 						flight: flightco2,
 						transport: transportco2,
@@ -292,8 +296,8 @@ function Vis() {
 			.filter(Boolean);
 
 		if (splitData.length > 0) {
-			const stackedData = stack().keys(Object.keys(splitData[0]))(splitData);
-			setStackedData(stackedData);
+			// const stackedData = stack().keys(Object.keys(splitData[0]))(splitData);
+			setSplitData(splitData);
 		}
 	}, [activeContinents, filterRange, allDataLoaded]);
 
@@ -504,30 +508,35 @@ function Vis() {
 		// 	});
 
 		// stacked rectangles
-		svg
-			.append("g")
-			.selectAll(".stacked")
-			.data(stackedData)
-			.join("g")
-			.attr("fill", (d, i) => ["yellow", "red", "green", "blue"][i % 4]) // Assigning colors based on index
-			.selectAll("rect")
-			.data((d) => d)
-			.join("rect")
-			.attr("x", function (d, i) {
-				return (bar_window_size.width / countryData.length) * i + Settings.border;
-			})
-			.attr("y", (d) => {
-				return y_scale_stacked(d[1]);
-			})
-			.attr("width", () => {
-				return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
-			})
-			.attr("height", function (d) {
-				return y_scale_stacked(d[0]) - y_scale_stacked(d[1]);
-			});
+		if (splitData.length > 0) {
+			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
-		selectAll(".first").raise();
+			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
 
+			svg
+				.append("g")
+				.selectAll(".stacked")
+				.data(stackedData)
+				.join("g")
+				.attr("fill", (d, i) => colorsStackedRectangles[i % 4]) // Assigning colors based on index
+				.selectAll("rect")
+				.data((d) => d)
+				.join("rect")
+				.attr("x", function (d, i) {
+					return (bar_window_size.width / countryData.length) * i + Settings.border;
+				})
+				.attr("y", (d) => {
+					return y_scale_stacked(d[1]);
+				})
+				.attr("width", () => {
+					return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
+				})
+				.attr("height", function (d) {
+					return y_scale_stacked(d[0]) - y_scale_stacked(d[1]);
+				});
+
+			selectAll(".first").raise();
+		}
 		// Add a tooltip container
 		const tooltip = svg.append("g").attr("class", "tooltip").style("display", "none");
 
