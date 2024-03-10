@@ -221,6 +221,18 @@ VIS
   cursor:default;
 }
 
+#barTooltip {
+  border: 1px solid #ccc;
+  position: absolute;
+  padding: 3px;
+  background-color: #ffffff;
+  display: none;
+  pointer-events: none;
+  border-radius: 5px;
+  width: fit-content;
+  height: 20;
+}
+
 /*
 Middle SideBar
 */

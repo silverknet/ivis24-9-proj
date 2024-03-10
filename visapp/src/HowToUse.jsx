@@ -12,7 +12,7 @@ function HowToUse(){
                 the tab "Country Info" you can read more about that specific country and see their emission statistic over time.
             </p>
             <p className="mainText">
-                The big feature of this tool is your ability to "play god", i.e. the possibility to place bans and restrictions. Under the tab "Restrictions"
+                The big feature of this tool is your ability to "play god", i.e. the possibility to place bans and restrictions on consumption behaviours. Under the tab "Restrictions"
                 you'll find some toggle switches, where you can decide to put an end to things like meat consumption or commersial air travel. The effects
                 of your choices will be applied to the bar graph, for an easy overview of what it would take for us to reach the 1.5C goal.
             </p>
