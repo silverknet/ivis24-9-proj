@@ -153,12 +153,12 @@ function CountryDetailGraph(props) {
             const hover_value = this_country_history_data[hover_year];
             //console.log(year);
             //console.log(year+Settings.current_year-Settings.amount + " " + this_country_history_data[year])
-            
+            const placement = document.getElementsByClassName('CountryDetailGraph')[0].getBoundingClientRect();
             if(hover_value != undefined && hover_year+Settings.current_year-Settings.amount < 2022){
                 tooltipCircle.style('opacity', 1).attr('cx',xScale(hover_year)).attr('cy', yScale(hover_value))
                 tooltip.select(".CO2Val").text(hover_value + " Tons");
                 tooltip.select(".historyYear").text("Year "+ (hover_year+Settings.current_year-Settings.amount))
-                tooltip.style("display", "block").style("top", `${yScale(hover_value) + 255 }px`).style("left", `${xScale(hover_year) + window.innerWidth -470}px`);
+                tooltip.style("display", "block").style("top", `${yScale(hover_value) + placement.top+50 }px`).style("left", `${xScale(hover_year) + placement.left}px`);
             }
             
             
