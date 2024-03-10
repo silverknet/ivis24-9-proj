@@ -331,7 +331,6 @@ Small details graph
 .CountryDetailGraph{
   width: 90%;
   height: 240px;
-  background-color: #9b9b9b07;
   border-radius: 10px;
 }
 .CountryDetailGraph .x-axis text,

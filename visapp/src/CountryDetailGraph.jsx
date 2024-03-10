@@ -20,6 +20,7 @@ function CountryDetailGraph(props) {
     */
     const start = useRef(0);
     const end = useRef(0);
+    const placement = document.getElementsByClassName('CountryDetailGraph')[0].getBoundingClientRect();
 
     useEffect(() => {
         try {
@@ -158,7 +159,7 @@ function CountryDetailGraph(props) {
                 tooltipCircle.style('opacity', 1).attr('cx',xScale(hover_year)).attr('cy', yScale(hover_value))
                 tooltip.select(".CO2Val").text(hover_value + " Tons");
                 tooltip.select(".historyYear").text("Year "+ (hover_year+Settings.current_year-Settings.amount))
-                tooltip.style("display", "block").style("top", `${yScale(hover_value) + 255 }px`).style("left", `${xScale(hover_year) + window.innerWidth -470}px`);
+                tooltip.style("display", "block").style("top", `${yScale(hover_value) + placement.top + 50 }px`).style("left", `${xScale(hover_year) + placement.left}px`);
             }
             
             
