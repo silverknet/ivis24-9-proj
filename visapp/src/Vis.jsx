@@ -404,7 +404,19 @@ function Vis(){
         .on('click', (p_e, d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
+        })
+        .on('mouseover', (e, d) => {
+            //console.log(e, d)
+            barTooltip.select(".tooltipCountry").text(d.country);
+            barTooltip.style("display", "block").style("top", `${e.screenY-60}px`).style("left", `${e.screenX-80}px`);
+          })
+        .on('mouseleave', () =>{
+            barTooltip.style("display", "none");
         });
+
+        const barTooltip = select('#barTooltip');
+        
+        
 
 		// Add a tooltip container
 		const tooltip = svg.append('g')
@@ -438,7 +450,7 @@ function Vis(){
         const targetText = svg.selectAll(".targetText").data([null]); 
         targetText.enter().append('text')
             .attr('class', 'targetText') 
-            .attr('fill', 'green')
+            .attr('fill', '#7c7c7c')
             .style('cursor', 'pointer')
             .style('z-order', '-1')
             .on('mouseover', showTooltip)
@@ -523,7 +535,10 @@ function Vis(){
                         policyState={policyState}
                     />
                 )}
-            </div>   
+            </div>
+            <div id="barTooltip">
+                <div className='tooltipCountry'></div>
+            </div>
         </div>
     );
 }
