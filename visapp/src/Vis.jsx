@@ -225,9 +225,9 @@ function Vis() {
 				}
 
 				reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["electric"]);
-				if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
-					console.log(c);
-				}
+				// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
+				// 	console.log(c);
+				// }
 				return {
 					other: row["2022"] - (meatco2 + flightco2 + transportco2),
 					meat: meatco2,
@@ -376,8 +376,8 @@ function Vis() {
 		const yAxis = axisRight(reverse_y_scale);
 
 		const y_scale_stacked = scaleLinear()
-			.domain([0, Settings.y_max + 4])
-			.range([bar_window_size.height + 50, 0]);
+			.domain([0, Settings.y_max + 1.83])
+			.range([bar_window_size.height + 40, 0]);
 
 		// this one should be replaced with countries
 		const xAxis = axisBottom(scaleLinear([1, filteredCountryData.length + 1], [0, bar_window_size.width]));
@@ -513,6 +513,8 @@ function Vis() {
 
 			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
 
+			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
+			// const testData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
 			svg
 				.append("g")
 				.selectAll(".stacked")
@@ -526,7 +528,7 @@ function Vis() {
 					return (bar_window_size.width / countryData.length) * i + Settings.border;
 				})
 				.attr("y", (d) => {
-					return y_scale_stacked(d[1]);
+					return y_scale_stacked(d[1]) + 10;
 				})
 				.attr("width", () => {
 					return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
