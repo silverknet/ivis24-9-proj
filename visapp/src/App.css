@@ -185,6 +185,9 @@ VIS
 }
 
 /*SIDEBAR*/
+.ElementComponent h1{
+  font-size: 25px;
+}
 .SideBar{
   width: 450px;
   display: flex;

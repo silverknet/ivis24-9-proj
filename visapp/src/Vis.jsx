@@ -408,7 +408,7 @@ function Vis(){
         .on('mouseover', (e, d) => {
             //console.log(e, d)
             barTooltip.select(".tooltipCountry").text(d.country);
-            barTooltip.style("display", "block").style("top", `${e.screenY-60}px`).style("left", `${e.screenX-80}px`);
+            barTooltip.style("display", "block").style("top", `${e.screenY - 180}px`).style("left", `${e.screenX-80}px`);
           })
         .on('mouseleave', () =>{
             barTooltip.style("display", "none");
