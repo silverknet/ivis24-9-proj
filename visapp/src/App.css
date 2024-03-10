@@ -94,17 +94,49 @@ MENU
 ABOUT PAGE
 */
 .AboutContainer{
+  width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin: 40px;
 }
 .mainText{
-  width: 400px;
+  width: 70%;
   font-family: Dosis;
   line-height: 25px;
   letter-spacing: 1px;
-  padding-bottom: 50px;
   height: fit-content;
+  text-align: left;
+  align-self: center;
+}
+.aboutPeople{
+  font-size: 40px;
+  font-weight: Bold;
+  color: #82BD8C;
+  align-self: Center;
+  margin-bottom: 20px;
+}
+
+.peopleDiv{
+  width: fit-content;
+  height: 100px;
+  text-align: Center;
+  padding: none;
+  border-radius: 5px;
+  color:#7C7C7C;
+  align-self: center;
+  font-size: 20px;
+}
+
+.aboutSpan{
+  width: fit-content;
+  height: 100px;
+  text-align: Center;
+  padding: 5px;
+  border-radius: 5px;
+  color:#7C7C7C;
+  align-self: center;
+  font-size: 20px;
 }
 
 /*
