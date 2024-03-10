@@ -158,7 +158,7 @@ function CountryDetailGraph(props) {
                 tooltipCircle.style('opacity', 1).attr('cx',xScale(hover_year)).attr('cy', yScale(hover_value))
                 tooltip.select(".CO2Val").text(hover_value + " Tons");
                 tooltip.select(".historyYear").text("Year "+ (hover_year+Settings.current_year-Settings.amount))
-                tooltip.style("display", "block").style("top", `${yScale(hover_value) + placement.top }px`).style("left", `${xScale(hover_year) + placement.left - 50}px`);
+                tooltip.style("display", "block").style("top", `${yScale(hover_value) + placement.top + 40 }px`).style("left", `${xScale(hover_year) + placement.left - 50}px`);
             }
             
             
