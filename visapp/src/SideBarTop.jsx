@@ -1,3 +1,4 @@
+import { color } from 'd3';
 import { useState } from 'react';
 
 function SideBarTop(props) {
@@ -12,6 +13,23 @@ function SideBarTop(props) {
     const handleToggle = (key) => {
         props.setActiveContinents(prevState => ({ ...prevState, [key]: !prevState[key] }));
     };
+
+    const continentColors = {
+        'Europe': '#8CB4D0',
+        'Asia': '#F8CA86', 
+        'Africa': '#B3A6D6', 
+        'North America': '#C68B8B', 
+        'South America': '#99BD8D', 
+        'Oceania': '#81C8B3'
+    };
+    function continentColorer(col){
+        if(col == "Europe") return {backgroundColor: continentColors['Europe']};
+        if(col == "Asia") return {backgroundColor: continentColors['Asia']};
+        if(col == "Africa") return {backgroundColor: continentColors['Africa']};
+        if(col == "North America") return {backgroundColor: continentColors['North America']};
+        if(col == "South America") return {backgroundColor: continentColors['South America']};
+        return {backgroundColor: continentColors['Oceania']};
+    }
   
     return (
         <div className='TopContainer Container'>
@@ -28,8 +46,9 @@ function SideBarTop(props) {
                                     type="checkbox"
                                     checked={props.activeContinents[key]}
                                     onChange={() => handleToggle(key)}
+                                    style={{filter: 'grayscale(1)'}}
                                 />
-                                <span className="continent-name">{key}</span>
+                                <span className="continent-name" style={continentColorer(key)}>{key}</span>
                             </label>
                         </div>
                     ))}
@@ -53,6 +72,7 @@ function SideBarTop(props) {
                     <div className='filterSliderItem'>
                         <label>Minimum Co2/c: {props.filterRange.min}</label>
                         <input
+                            style={{filter: 'grayscale(1)'}}
                             type="range"
                             min="0"
                             max="30"
@@ -66,6 +86,7 @@ function SideBarTop(props) {
                     <div className='filterSliderItem'>
                         <label>Maximum Co2/c: {props.filterRange.max}</label>
                         <input
+                            style={{filter: 'grayscale(1)'}}
                             type="range"
                             min="0"
                             max="30" 

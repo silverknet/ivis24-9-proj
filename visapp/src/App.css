@@ -7,7 +7,14 @@
   --gap: 20px; 
   --element_color: rgba(124, 124, 124, 0.039);
   --detail_color: #82BD8C;
-  --detail_color_highlight: rgb(255, 231, 97);
+  --detail_color_highlight: #f7e479;
+
+  --Europe: '#6A8CAF',
+  --Asia: '#F8CA86', 
+  --Africa: '#B3A6D6', 
+  --North_America: '#C68B8B', 
+  --South_America: '#99BD8D', 
+  --Oceania: '#81C8B3'
 
 }
 
@@ -260,7 +267,7 @@ Middle SideBar
 }
 
 .BottomContainer .checkboxColor {
-  filter: hue-rotate(230deg);
+  filter: grayscale(1);
 }
 .TopContainer .continentFilter{
   width: 100%;
@@ -288,6 +295,8 @@ Middle SideBar
 
 .continent-name {
   margin-left: 5px;
+  padding: 2px;
+  border-radius: 4px;
 }
 
 .TopContainer .emissionFilter{
