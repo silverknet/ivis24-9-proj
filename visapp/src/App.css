@@ -7,7 +7,7 @@
   --gap: 20px; 
   --element_color: rgba(124, 124, 124, 0.039);
   --detail_color: #82BD8C;
-  --detail_color_highlight: #f7e479;
+  --detail_color_highlight: rgba(124, 124, 124, 0.89); /*#f7e479*/
 
   --Europe: '#6A8CAF',
   --Asia: '#F8CA86', 
@@ -38,6 +38,7 @@ MENU
 */
 .MenuContainer{
   /*background-color: antiquewhite;*/
+  color: #7C7C7C ;
   width: 100vw;
   height: 100px;
   display: flex;
