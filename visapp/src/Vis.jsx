@@ -400,7 +400,7 @@ function Vis(){
         .attr('height', function(d) { return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d['2022']))*reduction[d["country"]]); })
         .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
         .attr("y", (d) => {return ((y_scale(d['2022']))*reduction[d["country"]]) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - d['2022']*reduction[d["country"]]) + Settings.border })
-        .attr('fill', d => {return d === selectedCountry ? '#f7e479' : continentColors[d['continent']]}) 
+        .attr('fill', d => {return d === selectedCountry ? '#7e7e7e' : continentColors[d['continent']]}) 
         .on('click', (p_e, d) => {
             setSelectedCountry(d);
             setRightDisplay(1); //open up middle display when selecting country
