@@ -228,6 +228,7 @@ VIS
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: calc(100vh - 100px - 50px);
 }
 .SideBar .Menu{
   display: flex;
@@ -346,7 +347,8 @@ Middle SideBar
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
   background-color: var(--element_color);
 }
 .ElementComponent{
@@ -645,6 +647,39 @@ Footer
 .dataFaultBox h1 {
   text-align: center;
 }
+
+/*celeb selector*/
+.celebSelector {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  cursor: pointer;
+  border: 1px solid #7c7c7c22;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 300px; 
+  background-color: #ff000024;
+}
+
+.celebSelector img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 20px;
+
+  border-radius: 100%;
+}
+
+.celebSelector p {
+  flex: 1;
+  margin: 0;
+  font-family: 'Poppins', 'sans-serif';
+}
+
+.celebSelector.selected {
+  background-color: #00ff4430;
+}
+
 
 @media only screen and (max-width: 600px) {
 }

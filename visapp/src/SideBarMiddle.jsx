@@ -84,7 +84,6 @@ function SideBarMiddle(props) {
       <div className="ElementComponent">
         <CountryDetailGraph countryData={props.countryData} selectedCountry={props.selectedCountry}/>
       </div>
-
       {showBool &&(
       <div className="partEmissions">
         <h2>Out of these carbon emissions:</h2>

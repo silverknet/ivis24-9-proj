@@ -27,13 +27,39 @@ function Vis(){
     const [isFoodDataLoaded, setIsFoodDataLoaded] = useState(false);
     const [isFlightDataLoaded, setIsFlightDataLoaded] = useState(false);
     const [isTransportDataLoaded, setIsTransportDataLoaded] = useState(false);
+	const [isCelebrityDataLoaded, setIsCelebrityDataLoaded] = useState(false);
     const [allDataLoaded, setAllDataLoaded] = useState(false);
     
     const rescaleModeRef = useRef(false);
     const [yMaxState, setYMaxState] = useState(30);
+	
+	const initialCelebActive = {
+		"Taylor Swift": false,
+		"Drake": false,
+		"Floyd Mayweather": false,
+		"Jay-Z": false,
+		"Kim Kardashian": false,
+		"A-Rod": false,
+		"Steven Spielberg": false,
+		"Mark Wahlberg": false,
+		"Blake Shelton": false,
+		"Jack Nicklaus": false
+	  };
+	
+	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
+
+	const toggleCeleb = (celebName) => {
+	setCelebStatus(prevStatus => ({
+		...prevStatus,
+		[celebName]: !prevStatus[celebName]
+	}));
+	};
+
+
+	const celebrityDataRef = useRef([]);
 
     useEffect(() => {
-        if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded && isTransportDataLoaded) {
+        if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded && isTransportDataLoaded && isCelebrityDataLoaded) {
             setAllDataLoaded(true);
         }
     }, [isCountryDataLoaded, isMeatDataLoaded, isFoodDataLoaded, isFlightDataLoaded, isTransportDataLoaded]);
@@ -94,7 +120,6 @@ function Vis(){
     // Load COUNTRY data
     useEffect(() => {
         csv('/data/co2_pcap_cons.csv').then(data2 => {
-            console.log(data2);
             const filteredAndSorted = data2
                 .filter(d => Number(d['2022']) > 0)
                 .sort((a, b) => Number(a['2022']) - Number(b['2022'])); 
@@ -104,6 +129,14 @@ function Vis(){
         }).catch(error => console.error('Error loading the COUNTRY file:', error));
     }, []);
 
+	// Load Celebrity data
+    useEffect(() => {
+        csv('/data/celebrity-data.csv').then(data2 => {
+			celebrityDataRef.current = data2;
+			setIsCelebrityDataLoaded(true);
+            console.log(celebrityDataRef.current);
+        }).catch(error => console.error('Error loading the Celebrity file:', error));
+    }, []);
 
     // Load meat data
     useEffect(() => {
@@ -547,8 +580,11 @@ function Vis(){
                 )}
                 {rightDisplay === 2 && (
                     <SideBarBottom
+						celebrityData = {celebrityDataRef.current}
                         setPolicyState={setPolicyState}
                         policyState={policyState}
+						toggleCeleb={toggleCeleb}
+						celebStatus={celebStatus}
                     />
                 )}
             </div>
