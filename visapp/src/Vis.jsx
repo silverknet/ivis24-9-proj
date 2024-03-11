@@ -58,9 +58,9 @@ function Vis(){
 
     //FIX LATER
     const coEmissions = {
-        meat: 0.2,
-        flight: 0.05,
-        electric: 0.25
+        meat: 0,
+        flight: 0,
+        electric: 0
     };
     const [reduction, setReduction] = useState({});
 
@@ -374,7 +374,7 @@ function Vis(){
                   })
                 .on('mouseleave', () =>{
                     barTooltip.style("display", "none");
-                });;
+                });
         }else{
             svg.selectAll('.small_flag').remove();
         }
@@ -536,6 +536,10 @@ function Vis(){
                     <SideBarMiddle
                         selectedCountry={selectedCountry}
                         countryData={countryData}
+                        meatData={meatData}
+                        foodData={foodData}
+                        flightData={flightData}
+                        transportData={transportData}
                     />
                 )}
                 {rightDisplay === 2 && (
