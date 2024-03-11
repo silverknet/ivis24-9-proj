@@ -376,8 +376,8 @@ function Vis() {
 		const yAxis = axisRight(reverse_y_scale);
 
 		const y_scale_stacked = scaleLinear()
-			.domain([0, Settings.y_max + 1.83])
-			.range([bar_window_size.height + 40, 0]);
+			.domain([0, Settings.y_max + 2.5])
+			.range([bar_window_size.height + 45, 0]);
 
 		// this one should be replaced with countries
 		const xAxis = axisBottom(scaleLinear([1, filteredCountryData.length + 1], [0, bar_window_size.width]));
@@ -508,37 +508,94 @@ function Vis() {
 		// 	});
 
 		// stacked rectangles
+		// if (splitData.length > 0) {
+		// 	const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
+
+		// 	const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
+
+		// 	// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
+		// 	// const testData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
+		// 	svg
+		// 		.append("g")
+		// 		.selectAll(".stacked")
+		// 		.data(stackedData)
+		// 		.join("g")
+		// 		.attr("fill", (d, i) => colorsStackedRectangles[i % 4]) // Assigning colors based on index
+		// 		.selectAll("rect")
+		// 		.data((d) => d)
+		// 		.join("rect")
+		// 		.attr("x", function (d, i) {
+		// 			return (bar_window_size.width / countryData.length) * i + Settings.border;
+		// 		})
+		// 		.attr("y", (d) => {
+		// 			return y_scale_stacked(d[1]) + 10;
+		// 		})
+		// 		.attr("width", () => {
+		// 			return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
+		// 		})
+		// 		.attr("height", function (d) {
+		// 			return y_scale_stacked(d[0]) - y_scale_stacked(d[1]);
+		// 		});
+
+		// 	selectAll(".first").raise();
+		// }
+
+		// stacked rectangles
+		// Assuming 'svg' is already defined and appended to the DOM
+		// Assuming 'stackedData' is your data array ready for use
+
 		if (splitData.length > 0) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
 			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
 
 			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
-			// const testData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
-			svg
+			// const stackedData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
+			// Bind the stacked data to the group elements
+			const seriesGroups = svg.selectAll(".stacked").data(stackedData, (d) => d.key); // Use a unique identifier for each series
+
+			// Enter selection for the groups
+			const enteredSeriesGroups = seriesGroups
+				.enter()
 				.append("g")
-				.selectAll(".stacked")
-				.data(stackedData)
-				.join("g")
-				.attr("fill", (d, i) => colorsStackedRectangles[i % 4]) // Assigning colors based on index
-				.selectAll("rect")
-				.data((d) => d)
-				.join("rect")
-				.attr("x", function (d, i) {
-					return (bar_window_size.width / countryData.length) * i + Settings.border;
-				})
-				.attr("y", (d) => {
-					return y_scale_stacked(d[1]) + 10;
-				})
-				.attr("width", () => {
-					return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
-				})
-				.attr("height", function (d) {
-					return y_scale_stacked(d[0]) - y_scale_stacked(d[1]);
-				});
+				.attr("class", "stacked")
+				.attr("fill", (d, i) => colorsStackedRectangles[i % 4]); // Set the fill color here
+
+			seriesGroups.attr("fill", (d, i) => colorsStackedRectangles[i % 4]);
+
+			seriesGroups.exit().remove();
+
+			enteredSeriesGroups.merge(seriesGroups).each(function (seriesData) {
+				const rects = select(this)
+					.selectAll("rect")
+					.data(seriesData, (d) => d.data.key); // Assuming each data point has a unique 'key' property
+
+				rects
+					.enter()
+					.append("rect")
+					.attr(
+						"x",
+						(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+					)
+					.attr("y", (d) => y_scale_stacked(d[1]) + 5)
+					.attr("width", absolute_bar_width)
+					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
+
+				rects
+					.attr(
+						"x",
+						(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+					)
+					.attr("y", (d) => y_scale_stacked(d[1]))
+					.attr("width", absolute_bar_width)
+					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
+
+				rects.exit().remove();
+			});
 
 			selectAll(".first").raise();
 		}
+
 		// Add a tooltip container
 		const tooltip = svg.append("g").attr("class", "tooltip").style("display", "none");
 
