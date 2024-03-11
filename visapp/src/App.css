@@ -335,6 +335,13 @@ Middle SideBar
 .BottomContainer .checkboxColor {
   filter: grayscale(1);
 }
+
+.checkBoxLabel {
+  font-size: 16px;
+  color: #333; /* Adjust color as needed */
+  font-weight: bold;
+}
+
 .TopContainer .continentFilter{
   width: 100%;
   display: flex;
@@ -343,10 +350,11 @@ Middle SideBar
   gap: 3px;
   padding-top: 5px;
   padding-bottom: 5px;
-  height: 100px;
+  height: 220px;
   justify-content: space-evenly;
   align-items: center;
   width: 70%;
+  font-size: 24px;
 }
 .continent-item {
   margin-bottom: 5px;  
@@ -453,6 +461,45 @@ Footer
 .button-group {
   margin-bottom: 10px;
 }
+
+.limitationsButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Adjust margin as needed */
+}
+
+.limitationsButton {
+  background-color: #a1a2a100; /* Green background */
+  border: 1px solid #0000009f; /* Black border */
+  color: #000; /* Black text */
+  padding: 10px 20px; /* Padding to make button larger */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 8px; /* Rounded corners */
+  font-weight: bold; /* Make text bold */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+
+.limitationsButton:hover {
+  background-color: #1f8e1f71; /* Darker green on hover */
+  box-shadow: 0 3px 6px rgba(11, 0, 0, 0.213);
+}
+
+.limitationsBox {
+  border: 1px solid #000;
+  box-shadow: 0 3px 6px rgba(11, 0, 0, 0.213);
+  width: 1400px; /* Set a fixed width */
+  margin: 0 auto; /* Center horizontally */
+}
+
+
+
+
 
 .select-button {
   margin-right: 10px;
