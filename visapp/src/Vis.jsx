@@ -189,57 +189,57 @@ function Vis() {
 	//     };
 	//   }, []);
 
-	// useEffect(() => {
-	// 	const reductionDict = {};
+	useEffect(() => {
+		const reductionDict = {};
 
-	// 	if (countryData.length === 0) {
-	// 		return;
-	// 	}
+		if (countryData.length === 0) {
+			return;
+		}
 
-	// 	const splitData = countryData.map((row) => {
-	// 		if (allDataLoaded) {
-	// 			const c = row["country"];
-	// 			// TODO: if the country isn't in the list, use values of continent instead
-	// 			var meatco2 = coEmissions["meat"];
-	// 			var flightco2 = coEmissions["flight"];
-	// 			var transportco2 = coEmissions["electric"];
-	// 			if (meatData[c] !== undefined) {
-	// 				meatco2 =
-	// 					meatData[c][0] * foodData["Poultry"] +
-	// 					meatData[c][1] * foodData["Beef (beef herd)"] +
-	// 					meatData[c][2] * foodData["Mutton"] +
-	// 					meatData[c][3] * foodData["Pork"] +
-	// 					meatData[c][5] * foodData["Fish (farmed)"];
-	// 				meatco2 = (meatco2 * 0.001) / row["2022"];
-	// 			}
+		const splitData = countryData.map((row) => {
+			if (allDataLoaded) {
+				const c = row["country"];
+				// TODO: if the country isn't in the list, use values of continent instead
+				var meatco2 = coEmissions["meat"];
+				var flightco2 = coEmissions["flight"];
+				var transportco2 = coEmissions["electric"];
+				if (meatData[c] !== undefined) {
+					meatco2 =
+						meatData[c][0] * foodData["Poultry"] +
+						meatData[c][1] * foodData["Beef (beef herd)"] +
+						meatData[c][2] * foodData["Mutton"] +
+						meatData[c][3] * foodData["Pork"] +
+						meatData[c][5] * foodData["Fish (farmed)"];
+					meatco2 = (meatco2 * 0.001) / row["2022"];
+				}
 
-	// 			if (flightData[c] !== undefined) {
-	// 				flightco2 = flightData[c];
-	// 				flightco2 = (flightco2 * 0.001) / row["2022"];
-	// 			}
+				if (flightData[c] !== undefined) {
+					flightco2 = flightData[c];
+					flightco2 = (flightco2 * 0.001) / row["2022"];
+				}
 
-	// 			if (transportData[c] !== undefined) {
-	// 				transportco2 = transportData[c];
-	// 				transportco2 = transportco2 / row["2022"];
-	// 			}
+				if (transportData[c] !== undefined) {
+					transportco2 = transportData[c];
+					transportco2 = transportco2 / row["2022"];
+				}
 
-	// 			reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["electric"]);
-	// 			// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
-	// 			// 	console.log(c);
-	// 			// }
-	// 			return {
-	// 				other: row["2022"] - (meatco2 + flightco2 + transportco2),
-	// 				meat: meatco2,
-	// 				flight: flightco2,
-	// 				transport: transportco2,
-	// 			};
-	// 		}
-	// 	});
+				reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["transport"]);
+				// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
+				// 	console.log(c);
+				// }
+				return {
+					other: row["2022"] - (meatco2 + flightco2 + transportco2),
+					meat: meatco2,
+					flight: flightco2,
+					transport: transportco2,
+				};
+			}
+		});
 
-	// 	setSplitData(splitData);
+		// setSplitData(splitData);
 
-	// 	setReduction(reductionDict);
-	// }, [allDataLoaded]);
+		setReduction(reductionDict);
+	}, [allDataLoaded]);
 
 	useEffect(() => {
 		const filteredData = countryData.filter(
