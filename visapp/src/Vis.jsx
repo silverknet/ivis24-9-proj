@@ -464,9 +464,8 @@ function Vis(){
         const barTooltip = select('#barTooltip');
         //console.log("CELEBS "+JSON.stringify(celebrityDataRef.current[0]));
     
-        let i = 0;
         activeCelebs.forEach(cel => {
-            let celebCount = activeCelebs.length;
+            const celebCount = activeCelebs.length;
             svg.append('rect')
             .attr('width', () => { return absolute_bar_width})
             .attr('height',  Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(cel['co2kg']/1000))))
