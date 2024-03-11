@@ -367,7 +367,11 @@ Middle SideBar
 }
 .ElementComponent h3{
   margin: 0px;
-  font-size: 24px;
+  font-size: 18px;
+}
+
+.partEmissions{
+  font-size: 12px;
 }
 
 .BottomContainer .checkboxColor {
@@ -610,7 +614,49 @@ Footer
   cursor: pointer;
 }
 
+.percentContainer{
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  padding: 5px;
+  column-gap: 10px;
+  width: 100%;
+}
 
+.percentBox {
+  width: 100%;
+  height: 130px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-style:solid;
+  border-color: var(--detail_color_highlight);
+  border-radius: 4px;
+}
+
+.dataFaultBox {
+  width: 100%;
+  border-style: groove;
+  border-color: var(--detail_color_highlight);
+  background-color: #ffcfcf;
+  /* border-radius: 1px; */
+  display: grid;
+  align-items: center;
+    text-align: center;
+}
+
+.dataFaultBox h2 {
+  font-size:x-large;
+  margin:auto;
+}
+
+.dataFaultBox h1 {
+  text-align: center;
+  margin: 0;
+}
+.percentBox h1 {
+  text-align: center;
+  margin: 0;
+}
 
 @media only screen and (max-width: 600px) {
 }

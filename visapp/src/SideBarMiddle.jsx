@@ -36,6 +36,55 @@ function SideBarMiddle(props) {
       <div className="ElementComponent">
         <CountryDetailGraph countryData={props.countryData} selectedCountry={props.selectedCountry}/>
       </div>
+
+      {showBool &&(
+      <div className="partEmissions">
+        <h2>Out of these carbon emissions:</h2>
+        <div className="percentContainer">
+          {meatBool &&(
+          <div className="percentBox">
+            <h1>{meatPercent}%</h1>
+            <h3>comes from <br></br>meat consumption</h3>
+            <h3>({meatco2} tons)</h3>
+          </div>)}
+          {!meatBool &&(
+            <div className="dataFaultBox">
+              <h2>Missing <br></br>data<br></br> for meat</h2>
+            </div>
+          )}
+          {flightBool &&(
+          <div className="percentBox">
+            <h1>{flightPercent}%</h1>
+            <h3>comes from <br></br>flying</h3>
+            <h3>({flightco2} tons)</h3>
+          </div>)}
+          {!flightBool &&(
+            <div className="dataFaultBox">
+              <h2>Missing <br></br>data<br></br> for flights</h2>
+            </div>
+          )}
+          {transportBool && (
+          <div className="percentBox">
+            <h1>{transportPercent}%</h1>
+            <h3>comes from <br></br>other transport</h3>
+            <h3>({transportco2} tons)</h3>
+          </div>)}
+          {!transportBool &&(
+            <div className="dataFaultBox">
+              <h2>Missing <br></br>data<br></br> for other <br></br>transport</h2>
+            </div>
+          )}
+        </div>
+      </div>)}
+
+      {!showBool&&(
+        <div className="partEmissions">
+          <div className="dataFaultBox">
+            <h1>Insufficient data</h1>
+          </div>
+          <h2>(We can't accurately tell where these emissions come from. Sorry!)</h2>
+        </div>
+      )}
     </div>
   );
 }
