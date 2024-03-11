@@ -366,7 +366,15 @@ function Vis(){
                 .attr('y', bar_window_size.height + Settings.border + 10) 
                 .attr('width', flagWidth)
                 .attr('height', flagHeight) 
-				.attr("href", (d) => (d.Code ? `https://flagcdn.com/${d.Code.toLowerCase()}.svg` : console.log(d.country)));
+				.attr("href", (d) => (d.Code ? `https://flagcdn.com/${d.Code.toLowerCase()}.svg` : console.log(d.country)))
+                .on('mouseover', (e, d) => {
+                    //console.log(e, d)
+                    barTooltip.select(".tooltipCountry").text(d.country);
+                    barTooltip.style("display", "block").style("top", `${e.screenY+30}px`).style("left", `${e.screenX}px`);
+                  })
+                .on('mouseleave', () =>{
+                    barTooltip.style("display", "none");
+                });;
         }else{
             svg.selectAll('.small_flag').remove();
         }
