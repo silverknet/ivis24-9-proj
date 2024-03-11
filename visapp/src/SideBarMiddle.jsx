@@ -91,7 +91,7 @@ function SideBarMiddle(props) {
           {meatBool &&(
           <div className="percentBox">
             <h1>{meatPercent}%</h1>
-            <h3>comes from <br></br>meat</h3>
+            <h3>comes from <br></br>meat consumption</h3>
             <h3>({meatco2} tons)</h3>
           </div>)}
           {!meatBool &&(

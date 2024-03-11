@@ -62,7 +62,7 @@ function SideBarTop(props) {
                         placeholder="Enter country name"
                         value={searchQuery}
                         onChange={handleSearch}
-                        style={{ margin: '0 auto', display: 'block', width: '80%' }} // Centering styles
+                        style={{ margin: '0 auto', display: 'block', width: '80%', fontSize:'14px'}} // Centering styles
                     />
                 </div>
             </div>
