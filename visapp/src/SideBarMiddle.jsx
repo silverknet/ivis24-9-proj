@@ -16,6 +16,7 @@ function SideBarMiddle(props) {
   var meatBool = false;
   var flightBool = false;
   var transportBool = false;
+  var showBool = true;
 
   if(props.meatData[c] !== undefined){
     meatco2 = props.meatData[c][0]*props.foodData["Poultry"] + props.meatData[c][1]*props.foodData["Beef (beef herd)"] + props.meatData[c][2]*props.foodData["Mutton"] + props.meatData[c][3]*props.foodData["Pork"] + props.meatData[c][5]*props.foodData["Fish (farmed)"];
@@ -45,6 +46,10 @@ function SideBarMiddle(props) {
 
   if(transportPercent != "" && transportPercent < 100){
     transportBool = true;
+  }
+
+  if (meatPercent +flightPercent+transportPercent>100){
+    showBool = false;
   }
 
  function showFlag(){
@@ -80,6 +85,7 @@ function SideBarMiddle(props) {
         <CountryDetailGraph countryData={props.countryData} selectedCountry={props.selectedCountry}/>
       </div>
 
+      {showBool &&(
       <div className="partEmissions">
         <h2>Out of these carbon emissions:</h2>
         <div className="percentContainer">
@@ -117,7 +123,16 @@ function SideBarMiddle(props) {
             </div>
           )}
         </div>
-      </div>
+      </div>)}
+
+      {!showBool&&(
+        <div className="partEmissions">
+          <div className="dataFaultBox">
+            <h1>Insufficient data</h1>
+          </div>
+          <h2>(We can't accurately tell where these emissions come from. Sorry!)</h2>
+        </div>
+      )}
     </div>
   );
 }

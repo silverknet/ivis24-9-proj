@@ -632,13 +632,18 @@ Footer
   border-color: var(--detail_color_highlight);
   background-color: #ffcfcf;
   /* border-radius: 1px; */
-  display: flex;
-    align-items: center;
+  display: grid;
+  align-items: center;
+    text-align: center;
 }
 
 .dataFaultBox h2 {
   font-size:x-large;
   margin:auto;
+}
+
+.dataFaultBox h1 {
+  text-align: center;
 }
 
 @media only screen and (max-width: 600px) {
