@@ -48,7 +48,7 @@ function Vis(){
 	
 	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
 
-    let celebCount = 0;
+    
     let activeCelebs = [];
     
 	const toggleCeleb = (celebName) => {
@@ -466,6 +466,7 @@ function Vis(){
     
         let i = 0;
         activeCelebs.forEach(cel => {
+            let celebCount = activeCelebs.length;
             svg.append('rect')
             .attr('width', () => { return absolute_bar_width})
             .attr('height',  Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(cel['co2kg']/1000))))
