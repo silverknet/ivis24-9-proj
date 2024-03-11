@@ -206,7 +206,7 @@ VIS
   justify-content: center;
   color:#ffffff;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 25px;
   border-radius: 5px;
 }
 .Menu .selected{
@@ -216,6 +216,26 @@ VIS
 
 .SideBar .SelectBox:hover {
   cursor: pointer;
+}
+
+
+/* sidebar Top */
+
+.searchContainer {
+  width: 80%; /* Adjust width as needed */
+  margin: 0 auto;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(11, 0, 0, 0.213);
+}
+
+.searchContainer input[type="text"] {
+  width: 200%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 24px;
 }
 .SideBar .selected:hover {
   cursor:default;
@@ -309,6 +329,7 @@ Middle SideBar
 }
 .ElementComponent h3{
   margin: 0px;
+  font-size: 24px;
 }
 
 .BottomContainer .checkboxColor {
@@ -366,6 +387,7 @@ Middle SideBar
 }
 .emissionFilter .filterSliderItem label{
   width: 100%;
+  font-size: 24px;
 }
 .SideBar h2{
   margin-top: 0px;
