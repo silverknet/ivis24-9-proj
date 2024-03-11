@@ -190,57 +190,57 @@ function Vis() {
 	//     };
 	//   }, []);
 
-	useEffect(() => {
-		const reductionDict = {};
+	// useEffect(() => {
+	// 	const reductionDict = {};
 
-		if (countryData.length === 0) {
-			return;
-		}
+	// 	if (countryData.length === 0) {
+	// 		return;
+	// 	}
 
-		const splitData = countryData.map((row) => {
-			if (allDataLoaded) {
-				const c = row["country"];
-				// TODO: if the country isn't in the list, use values of continent instead
-				var meatco2 = coEmissions["meat"];
-				var flightco2 = coEmissions["flight"];
-				var transportco2 = coEmissions["electric"];
-				if (meatData[c] !== undefined) {
-					meatco2 =
-						meatData[c][0] * foodData["Poultry"] +
-						meatData[c][1] * foodData["Beef (beef herd)"] +
-						meatData[c][2] * foodData["Mutton"] +
-						meatData[c][3] * foodData["Pork"] +
-						meatData[c][5] * foodData["Fish (farmed)"];
-					meatco2 = (meatco2 * 0.001) / row["2022"];
-				}
+	// 	const splitData = countryData.map((row) => {
+	// 		if (allDataLoaded) {
+	// 			const c = row["country"];
+	// 			// TODO: if the country isn't in the list, use values of continent instead
+	// 			var meatco2 = coEmissions["meat"];
+	// 			var flightco2 = coEmissions["flight"];
+	// 			var transportco2 = coEmissions["electric"];
+	// 			if (meatData[c] !== undefined) {
+	// 				meatco2 =
+	// 					meatData[c][0] * foodData["Poultry"] +
+	// 					meatData[c][1] * foodData["Beef (beef herd)"] +
+	// 					meatData[c][2] * foodData["Mutton"] +
+	// 					meatData[c][3] * foodData["Pork"] +
+	// 					meatData[c][5] * foodData["Fish (farmed)"];
+	// 				meatco2 = (meatco2 * 0.001) / row["2022"];
+	// 			}
 
-				if (flightData[c] !== undefined) {
-					flightco2 = flightData[c];
-					flightco2 = (flightco2 * 0.001) / row["2022"];
-				}
+	// 			if (flightData[c] !== undefined) {
+	// 				flightco2 = flightData[c];
+	// 				flightco2 = (flightco2 * 0.001) / row["2022"];
+	// 			}
 
-				if (transportData[c] !== undefined) {
-					transportco2 = transportData[c];
-					transportco2 = transportco2 / row["2022"];
-				}
+	// 			if (transportData[c] !== undefined) {
+	// 				transportco2 = transportData[c];
+	// 				transportco2 = transportco2 / row["2022"];
+	// 			}
 
-				reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["electric"]);
-				// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
-				// 	console.log(c);
-				// }
-				return {
-					other: row["2022"] - (meatco2 + flightco2 + transportco2),
-					meat: meatco2,
-					flight: flightco2,
-					transport: transportco2,
-				};
-			}
-		});
+	// 			reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["electric"]);
+	// 			// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
+	// 			// 	console.log(c);
+	// 			// }
+	// 			return {
+	// 				other: row["2022"] - (meatco2 + flightco2 + transportco2),
+	// 				meat: meatco2,
+	// 				flight: flightco2,
+	// 				transport: transportco2,
+	// 			};
+	// 		}
+	// 	});
 
-		setSplitData(splitData);
+	// 	setSplitData(splitData);
 
-		setReduction(reductionDict);
-	}, [policyState, allDataLoaded]);
+	// 	setReduction(reductionDict);
+	// }, [allDataLoaded]);
 
 	useEffect(() => {
 		const filteredData = countryData.filter(
@@ -299,7 +299,7 @@ function Vis() {
 			// const stackedData = stack().keys(Object.keys(splitData[0]))(splitData);
 			setSplitData(splitData);
 		}
-	}, [activeContinents, filterRange, allDataLoaded]);
+	}, [policyState, activeContinents, filterRange, allDataLoaded]);
 
 	// update on rescale
 	useEffect(() => {
@@ -544,7 +544,7 @@ function Vis() {
 		// Assuming 'svg' is already defined and appended to the DOM
 		// Assuming 'stackedData' is your data array ready for use
 
-		if (splitData.length > 0) {
+		if (splitData.length > 0 && Object.values(activeContinents).some((x) => x === true) && filteredCountryData.length > 0) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
 			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
@@ -594,6 +594,8 @@ function Vis() {
 			});
 
 			selectAll(".first").raise();
+		} else {
+			selectAll(".stacked").remove();
 		}
 
 		// Add a tooltip container
@@ -670,7 +672,7 @@ function Vis() {
 			.attr("x2", bar_window_size.width + Settings.border) // Ending x-coordinate
 			.attr("y2", Settings.border + reverse_y_scale(2.3)) // Ending y-coordinate
 			.raise();
-	}, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
+	}, [policyState, svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
 
 	return (
 		// <Router>
