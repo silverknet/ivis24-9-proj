@@ -330,7 +330,7 @@ function Vis(){
         const svg = select(svgRef.current);
 
         const bar_window_size = {width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2}
-        const bar_width = bar_window_size.width / (filteredCountryData.length + celebCount);
+        const bar_width = bar_window_size.width / (filteredCountryData.length + activeCelebs.length);
         const y_scale = scaleLinear([0, yMaxState],[0, bar_window_size.height]);
         const reverse_y_scale = scaleLinear([0, yMaxState],[bar_window_size.height, 0]);
 
@@ -380,7 +380,7 @@ function Vis(){
 
         // X-axis flags
         // Maximum flag dimensions
-        if(filteredCountryData.length+celebCount < Settings.flaglimit){ // only show flags under some length
+        if(filteredCountryData.length+activeCelebs.length< Settings.flaglimit){ // only show flags under some length
             const maxFlagWidth = 30;
             const maxFlagHeight = 15; 
 
@@ -401,7 +401,7 @@ function Vis(){
                     update => update,
                     exit => exit.remove()
                 )
-                .attr('x', (d, i) => (bar_window_size.width / (filteredCountryData.length+celebCount)) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2)
+                .attr('x', (d, i) => (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2)
                 .attr('y', bar_window_size.height + Settings.border + 10) 
                 .attr('width', flagWidth)
                 .attr('height', flagHeight) 
@@ -437,7 +437,7 @@ function Vis(){
             });
 
         // Rectangles
-        const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / (filteredCountryData.length+celebCount)) * Settings.bar_size));
+        const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * Settings.bar_size));
 
         svg.selectAll('.first').data(filteredCountryData).join(
             enter => enter.append('rect').attr('class', 'first'),
@@ -445,7 +445,7 @@ function Vis(){
             exit => exit.remove()
         ).attr('width', () => { return absolute_bar_width})
         .attr('height', function(d) { return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d['2022']))*reduction[d["country"]]); })
-        .attr("x", function(d, i) { return (bar_window_size.width / (filteredCountryData.length+celebCount)) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
+        .attr("x", function(d, i) { return (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
         .attr("y", (d) => {return ((y_scale(d['2022']))*reduction[d["country"]]) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - d['2022']*reduction[d["country"]]) + Settings.border })
         .attr('fill', d => {return d === selectedCountry ? '#7e7e7e' : continentColors[d['continent']]}) 
         .on('click', (p_e, d) => {
