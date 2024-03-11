@@ -507,7 +507,7 @@ function Vis() {
 		// 		setRightDisplay(1); //open up middle display when selecting country
 		// 	});
 
-		// stacked rectangles
+		// // stacked rectangles
 		// if (splitData.length > 0) {
 		// 	const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
