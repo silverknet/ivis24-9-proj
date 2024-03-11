@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 const checkBoxData = {
   meat: "Remove meat consumption",
-  flight: "Remove flying",
-  electric: "Only electric cars"
+  flight: "Remove personal flights",
+  electric: "Remove other personal transportation"
 };
 
 function SideBarBottom(props) {

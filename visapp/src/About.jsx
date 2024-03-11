@@ -27,16 +27,13 @@ function About() {
 
           <div className="righttpane">
             <div className="aboutPeople">
-              limitations
+              Limitations
             </div>
             <div className= "aboutTextContainer">
             <p className="aboutMainText">
-                Data from for the Co2 Emisions per capita is derived form data colected by gapminder
-                <p>this data is collected by...</p>
-                <p>Data that affects restrictions are from...</p>
-                <p></p>
-                <p>This data can be used to get estimates the instant effect certain decions would have. It can not factor in further impacts such decisons would have, for example, if baning flights would lead to an increse in other forms of traveling</p>
-                <p>This feature should be used to gauge how impactful centrian emisioons can be not be used to make decions or shape opnions on policy</p>
+                <p>The data is gathered from different sources. There is therefore no guarantee that emissions correlate between datasets. What goes into each country's emissions should therefore only be considered estimates.</p>
+                <p>There is also no way of calculating the exact impact of different systemic changes. For example, banning personal flights outright would likely lead to other problems, such as more emissions from people being forced to travel through energy inefficient means.</p>
+                <p>This feature is intended to be used to better understand where emissions come from and how they can be reduced, not as a measure of what different changes would do for the world.</p>
             </p>
           </div>
           </div>
