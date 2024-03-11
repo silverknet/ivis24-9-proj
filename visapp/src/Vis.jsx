@@ -31,7 +31,7 @@ function Vis(){
     const [allDataLoaded, setAllDataLoaded] = useState(false);
     
     const rescaleModeRef = useRef(false);
-    const [yMaxState, setYMaxState] = useState(30);
+    const [yMaxState, setYMaxState] = useState(300000);
 	const celebs = ["Taylor Swift", "Drake", "Floyd Mayweather", "Jay-Z", "Kim Kardashian", "A-Rod", "Steven Spielberg", "Mark Wahlberg", "Blake Shelton", "Jack Nicklaus"];
 	const initialCelebActive = {
 		"Taylor Swift": false,
@@ -115,8 +115,6 @@ function Vis(){
     setFilteredCountryData(filteredData2);
 };
 
-    
-
 	const svgRef = useRef();
 
     // Load COUNTRY data
@@ -134,9 +132,9 @@ function Vis(){
 	// Load Celebrity data
     useEffect(() => {
         csv('/data/celebrity-data.csv').then(data2 => {
-			celebrityDataRef.current = data2;
+            const updatedData = data2.slice(0, -1);
+			celebrityDataRef.current = updatedData;
 			setIsCelebrityDataLoaded(true);
-            console.log(celebrityDataRef.current);
         }).catch(error => console.error('Error loading the Celebrity file:', error));
     }, []);
 
@@ -329,6 +327,19 @@ function Vis(){
     useEffect(()=>{
         const svg = select(svgRef.current);
 
+        activeCelebs = [];
+        for (const [celebName, isActive] of Object.entries(celebStatus)) {
+            if (isActive) {
+                const celebObject = celebrityDataRef.current.find(celebrity => celebrity.celebrity === celebName);
+                if (celebObject) {
+                    activeCelebs.push(celebObject);
+                }
+            }
+        }
+        activeCelebs.sort((a, b) => a.co2kg - b.co2kg);
+
+        console.log(activeCelebs);
+
         const bar_window_size = {width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2}
         const bar_width = bar_window_size.width / (filteredCountryData.length + activeCelebs.length);
         const y_scale = scaleLinear([0, yMaxState],[0, bar_window_size.height]);
@@ -462,26 +473,49 @@ function Vis(){
         });
 
         const barTooltip = select('#barTooltip');
+
+
+        const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
+
+        svg.selectAll('.celeb').data(activeCelebs).join(
+            enter => enter.append('rect').attr('class', 'celeb'),
+            update => update,
+            exit => exit.remove()
+        ).attr('width', absolute_bar_width)
+        .attr('height', d => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg))))
+        .attr("x", (d, i) => celebOffset + (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i + Settings.border + ((absolute_bar_width * 0.8) / 2) - (absolute_bar_width / 2))
+        .attr("y", d => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg))) - Settings.border)
+        .attr('fill', '#c44e52')
+        .on('mouseover', (e, d) => {
+            barTooltip.select(".tooltipCountry").text(d.celebrity);
+            barTooltip.style("display", "block").style("top", `${e.clientY - 100}px`).style("left", `${e.clientX - 80}px`);
+        })
+        .on('mouseleave', () => {
+            barTooltip.style("display", "none");
+        });
+
+
+
         //console.log("CELEBS "+JSON.stringify(celebrityDataRef.current[0]));
     
-        activeCelebs.forEach(cel => {
-            const celebCount = activeCelebs.length;
-            svg.append('rect')
-            .attr('width', () => { return absolute_bar_width})
-            .attr('height',  Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(cel['co2kg']/1000))))
-            .attr("x",(bar_window_size.width / (filteredCountryData.length+celebCount)) * (i+filteredCountryData.length) + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2))
-            .attr("y",  (y_scale(cel['co2kg']/1000)) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - cel['co2kg']/1000) + Settings.border)
-            .attr('fill', '#FDFF8A')
-            .on('mouseover', (e) => {
-                //console.log(e, d)
-                barTooltip.select(".tooltipCountry").text(cel["celebrity"]);
-                barTooltip.style("display", "block").style("top", `${e.screenY - 100}px`).style("left", `${e.screenX-80}px`);
-              })
-            .on('mouseleave', () =>{
-                barTooltip.style("display", "none");
-            });
-            i++;
-        });
+        // activeCelebs.forEach(cel => {
+        //     const celebCount = activeCelebs.length;
+        //     svg.append('rect')
+        //     .attr('width', () => { return absolute_bar_width})
+        //     .attr('height',  Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(cel['co2kg']/1000))))
+        //     .attr("x",(bar_window_size.width / (filteredCountryData.length+celebCount)) * (filteredCountryData.length) + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2))
+        //     .attr("y",  (y_scale(cel['co2kg']/1000)) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - cel['co2kg']/1000) + Settings.border)
+        //     .attr('fill', '#FDFF8A')
+        //     .on('mouseover', (e) => {
+        //         //console.log(e, d)
+        //         barTooltip.select(".tooltipCountry").text(cel["celebrity"]);
+        //         barTooltip.style("display", "block").style("top", `${e.screenY - 100}px`).style("left", `${e.screenX-80}px`);
+        //       })
+        //     .on('mouseleave', () =>{
+        //         barTooltip.style("display", "none");
+        //     });
+        //     i++;
+        // });
         
 
 		// Add a tooltip container
@@ -559,7 +593,7 @@ function Vis(){
 
 
         
-    }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
+    }, [svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState, celebStatus]);
 
     return (
         // <Router>
