@@ -231,6 +231,9 @@ function Vis() {
 
 				if (meatco2Reduction + flightco2Reduction + transportco2Reduction > 1) {
 					reductionDict[c] = 1;
+					meatco2 = 0;
+					flightco2 = 0;
+					transportco2 = 0;
 				} else {
 					reductionDict[c] =
 						1 -
@@ -291,15 +294,19 @@ function Vis() {
 						transportco2 = transportData[c];
 					}
 
-					return {
-						other:
-							row["2022"] - (meatco2 + flightco2 + transportco2) > 0
-								? row["2022"] - (meatco2 + flightco2 + transportco2)
-								: row["2022"] - (meatco2 + flightco2 + transportco2) * -1,
-						meat: meatco2,
-						flight: flightco2,
-						transport: transportco2,
-					};
+					return row["2022"] - (meatco2 + flightco2 + transportco2) > 0
+						? {
+								other: row["2022"] - (meatco2 + flightco2 + transportco2),
+								meat: meatco2,
+								flight: flightco2,
+								transport: transportco2,
+						  }
+						: {
+								other: row["2022"],
+								meat: 0,
+								flight: 0,
+								transport: 0,
+						  };
 				}
 			})
 			.filter(Boolean);
