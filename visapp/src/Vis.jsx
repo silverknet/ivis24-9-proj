@@ -32,7 +32,7 @@ function Vis(){
     
     const rescaleModeRef = useRef(false);
     const [yMaxState, setYMaxState] = useState(30);
-	
+	const celebs = ["Taylor Swift", "Drake", "Floyd Mayweather", "Jay-Z", "Kim Kardashian", "A-Rod", "Steven Spielberg", "Mark Wahlberg", "Blake Shelton", "Jack Nicklaus"];
 	const initialCelebActive = {
 		"Taylor Swift": false,
 		"Drake": false,
@@ -48,13 +48,15 @@ function Vis(){
 	
 	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
 
+    let celebCount = 0;
+    let activeCelebs = [];
+    
 	const toggleCeleb = (celebName) => {
 	setCelebStatus(prevStatus => ({
 		...prevStatus,
 		[celebName]: !prevStatus[celebName]
 	}));
 	};
-
 
 	const celebrityDataRef = useRef([]);
 
@@ -322,12 +324,13 @@ function Vis(){
     }, [yMaxState]);
     
 
+    
     // *** MAIN UPDATE USEEFFECT ***
     useEffect(()=>{
         const svg = select(svgRef.current);
 
         const bar_window_size = {width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2}
-        const bar_width = bar_window_size.width / filteredCountryData.length;
+        const bar_width = bar_window_size.width / (filteredCountryData.length + celebCount);
         const y_scale = scaleLinear([0, yMaxState],[0, bar_window_size.height]);
         const reverse_y_scale = scaleLinear([0, yMaxState],[bar_window_size.height, 0]);
 
@@ -377,7 +380,7 @@ function Vis(){
 
         // X-axis flags
         // Maximum flag dimensions
-        if(filteredCountryData.length < Settings.flaglimit){ // only show flags under some length
+        if(filteredCountryData.length+celebCount < Settings.flaglimit){ // only show flags under some length
             const maxFlagWidth = 30;
             const maxFlagHeight = 15; 
 
@@ -398,7 +401,7 @@ function Vis(){
                     update => update,
                     exit => exit.remove()
                 )
-                .attr('x', (d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2)
+                .attr('x', (d, i) => (bar_window_size.width / (filteredCountryData.length+celebCount)) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2)
                 .attr('y', bar_window_size.height + Settings.border + 10) 
                 .attr('width', flagWidth)
                 .attr('height', flagHeight) 
@@ -434,7 +437,7 @@ function Vis(){
             });
 
         // Rectangles
-        const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size));
+        const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / (filteredCountryData.length+celebCount)) * Settings.bar_size));
 
         svg.selectAll('.first').data(filteredCountryData).join(
             enter => enter.append('rect').attr('class', 'first'),
@@ -442,7 +445,7 @@ function Vis(){
             exit => exit.remove()
         ).attr('width', () => { return absolute_bar_width})
         .attr('height', function(d) { return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d['2022']))*reduction[d["country"]]); })
-        .attr("x", function(d, i) { return (bar_window_size.width / filteredCountryData.length) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
+        .attr("x", function(d, i) { return (bar_window_size.width / (filteredCountryData.length+celebCount)) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
         .attr("y", (d) => {return ((y_scale(d['2022']))*reduction[d["country"]]) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - d['2022']*reduction[d["country"]]) + Settings.border })
         .attr('fill', d => {return d === selectedCountry ? '#7e7e7e' : continentColors[d['continent']]}) 
         .on('click', (p_e, d) => {
@@ -459,7 +462,26 @@ function Vis(){
         });
 
         const barTooltip = select('#barTooltip');
-        
+        //console.log("CELEBS "+JSON.stringify(celebrityDataRef.current[0]));
+    
+        let i = 0;
+        activeCelebs.forEach(cel => {
+            svg.append('rect')
+            .attr('width', () => { return absolute_bar_width})
+            .attr('height',  Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(cel['co2kg']/1000))))
+            .attr("x",(bar_window_size.width / (filteredCountryData.length+celebCount)) * (i+filteredCountryData.length) + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2))
+            .attr("y",  (y_scale(cel['co2kg']/1000)) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - cel['co2kg']/1000) + Settings.border)
+            .attr('fill', '#FDFF8A')
+            .on('mouseover', (e) => {
+                //console.log(e, d)
+                barTooltip.select(".tooltipCountry").text(cel["celebrity"]);
+                barTooltip.style("display", "block").style("top", `${e.screenY - 100}px`).style("left", `${e.screenX-80}px`);
+              })
+            .on('mouseleave', () =>{
+                barTooltip.style("display", "none");
+            });
+            i++;
+        });
         
 
 		// Add a tooltip container
