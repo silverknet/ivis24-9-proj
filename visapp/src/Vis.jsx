@@ -202,29 +202,39 @@ function Vis() {
 				var meatco2 = coEmissions["meat"];
 				var flightco2 = coEmissions["flight"];
 				var transportco2 = coEmissions["electric"];
+
+				let meatco2Reduction = 0;
+				let flightco2Reduction = 0;
+				let transportco2Reduction = 0;
+
 				if (meatData[c] !== undefined) {
 					meatco2 =
-						meatData[c][0] * foodData["Poultry"] +
-						meatData[c][1] * foodData["Beef (beef herd)"] +
-						meatData[c][2] * foodData["Mutton"] +
-						meatData[c][3] * foodData["Pork"] +
-						meatData[c][5] * foodData["Fish (farmed)"];
-					meatco2 = (meatco2 * 0.001) / row["2022"];
+						(meatData[c][0] * foodData["Poultry"] +
+							meatData[c][1] * foodData["Beef (beef herd)"] +
+							meatData[c][2] * foodData["Mutton"] +
+							meatData[c][3] * foodData["Pork"] +
+							meatData[c][5] * foodData["Fish (farmed)"]) *
+						0.001;
+
+					meatco2Reduction = meatco2 / row["2022"];
 				}
+
 				if (flightData[c] !== undefined) {
-					flightco2 = flightData[c];
-					flightco2 = (flightco2 * 0.001) / row["2022"];
+					flightco2 = flightData[c] * 0.001;
+					flightco2Reduction = flightco2 / row["2022"];
 				}
 
 				if (transportData[c] !== undefined) {
 					transportco2 = transportData[c];
-					transportco2 = transportco2 / row["2022"];
+					transportco2Reduction = transportco2 / row["2022"];
 				}
 
-				if (meatco2 + flightco2 + transportco2 > 1) {
+				if (meatco2Reduction + flightco2Reduction + transportco2Reduction > 1) {
 					reductionDict[c] = 1;
 				} else {
-					reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["transport"]);
+					reductionDict[c] =
+						1 -
+						(meatco2Reduction * policyState["meat"] + flightco2Reduction * policyState["flight"] + transportco2Reduction * policyState["transport"]);
 				}
 				// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
 				// 	console.log(c);
@@ -265,22 +275,20 @@ function Vis() {
 					var transportco2 = coEmissions["electric"];
 					if (meatData[c] !== undefined) {
 						meatco2 =
-							meatData[c][0] * foodData["Poultry"] +
-							meatData[c][1] * foodData["Beef (beef herd)"] +
-							meatData[c][2] * foodData["Mutton"] +
-							meatData[c][3] * foodData["Pork"] +
-							meatData[c][5] * foodData["Fish (farmed)"];
-						meatco2 = (meatco2 * 0.001) / row["2022"];
+							(meatData[c][0] * foodData["Poultry"] +
+								meatData[c][1] * foodData["Beef (beef herd)"] +
+								meatData[c][2] * foodData["Mutton"] +
+								meatData[c][3] * foodData["Pork"] +
+								meatData[c][5] * foodData["Fish (farmed)"]) *
+							0.001;
 					}
 
 					if (flightData[c] !== undefined) {
-						flightco2 = flightData[c];
-						flightco2 = (flightco2 * 0.001) / row["2022"];
+						flightco2 = flightData[c] * 0.001;
 					}
 
 					if (transportData[c] !== undefined) {
 						transportco2 = transportData[c];
-						transportco2 = transportco2 / row["2022"];
 					}
 
 					return {
@@ -376,9 +384,8 @@ function Vis() {
 
 		const yAxis = axisRight(reverse_y_scale);
 
-		const y_scale_stacked = scaleLinear()
-			.domain([0, Settings.y_max + 2.5])
-			.range([bar_window_size.height + 45, 0]);
+		// const y_scale_stacked = scaleLinear().domain([1.5, yMaxState]).range([bar_window_size.height, 0]);
+		const y_scale_stacked = scaleLinear([0, yMaxState], [bar_window_size.height, 0]);
 
 		// this one should be replaced with countries
 		const xAxis = axisBottom(scaleLinear([1, filteredCountryData.length + 1], [0, bar_window_size.width]));
@@ -503,6 +510,7 @@ function Vis() {
 			.attr("fill", (d) => {
 				return d === selectedCountry ? "#7e7e7e" : continentColors[d["continent"]];
 			})
+			.style("opacity", "0.7")
 			.on("click", (p_e, d) => {
 				setSelectedCountry(d);
 				setRightDisplay(1); //open up middle display when selecting country
@@ -618,7 +626,7 @@ function Vis() {
 						"x",
 						(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
 					)
-					.attr("y", (d) => y_scale_stacked(d[1]) + 5)
+					.attr("y", (d) => y_scale_stacked(d[1]) + 50)
 					.attr("width", absolute_bar_width)
 					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
 
