@@ -206,6 +206,9 @@ function Vis(){
                 }
 
                 reductionDict[c] = 1-(meatco2*policyState["meat"]+flightco2*policyState["flight"]+transportco2*policyState["electric"])
+                if(meatco2+flightco2+transportco2 >1){
+                    reductionDict[c]=1
+                }
             }
         })
         setReduction(reductionDict);
