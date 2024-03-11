@@ -366,7 +366,15 @@ function Vis(){
                 .attr('y', bar_window_size.height + Settings.border + 10) 
                 .attr('width', flagWidth)
                 .attr('height', flagHeight) 
-				.attr("href", (d) => (d.Code ? `https://flagcdn.com/${d.Code.toLowerCase()}.svg` : console.log(d.country)));
+				.attr("href", (d) => (d.Code ? `https://flagcdn.com/${d.Code.toLowerCase()}.svg` : console.log(d.country)))
+                .on('mouseover', (e, d) => {
+                    //console.log(e, d)
+                    barTooltip.select(".tooltipCountry").text(d.country);
+                    barTooltip.style("display", "block").style("top", `${e.screenY+30}px`).style("left", `${e.screenX}px`);
+                  })
+                .on('mouseleave', () =>{
+                    barTooltip.style("display", "none");
+                });;
         }else{
             svg.selectAll('.small_flag').remove();
         }
@@ -408,7 +416,7 @@ function Vis(){
         .on('mouseover', (e, d) => {
             //console.log(e, d)
             barTooltip.select(".tooltipCountry").text(d.country);
-            barTooltip.style("display", "block").style("top", `${e.screenY-60}px`).style("left", `${e.screenX-80}px`);
+            barTooltip.style("display", "block").style("top", `${e.screenY - 100}px`).style("left", `${e.screenX-80}px`);
           })
         .on('mouseleave', () =>{
             barTooltip.style("display", "none");
@@ -479,9 +487,10 @@ function Vis(){
         // Enter selection: append the line if it doesn't exist
         co2_line.enter().append('line')
             .attr('class', 'co2_line')
-            .attr('stroke', 'green')  // Line color
-            .attr('stroke-width', 3)  // Line thickness
-            .attr('stroke-dasharray', '5 5')  // Dashed line style
+            .attr('stroke', '#7c7c7c')  // Line color
+            .attr('stroke-width', 2)  // Line thickness
+            .attr('stroke-dasharray', '5 3')  // Dashed line style
+
         .merge(co2_line)  // Merge enter and update selections
             .attr('x1', Settings.border)  // Starting x-coordinate
             .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate
