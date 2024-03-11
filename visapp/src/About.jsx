@@ -3,6 +3,7 @@ import saga from './assets/saga.jpg';
 import patrik from './assets/patrik.jpg';
 import amanda from './assets/amanda.jpg';
 import dante from './assets/dante.png';
+import martin from './assets/martin.jpg';
 
 function About() {
     const [showLimitations, setShowLimitations] = useState(false);
@@ -98,7 +99,7 @@ function About() {
           </div>
           <div className="peopleDiv"><span className="aboutSpan">Amanda Hallstedt</span> <span className="aboutSpan"><img src={amanda}></img></span></div>
           <div className="peopleDiv"><span className="aboutSpan"><img src={dante}></img></span><span className="aboutSpan">Dante Sangregorio</span></div>
-          <div className="peopleDiv"><span className="aboutSpan">Martin Håkansson</span><span className="aboutSpan"><img></img></span></div>
+          <div className="peopleDiv"><span className="aboutSpan">Martin Håkansson</span><span className="aboutSpan"><img src={martin}></img></span></div>
           <div className="peopleDiv"><span className="aboutSpan"><img src={patrik}></img></span><span className="aboutSpan">Patrik Lundqvist</span></div>
           <div className="peopleDiv"><span className="aboutSpan">Saga Jonasson</span> <span className="aboutSpan"><img src={saga}></img></span></div>
         </div>
