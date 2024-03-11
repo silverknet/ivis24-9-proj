@@ -241,7 +241,7 @@ function Vis() {
 		// setSplitData(splitData);
 
 		setReduction(reductionDict);
-	}, [allDataLoaded]);
+	}, [policyState, allDataLoaded]);
 
 	useEffect(() => {
 		const filteredData = countryData.filter(
