@@ -195,7 +195,6 @@ function Vis() {
 		if (countryData.length === 0) {
 			return;
 		}
-
 		const splitData = countryData.map((row) => {
 			if (allDataLoaded) {
 				const c = row["country"];
@@ -212,7 +211,6 @@ function Vis() {
 						meatData[c][5] * foodData["Fish (farmed)"];
 					meatco2 = (meatco2 * 0.001) / row["2022"];
 				}
-
 				if (flightData[c] !== undefined) {
 					flightco2 = flightData[c];
 					flightco2 = (flightco2 * 0.001) / row["2022"];
@@ -223,7 +221,11 @@ function Vis() {
 					transportco2 = transportco2 / row["2022"];
 				}
 
-				reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["transport"]);
+				if (meatco2 + flightco2 + transportco2 > 1) {
+					reductionDict[c] = 1;
+				} else {
+					reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["transport"]);
+				}
 				// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
 				// 	console.log(c);
 				// }
@@ -750,8 +752,20 @@ function Vis() {
 						handleSearch={handleSearch}
 					/>
 				)}
-				{rightDisplay === 1 && <SideBarMiddle selectedCountry={selectedCountry} countryData={countryData} />}
+				{rightDisplay === 1 && (
+					<SideBarMiddle
+						selectedCountry={selectedCountry}
+						countryData={countryData}
+						meatData={meatData}
+						foodData={foodData}
+						flightData={flightData}
+						transportData={transportData}
+					/>
+				)}
 				{rightDisplay === 2 && <SideBarBottom setPolicyState={setPolicyState} policyState={policyState} />}
+			</div>
+			<div id="barTooltip">
+				<div className="tooltipCountry"></div>
 			</div>
 		</div>
 	);

@@ -610,7 +610,41 @@ Footer
   cursor: pointer;
 }
 
+.percentContainer{
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  padding: 10px;
+  column-gap: 10px;
+  width: 100%;
+}
 
+.percentBox {
+  width: 100%;
+  border-style: groove;
+  border-color: var(--detail_color_highlight);
+  /* border-radius: 1px; */
+}
+
+.dataFaultBox {
+  width: 100%;
+  border-style: groove;
+  border-color: var(--detail_color_highlight);
+  background-color: #ffcfcf;
+  /* border-radius: 1px; */
+  display: grid;
+  align-items: center;
+    text-align: center;
+}
+
+.dataFaultBox h2 {
+  font-size:x-large;
+  margin:auto;
+}
+
+.dataFaultBox h1 {
+  text-align: center;
+}
 
 @media only screen and (max-width: 600px) {
 }
