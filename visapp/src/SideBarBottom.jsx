@@ -32,12 +32,14 @@ function SideBarBottom(props) {
         ))}
       </div>
       <div className='ElementComponent'>
+        <div className='celebFlexbox'>
         {Object.entries(props.celebrityData).map(([key, d]) => (
           <div className={`celebSelector ${props.celebStatus[d.celebrity] ? 'selected' : ''}`} onClick={() => props.toggleCeleb(d.celebrity)}>
           <img className="image" src={d.image} alt={d.celebrity} />
           <p key={key}>{d.celebrity}</p>
         </div>
         ))}
+        </div>
       </div>
     </div>
   );
