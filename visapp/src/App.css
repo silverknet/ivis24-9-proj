@@ -189,11 +189,31 @@ VIS
   justify-content: center;
   color:#ffffff;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 25px;
   border-radius: 5px;
 }
 .SideBar .SelectBox:hover {
   cursor: pointer;
+}
+
+
+/* sidebar Top */
+
+.searchContainer {
+  width: 80%; /* Adjust width as needed */
+  margin: 0 auto;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(11, 0, 0, 0.213);
+}
+
+.searchContainer input[type="text"] {
+  width: 200%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 24px;
 }
 
 /*
@@ -263,6 +283,7 @@ Middle SideBar
   text-align: left;
   justify-content: flex-start;
   gap: 10px;
+  font-size: 24px;
 }
 
 .BottomContainer .checkboxColor {
@@ -276,8 +297,8 @@ Middle SideBar
   gap: 3px;
   padding-top: 5px;
   padding-bottom: 15px;
-  height: 80px;
-  border-top: none;
+  height: 80  px;
+  border-top: 1px solid #00000020; 
   border-right: none; 
   border-left: none; 
   border-bottom: 1px solid #00000020; 
@@ -309,6 +330,7 @@ Middle SideBar
 }
 .emissionFilter .filterSliderItem label{
   width: 100%;
+  font-size: 24px;
 }
 .SideBar h2{
   margin: auto;

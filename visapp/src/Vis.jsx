@@ -350,7 +350,7 @@ function Vis(){
         <div className="VisContainer">
             <svg className="SvgBarGraph" ref={svgRef}></svg>  
             <div className='SideBar'>  
-                <div className='SelectBox' onClick={() => setRightDisplay(0)}>Pick & Choose</div>
+                <div className='SelectBox' onClick={() => setRightDisplay(0)}>Filter and Search</div>
                 <div className={`Component SideBarTop ${rightDisplay === 0 ? "display" : "no-display"}`}><SideBarTop activeContinents={activeContinents} setActiveContinents={setActiveContinents} filterRange={filterRange} setFilterRange={setFilterRange} handleSearch={handleSearch} /></div>
                 
                 <div className='SelectBox' onClick={() => setRightDisplay(1)}>Country Overview</div>
