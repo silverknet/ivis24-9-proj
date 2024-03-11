@@ -490,6 +490,7 @@ function Vis(){
             .attr('stroke', '#7c7c7c')  // Line color
             .attr('stroke-width', 2)  // Line thickness
             .attr('stroke-dasharray', '5 3')  // Dashed line style
+
         .merge(co2_line)  // Merge enter and update selections
             .attr('x1', Settings.border)  // Starting x-coordinate
             .attr('y1', Settings.border + reverse_y_scale(2.3))  // Starting y-coordinate

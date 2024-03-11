@@ -55,9 +55,7 @@ MENU
   padding-right: 50px;
 
 }
-.MenuContainer h1{
-  
-}
+
 .MenuContainer .Logo{
   /*font-family: 'Poppins', 'sans-serif';*/
   font-weight: 600;
@@ -93,7 +91,7 @@ MENU
 /*
 ABOUT PAGE
 */
-.AboutContainer{
+.AboutContainer1{
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -101,12 +99,34 @@ ABOUT PAGE
   margin: 40px;
 }
 .mainText{
-  width: 70%;
+  width: 100%;
   font-family: Dosis;
   line-height: 25px;
   letter-spacing: 1px;
   height: fit-content;
-  text-align: left;
+  text-align: center;
+  align-self: center;
+
+}
+
+.aboutTextContainer {
+  width: 80%; /* Adjust width as needed */
+  margin: 0 auto;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(11, 0, 0, 0.213);
+}
+
+.aboutMainText{
+  width: 100%;
+  font-family: Dosis;
+  font-size: 24px;
+  line-height: 25px;
+  letter-spacing: 1px;
+  font-size: 200;
+  height: fit-content;
+  text-align: center;
   align-self: center;
 }
 .aboutPeople{
@@ -137,6 +157,21 @@ ABOUT PAGE
   color:#7C7C7C;
   align-self: center;
   font-size: 20px;
+}
+
+.TopSection {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.leftpane {
+  width: 70%;
+  padding: 0 10px; /* Adjust padding as needed */
+}
+.rightpane {
+  width: 30%;
+  padding: 0 10px; /* Adjust padding as needed */
 }
 
 /*
@@ -209,7 +244,7 @@ VIS
   justify-content: center;
   color:#ffffff;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 25px;
   border-radius: 5px;
 }
 .Menu .selected{
@@ -219,6 +254,26 @@ VIS
 
 .SideBar .SelectBox:hover {
   cursor: pointer;
+}
+
+
+/* sidebar Top */
+
+.searchContainer {
+  width: 80%; /* Adjust width as needed */
+  margin: 0 auto;
+  padding: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(11, 0, 0, 0.213);
+}
+
+.searchContainer input[type="text"] {
+  width: 200%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 24px;
 }
 .SideBar .selected:hover {
   cursor:default;
@@ -312,11 +367,19 @@ Middle SideBar
 }
 .ElementComponent h3{
   margin: 0px;
+  font-size: 24px;
 }
 
 .BottomContainer .checkboxColor {
   filter: grayscale(1);
 }
+
+.checkBoxLabel {
+  font-size: 16px;
+  color: #333; /* Adjust color as needed */
+  font-weight: bold;
+}
+
 .TopContainer .continentFilter{
   width: 100%;
   display: flex;
@@ -325,10 +388,11 @@ Middle SideBar
   gap: 3px;
   padding-top: 5px;
   padding-bottom: 5px;
-  height: 100px;
+  height: 220px;
   justify-content: space-evenly;
   align-items: center;
   width: 70%;
+  font-size: 24px;
 }
 .continent-item {
   margin-bottom: 5px;  
@@ -369,6 +433,7 @@ Middle SideBar
 }
 .emissionFilter .filterSliderItem label{
   width: 100%;
+  font-size: 24px;
 }
 .SideBar h2{
   margin-top: 0px;
@@ -434,6 +499,106 @@ Footer
 .button-group {
   margin-bottom: 10px;
 }
+
+.limitationsButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Adjust margin as needed */
+  margin-top:20px;
+}
+
+
+.limitationsButton {
+  background-color: var(--detail_color);
+  border: 1px solid #ffffff9f; /* White border */
+  color: #ffffff; /* White text */
+  padding: 10px 20px; /* Padding to make button larger */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 8px; /* Rounded corners */
+  font-weight: bold; /* Make text bold */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+
+
+.aboutSection {
+  flex: 1;
+  padding-right: 20px; /* Add some spacing between sections */
+}
+
+.limitationsSection {
+  flex: 1;
+  padding-left: 20px; /* Add some spacing between sections */
+}
+
+.limitationsButton:hover {
+  background-color: #5c8465;; /* Darker green on hover */
+  box-shadow: 0 3px 6px rgba(11, 0, 0, 0.213);
+}
+
+.limitationsBox {
+  border: 1px solid #000;
+  box-shadow: 0 3px 6px rgba(11, 0, 0, 0.213);
+  width: 1400px; /* Set a fixed width */
+  margin: 0 auto; /* Center horizontally */
+}
+
+.AboutContainer1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px;
+}
+
+.aboutPeople {
+  font-size: 40px;
+  font-weight: bold;
+  color: #82BD8C;
+  margin-bottom: 20px;
+  align-self: center;
+}
+
+.BottomSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px; /* Add margin-top as needed */
+}
+
+
+.dataTableContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Adjust margin as needed */
+  margin-top: 20px;
+}
+
+
+ 
+.dataTable {
+  /* border: 2px solid forestgreen; */
+  width: 800px;
+  height: 200px;
+}
+
+.dataTable th {
+  /* border-bottom: 1px solid white; */
+  color: white;
+  background-color: var(--detail_color);
+}
+
+.dataTable td {
+  text-align: center;
+}
+
+.dataTable tr:nth-child(even){background-color: var(--element_color);}
+
 
 .select-button {
   margin-right: 10px;
