@@ -579,61 +579,61 @@ function Vis() {
 		// 	selectAll(".first").raise();
 		// }
 
-		// // stacked rectangles
-		// // Assuming 'svg' is already defined and appended to the DOM
-		// // Assuming 'stackedData' is your data array ready for use
+		// stacked rectangles
+		// Assuming 'svg' is already defined and appended to the DOM
+		// Assuming 'stackedData' is your data array ready for use
 
-		// if (splitData.length > 0) {
-		// 	const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
+		if (splitData.length > 0) {
+			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
-		// 	const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
+			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
 
-		// 	// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
-		// 	// const stackedData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
-		// 	// Bind the stacked data to the group elements
-		// 	const seriesGroups = svg.selectAll(".stacked").data(stackedData, (d) => d.key); // Use a unique identifier for each series
+			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
+			// const stackedData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
+			// Bind the stacked data to the group elements
+			const seriesGroups = svg.selectAll(".stacked").data(stackedData, (d) => d.key); // Use a unique identifier for each series
 
-		// 	// Enter selection for the groups
-		// 	const enteredSeriesGroups = seriesGroups
-		// 		.enter()
-		// 		.append("g")
-		// 		.attr("class", "stacked")
-		// 		.attr("fill", (d, i) => colorsStackedRectangles[i % 4]); // Set the fill color here
+			// Enter selection for the groups
+			const enteredSeriesGroups = seriesGroups
+				.enter()
+				.append("g")
+				.attr("class", "stacked")
+				.attr("fill", (d, i) => colorsStackedRectangles[i % 4]); // Set the fill color here
 
-		// 	seriesGroups.attr("fill", (d, i) => colorsStackedRectangles[i % 4]);
+			seriesGroups.attr("fill", (d, i) => colorsStackedRectangles[i % 4]);
 
-		// 	seriesGroups.exit().remove();
+			seriesGroups.exit().remove();
 
-		// 	enteredSeriesGroups.merge(seriesGroups).each(function (seriesData) {
-		// 		const rects = select(this)
-		// 			.selectAll("rect")
-		// 			.data(seriesData, (d) => d.data.key); // Assuming each data point has a unique 'key' property
+			enteredSeriesGroups.merge(seriesGroups).each(function (seriesData) {
+				const rects = select(this)
+					.selectAll("rect")
+					.data(seriesData, (d) => d.data.key); // Assuming each data point has a unique 'key' property
 
-		// 		rects
-		// 			.enter()
-		// 			.append("rect")
-		// 			.attr(
-		// 				"x",
-		// 				(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
-		// 			)
-		// 			.attr("y", (d) => y_scale_stacked(d[1]) + 5)
-		// 			.attr("width", absolute_bar_width)
-		// 			.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
+				rects
+					.enter()
+					.append("rect")
+					.attr(
+						"x",
+						(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+					)
+					.attr("y", (d) => y_scale_stacked(d[1]) + 5)
+					.attr("width", absolute_bar_width)
+					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
 
-		// 		rects
-		// 			.attr(
-		// 				"x",
-		// 				(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
-		// 			)
-		// 			.attr("y", (d) => y_scale_stacked(d[1]))
-		// 			.attr("width", absolute_bar_width)
-		// 			.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
+				rects
+					.attr(
+						"x",
+						(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+					)
+					.attr("y", (d) => y_scale_stacked(d[1]))
+					.attr("width", absolute_bar_width)
+					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
 
-		// 		rects.exit().remove();
-		// 	});
+				rects.exit().remove();
+			});
 
-		// 	selectAll(".first").raise();
-		// }
+			selectAll(".first").raise();
+		}
 
 		const barTooltip = select("#barTooltip");
 
