@@ -18,21 +18,22 @@ function SideBarBottom(props) {
         <h1>Apply restrictions</h1>
       </div>
       <div className='ElementComponent'>
-      {Object.keys(checkBoxData).map(key => (
-        <label key={key}>
-          <input
-            type="checkbox"
-            onChange={() => handleToggle(key)}
-            name={key}
-            checked={props.policyState[key]}
-            className='checkboxColor'
-          />
-          {checkBoxData[key]}
-        </label>
-      ))}
+        {Object.keys(checkBoxData).map(key => (
+          <label key={key}>
+            <input
+              type="checkbox"
+              onChange={() => handleToggle(key)}
+              name={key}
+              checked={props.policyState[key]}
+              className='checkboxColor'
+            />
+            <span className="checkBoxLabel">{checkBoxData[key]}</span>
+          </label>
+        ))}
       </div>
     </div>
   );
 }
 
 export default SideBarBottom;
+
