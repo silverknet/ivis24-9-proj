@@ -480,7 +480,7 @@ function Vis(){
         co2_line.enter().append('line')
             .attr('class', 'co2_line')
             .attr('stroke', 'green')  // Line color
-            .attr('stroke-width', 2)  // Line thickness
+            .attr('stroke-width', 3)  // Line thickness
             .attr('stroke-dasharray', '5 5')  // Dashed line style
         .merge(co2_line)  // Merge enter and update selections
             .attr('x1', Settings.border)  // Starting x-coordinate
