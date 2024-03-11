@@ -17,11 +17,10 @@ function About() {
             </div>
             <div className= "aboutTextContainer">
             <p className="aboutMainText">
-              This website is a digital tool to help users understand carbon dioxide (CO2) emissions, and the impact certain products and services
-              have on the total amount of emissions. All emissions shown in the bar graph are consumption-based emissions per capita, using data from
-              <a href="http://gapm.io/dco2_consumption_historic">Gapminder.</a> The estimates for the impact of specific products or sectors are based
-              on data from <a href="">Link1</a>, <a href="">Link2</a>, <a href="">Link3</a> and <a href="">Link4</a>.
-              Celebrity estimates are based on data from <a href="">Link5</a>.
+            This website is a digital tool to help users understand carbon dioxide (CO2) emissions, and the impact certain products and services
+            have on the total amount of emissions. All emissions shown in the bar graph are consumption-based emissions per capita. All data comes from
+            <a href="https://www.gapminder.org/"> Gapminder</a>, <a href="https://ourworldindata.org/"> OurWorldInData</a>, 
+            and <a href="https://weareyard.com/"> WeAreYard</a>. Click below to see all data and where it came from!
             </p>
           </div>
           </div>
@@ -43,6 +42,53 @@ function About() {
           </div>
           </div>
   
+          <div className="limitationsButtonContainer">
+        <button onClick={toggleLimitations} className="limitationsButton">
+            {showLimitations ? 'Hide Full Data Sources' : 'Show Full Data Sources'}
+        </button>
+    </div>
+    {showLimitations && (
+      <div className="dataTableContainer">
+        <table className="dataTable">
+            <tr>
+                <th>Data</th>
+                <th>Source</th>
+            </tr>
+            <tr>
+                <td>Consumption based emissions per capita</td>
+                <td><a href="http://gapm.io/dco2_consumption_historic">Gapminder</a> </td>
+            </tr>
+            <tr>
+                <td>GDP per capita</td>
+                <td><a href="http://gapm.io/dgdpcap_cppp">Gapminder</a> </td>
+            </tr>
+            <tr>
+                <td>Population</td>
+                <td><a href="http://gapm.io/dpop">Gapminder</a> </td>
+            </tr>
+            <tr>
+                <td>Meat consumption per capita</td>
+                <td><a href="https://ourworldindata.org/grapher/per-capita-meat-type?tab=table&country=CHN~USA~IND~ARG~PRT~ETH~JPN~GBR~BRA">OurWorldInData</a> </td>
+            </tr>
+            <tr>
+                <td>Environmental impact of food</td>
+                <td><a href="https://ourworldindata.org/environmental-impacts-of-food">OurWorldInData</a> </td>
+            </tr>
+            <tr>
+                <td>Flight emissions, adjusted for tourism</td>
+                <td><a href="https://ourworldindata.org/grapher/per-capita-co2-aviation-adjusted">OurWorldInData</a> </td>
+            </tr>
+            <tr>
+                <td>Transporation emissions per capita</td>
+                <td><a href="https://ourworldindata.org/grapher/per-capita-co2-transport">OurWorldInData</a> </td>
+            </tr>
+            <tr>
+                <td>Celebrity emissions</td>
+                <td><a href="https://weareyard.com/insights/worst-celebrity-private-jet-co2-emission-offenders">WeAreYard</a> </td>
+            </tr>
+        </table>
+      </div>
+    )}
 
   
         <div className="BottomSection">

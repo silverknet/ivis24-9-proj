@@ -502,13 +502,14 @@ Footer
   justify-content: center;
   align-items: center;
   margin-bottom: 20px; /* Adjust margin as needed */
+  margin-top:20px;
 }
 
 
 .limitationsButton {
   background-color: #a1a2a100; /* Green background */
-  border: 1px solid #0000009f; /* Black border */
-  color: #000; /* Black text */
+  border: 1px solid #ffffff9f; /* White border */
+  color: #ffffff; /* White text */
   padding: 10px 20px; /* Padding to make button larger */
   text-align: center;
   text-decoration: none;
@@ -533,7 +534,7 @@ Footer
 }
 
 .limitationsButton:hover {
-  background-color: #1f8e1f71; /* Darker green on hover */
+  background-color: #55bd5571; /* Darker green on hover */
   box-shadow: 0 3px 6px rgba(11, 0, 0, 0.213);
 }
 
@@ -566,6 +567,33 @@ Footer
   margin-top: 20px; /* Add margin-top as needed */
 }
 
+
+.dataTableContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Adjust margin as needed */
+  margin-top: 20px;
+}
+
+
+ 
+.dataTable {
+  /* border: 2px solid forestgreen; */
+  width: 800px;
+  height: 200px;
+}
+
+.dataTable th {
+  /* border-bottom: 1px solid white; */
+  background-color: #04AA6D;
+}
+
+.dataTable td {
+  text-align: center;
+}
+
+.dataTable tr:nth-child(even){background-color: #262626;}
 
 
 .select-button {
