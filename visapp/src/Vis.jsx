@@ -31,7 +31,7 @@ function Vis(){
     const [allDataLoaded, setAllDataLoaded] = useState(false);
     
     const rescaleModeRef = useRef(false);
-    const [yMaxState, setYMaxState] = useState(300000);
+    const [yMaxState, setYMaxState] = useState(300);
 	const celebs = ["Taylor Swift", "Drake", "Floyd Mayweather", "Jay-Z", "Kim Kardashian", "A-Rod", "Steven Spielberg", "Mark Wahlberg", "Blake Shelton", "Jack Nicklaus"];
 	const initialCelebActive = {
 		"Taylor Swift": false,
@@ -348,8 +348,11 @@ function Vis(){
             }
         }
         activeCelebs.sort((a, b) => a.co2kg - b.co2kg);
+        if(activeCelebs.length > 0){
+            setYMaxState(310)
+        }else(setYMaxState(35))
 
-        console.log(activeCelebs);
+        //console.log(activeCelebs);
 
         const bar_window_size = {width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2}
         const bar_width = bar_window_size.width / (filteredCountryData.length + activeCelebs.length);
@@ -493,9 +496,9 @@ function Vis(){
             update => update,
             exit => exit.remove()
         ).attr('width', absolute_bar_width)
-        .attr('height', d => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg))))
+        .attr('height', d => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg/1000))))
         .attr("x", (d, i) => celebOffset + (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i + Settings.border + ((absolute_bar_width * 0.8) / 2) - (absolute_bar_width / 2))
-        .attr("y", d => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg))) - Settings.border)
+        .attr("y", d => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg/1000))) - Settings.border)
         .attr('fill', d => `${celebColors[d.celebrity]}`)
         .on('mouseover', (e, d) => {
             barTooltip.select(".tooltipCountry").text(d.celebrity);
