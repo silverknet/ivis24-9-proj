@@ -608,7 +608,9 @@ function Vis() {
 					.on("mouseleave", () => {
 						barTooltip.style("display", "none");
 					})
-			: svg.selectAll(".first").remove();
+					.style("pointer-events", "all")
+					.attr("opacity", "1")
+			: svg.selectAll(".first").attr("opacity", "0");
 
 		// const barTooltip = select("#barTooltip");
 
@@ -746,32 +748,43 @@ function Vis() {
 			enteredSeriesGroups.merge(seriesGroups).each(function (seriesData) {
 				const rects = select(this)
 					.selectAll("rect")
-					.data(seriesData, (d) => d.data.key); // Assuming each data point has a unique 'key' property
+					.data(seriesData, (d) => d.data.key)
+					.style("pointer-events", "none"); // Assuming each data point has a unique 'key' property
 
 				rects
 					.enter()
 					.append("rect")
 					.attr(
 						"x",
-						(d, i) => (bar_window_size.width /(filteredCountryData.length+activeCelebs.length)) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+						(d, i) =>
+							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+							Settings.border +
+							(bar_width * 0.8) / 2 -
+							absolute_bar_width / 2
 					)
 					.attr("y", (d) => y_scale_stacked(d[1]) + 50)
 					.attr("width", absolute_bar_width)
-					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
+					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]))
+					.style("pointer-events", "none");
 
 				rects
 					.attr(
 						"x",
-						(d, i) => (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+						(d, i) =>
+							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+							Settings.border +
+							(bar_width * 0.8) / 2 -
+							absolute_bar_width / 2
 					)
 					.attr("y", (d) => y_scale_stacked(d[1]))
 					.attr("width", absolute_bar_width)
-					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]));
+					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]))
+					.style("pointer-events", "none");
 
 				rects.exit().remove();
 			});
 
-			selectAll(".first").raise();
+			// selectAll(".first").raise();
 		} else {
 			selectAll(".stacked").remove();
 		}
