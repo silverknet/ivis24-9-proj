@@ -727,7 +727,7 @@ function Vis() {
 		) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
-			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
+			const colorsStackedRectangles = ["#FFC88A", "#C6A0DA", "#E37C7C", "#A2E7DC"].filter((_, i) => Object.values(policyState)[i] === false);
 
 			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
 			// const stackedData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
