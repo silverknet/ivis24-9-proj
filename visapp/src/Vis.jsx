@@ -57,7 +57,16 @@ function Vis(){
         "Blake Shelton": "#AED581", // Lime Green
         "Jack Nicklaus": "#FFB74D" // Orange
     };
+
+    const [continentORstacked, setVis] = useState(0)
+
 	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
+
+    const toggleVisState = (newstate) =>{
+        setVis( state =>({
+            state: newstate
+        }));
+    };
 
     
     let activeCelebs = [];
@@ -464,72 +473,53 @@ function Vis(){
         // Rectangles
         const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * Settings.bar_size));
 
-        svg.selectAll('.first').data(filteredCountryData).join(
-            enter => enter.append('rect').attr('class', 'first'),
-            update => update,
-            exit => exit.remove()
-        ).attr('width', () => { return absolute_bar_width})
-        .attr('height', function(d) { return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d['2022']))*reduction[d["country"]]); })
-        .attr("x", function(d, i) { return (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
-        .attr("y", (d) => {return ((y_scale(d['2022']))*reduction[d["country"]]) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - d['2022']*reduction[d["country"]]) + Settings.border })
-        .attr('fill', d => {return d === selectedCountry ? '#7e7e7e' : continentColors[d['continent']]}) 
-        .on('click', (p_e, d) => {
-            setSelectedCountry(d);
-            setRightDisplay(1); //open up middle display when selecting country
-        })
-        .on('mouseover', (e, d) => {
-            //console.log(e, d)
-            barTooltip.select(".tooltipCountry").text(d.country);
-            barTooltip.style("display", "block").style("top", `${e.screenY - 100}px`).style("left", `${e.screenX-80}px`);
-          })
-        .on('mouseleave', () =>{
-            barTooltip.style("display", "none");
-        });
 
-        const barTooltip = select('#barTooltip');
-
-        // celeb rects
-        const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
-
-        svg.selectAll('.celeb').data(activeCelebs).join(
-            enter => enter.append('rect').attr('class', 'celeb'),
-            update => update,
-            exit => exit.remove()
-        ).attr('width', absolute_bar_width)
-        .attr('height', d => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg/1000))))
-        .attr("x", (d, i) => celebOffset + (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i + Settings.border + ((absolute_bar_width * 0.8) / 2) - (absolute_bar_width / 2))
-        .attr("y", d => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg/1000))) - Settings.border)
-        .attr('fill', d => `${celebColors[d.celebrity]}`)
-        .on('mouseover', (e, d) => {
-            barTooltip.select(".tooltipCountry").text(d.celebrity);
-            barTooltip.style("display", "block").style("top", `${e.clientY - 100}px`).style("left", `${e.clientX - 80}px`);
-        })
-        .on('mouseleave', () => {
-            barTooltip.style("display", "none");
-        });
-
-
-
-        //console.log("CELEBS "+JSON.stringify(celebrityDataRef.current[0]));
+        
+            svg.selectAll('.first').data(filteredCountryData).join(
+                enter => enter.append('rect').attr('class', 'first'),
+                update => update,
+                exit => exit.remove()
+            ).attr('width', () => { return absolute_bar_width})
+            .attr('height', function(d) { return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d['2022']))*reduction[d["country"]]); })
+            .attr("x", function(d, i) { return (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * i + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2)})
+            .attr("y", (d) => {return ((y_scale(d['2022']))*reduction[d["country"]]) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - d['2022']*reduction[d["country"]]) + Settings.border })
+            .attr('fill', d => {return d === selectedCountry ? '#7e7e7e' : continentColors[d['continent']]}) 
+            .on('click', (p_e, d) => {
+                setSelectedCountry(d);
+                setRightDisplay(1); //open up middle display when selecting country
+            })
+            .on('mouseover', (e, d) => {
+                //console.log(e, d)
+                barTooltip.select(".tooltipCountry").text(d.country);
+                barTooltip.style("display", "block").style("top", `${e.screenY - 100}px`).style("left", `${e.screenX-80}px`);
+              })
+            .on('mouseleave', () =>{
+                barTooltip.style("display", "none");
+            });
     
-        // activeCelebs.forEach(cel => {
-        //     const celebCount = activeCelebs.length;
-        //     svg.append('rect')
-        //     .attr('width', () => { return absolute_bar_width})
-        //     .attr('height',  Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(cel['co2kg']/1000))))
-        //     .attr("x",(bar_window_size.width / (filteredCountryData.length+celebCount)) * (filteredCountryData.length) + Settings.border + ((bar_width*0.8) / 2) - ((absolute_bar_width)/2))
-        //     .attr("y",  (y_scale(cel['co2kg']/1000)) >= svgSize.height - Settings.border * 2 ? Settings.border : y_scale(yMaxState - cel['co2kg']/1000) + Settings.border)
-        //     .attr('fill', '#FDFF8A')
-        //     .on('mouseover', (e) => {
-        //         //console.log(e, d)
-        //         barTooltip.select(".tooltipCountry").text(cel["celebrity"]);
-        //         barTooltip.style("display", "block").style("top", `${e.screenY - 100}px`).style("left", `${e.screenX-80}px`);
-        //       })
-        //     .on('mouseleave', () =>{
-        //         barTooltip.style("display", "none");
-        //     });
-        //     i++;
-        // });
+            const barTooltip = select('#barTooltip');
+    
+            // celeb rects
+            const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
+    
+            svg.selectAll('.celeb').data(activeCelebs).join(
+                enter => enter.append('rect').attr('class', 'celeb'),
+                update => update,
+                exit => exit.remove()
+            ).attr('width', absolute_bar_width)
+            .attr('height', d => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg/1000))))
+            .attr("x", (d, i) => celebOffset + (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i + Settings.border + ((absolute_bar_width * 0.8) / 2) - (absolute_bar_width / 2))
+            .attr("y", d => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg/1000))) - Settings.border)
+            .attr('fill', d => `${celebColors[d.celebrity]}`)
+            .on('mouseover', (e, d) => {
+                barTooltip.select(".tooltipCountry").text(d.celebrity);
+                barTooltip.style("display", "block").style("top", `${e.clientY - 100}px`).style("left", `${e.clientX - 80}px`);
+            })
+            .on('mouseleave', () => {
+                barTooltip.style("display", "none");
+            });
+
+        
         
 
 		// Add a tooltip container
@@ -636,6 +626,7 @@ function Vis(){
                         filterRange={filterRange}
                         setFilterRange={setFilterRange}
                         handleSearch={handleSearch}
+                        toggleVisState={toggleVisState}
                     />
                 )}
                 {rightDisplay === 1 && (
