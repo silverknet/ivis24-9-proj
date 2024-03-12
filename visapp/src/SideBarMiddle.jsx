@@ -60,6 +60,12 @@ function SideBarMiddle(props) {
     return noflag;
   }
  }
+
+ function colorBox(val){
+  if(val == 0) return {backgroundColor: '#C6A0DA'};
+  if(val == 1) return {backgroundColor: '#E37C7C'};
+  if(val == 2){return {backgroundColor: '#A2E7DC'}}
+ }
   return ( 
     <div className='MiddleContainer Container'>
       <div className="ElementComponent">
@@ -89,7 +95,7 @@ function SideBarMiddle(props) {
         <h2>Out of these carbon emissions:</h2>
         <div className="percentContainer">
           {meatBool &&(
-          <div className="percentBox">
+          <div className="percentBox" style={colorBox(0)}>
             <h1>{meatPercent}%</h1>
             <h3>comes from <br></br>meat consumption</h3>
             <h3>({meatco2} tons)</h3>
@@ -100,7 +106,7 @@ function SideBarMiddle(props) {
             </div>
           )}
           {flightBool &&(
-          <div className="percentBox">
+          <div className="percentBox" style={colorBox(1)}> 
             <h1>{flightPercent}%</h1>
             <h3>comes from <br></br>flying</h3>
             <h3>({flightco2} tons)</h3>
@@ -111,7 +117,7 @@ function SideBarMiddle(props) {
             </div>
           )}
           {transportBool && (
-          <div className="percentBox">
+          <div className="percentBox" style={colorBox(2)}>
             <h1>{transportPercent}%</h1>
             <h3>comes from <br></br>other transport</h3>
             <h3>({transportco2} tons)</h3>
