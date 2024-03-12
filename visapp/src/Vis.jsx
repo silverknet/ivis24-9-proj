@@ -410,6 +410,19 @@ function Vis() {
 			.call((g) => g.selectAll(".tick text").attr("x", 4).attr("dy", -4));
 
 		const gx = svg.selectAll(".x-axis").data([null]);
+
+		// Add y-axis label
+		svg
+			.append("text")
+			.attr("class", "target")
+			.attr(
+				"fill",
+				window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)"
+			)
+			.attr("font-size", "10px") // Add font-size property
+			.text("Co2 emissions per capita (Tons)")
+			.attr("x", Settings.border - 50)
+			.attr("y", Settings.border - 20);
 		// gx.enter()
 		// .append("g")
 		//     .attr("class", "x-axis")
