@@ -615,7 +615,7 @@ function Vis() {
 		// celeb rects
 		const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
 
-		!continentORstacked
+		!continentORstacked || continentORstacked
 			? svg
 					.selectAll(".celeb")
 					.data(activeCelebs)
@@ -753,7 +753,7 @@ function Vis() {
 					.append("rect")
 					.attr(
 						"x",
-						(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+						(d, i) => (bar_window_size.width /(filteredCountryData.length+activeCelebs.length)) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
 					)
 					.attr("y", (d) => y_scale_stacked(d[1]) + 50)
 					.attr("width", absolute_bar_width)
@@ -762,7 +762,7 @@ function Vis() {
 				rects
 					.attr(
 						"x",
-						(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
+						(d, i) => (bar_window_size.width / (filteredCountryData.length+activeCelebs.length)) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2
 					)
 					.attr("y", (d) => y_scale_stacked(d[1]))
 					.attr("width", absolute_bar_width)
