@@ -420,7 +420,7 @@ function Vis() {
 				window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)"
 			)
 			.attr("font-size", "10px") // Add font-size property
-			.text("Co2 emissions per capita (Tons)")
+			.text("Consumption based co2 emissions per capita (Tons)")
 			.attr("x", Settings.border - 50)
 			.attr("y", Settings.border - 20);
 		// gx.enter()
