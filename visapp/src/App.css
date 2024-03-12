@@ -660,6 +660,29 @@ Footer
   margin: 0;
 }
 
+.flightBox {
+  background-color: #81060675; /* Choose your desired background color */
+  padding: 20px; /* Adjust padding as needed */
+  border-radius: 10px; /* Add border radius for rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  margin-bottom: 20px; /* Add margin bottom for spacing */;
+}
+
+.meatBox {
+  background-color: #0a890672; /* Choose your desired background color */
+  padding: 20px; /* Adjust padding as needed */
+  border-radius: 10px; /* Add border radius for rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  margin-bottom: 20px; /* Add margin bottom for spacing */}
+
+.transportBox {
+  background-color: #1218cb7d; /* Choose your desired background color */
+  padding: 20px; /* Adjust padding as needed */
+  border-radius: 10px; /* Add border radius for rounded corners */
+  box-shadow: 0 4px 8px rgba(6, 6, 6, 0.15); /* Add shadow for depth */
+  margin-bottom: 20px; /* Add margin bottom for spacing */
+}
+
 @media only screen and (max-width: 600px) {
 }
 

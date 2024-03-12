@@ -90,10 +90,12 @@ function SideBarMiddle(props) {
         <h2>Out of these carbon emissions:</h2>
         <div className="percentContainer">
           {meatBool &&(
+          <div className="meatBox">
           <div className="percentBox">
             <h1>{meatPercent}%</h1>
             <h3>comes from <br></br>meat consumption</h3>
             <h3>({meatco2} tons)</h3>
+            </div>
           </div>)}
           {!meatBool &&(
             <div className="dataFaultBox">
@@ -101,10 +103,12 @@ function SideBarMiddle(props) {
             </div>
           )}
           {flightBool &&(
-          <div className="percentBox">
+            <div className="flightBox">
+              <div className="percentBox">
             <h1>{flightPercent}%</h1>
             <h3>comes from <br></br>flying</h3>
             <h3>({flightco2} tons)</h3>
+            </div>
           </div>)}
           {!flightBool &&(
             <div className="dataFaultBox">
@@ -112,10 +116,12 @@ function SideBarMiddle(props) {
             </div>
           )}
           {transportBool && (
+          <div className="transportBox">
           <div className="percentBox">
             <h1>{transportPercent}%</h1>
             <h3>comes from <br></br>other transport</h3>
             <h3>({transportco2} tons)</h3>
+            </div>
           </div>)}
           {!transportBool &&(
             <div className="dataFaultBox">
