@@ -18,6 +18,26 @@
 
 }
 
+
+@media (prefers-color-scheme: dark) {
+  #root {
+    --detail_color_highlight: rgba(207, 207, 207, 0.89);
+  }
+
+  .targetText {
+    fill: white;
+  }
+
+  .textBackground{
+    fill: black;
+  }
+
+  .co2_line{
+    stroke: white;
+  }
+}
+
+
 body {
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
@@ -38,7 +58,7 @@ MENU
 */
 .MenuContainer{
   /*background-color: antiquewhite;*/
-  color: #7C7C7C ;
+  color: var(--detail_color_highlight) ;
   width: 100vw;
   height: 100px;
   display: flex;
@@ -286,6 +306,7 @@ VIS
 }
 
 #barTooltip {
+  color: black;
   border: 1px solid #ccc;
   position: absolute;
   padding: 3px;
@@ -392,7 +413,7 @@ Middle SideBar
 
 .checkBoxLabel {
   font-size: 16px;
-  color: #333; /* Adjust color as needed */
+  color: var(--detail_color_highlight); /* Adjust color as needed */
   font-weight: bold;
 }
 
@@ -455,6 +476,7 @@ Middle SideBar
   margin-top: 0px;
   margin-bottom: 0px;
 }
+
 
 
 /*
@@ -520,6 +542,7 @@ Footer
 
 
 .limitationsButton {
+  font-family: Dosis, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   background-color: var(--detail_color);
   border: 1px solid #ffffff9f; /* White border */
   color: #ffffff; /* White text */
@@ -628,12 +651,13 @@ Footer
 }
 
 .percentBox {
+  color: black;
   width: 100%;
   height: 130px;
   padding-bottom: 5px;
   padding-top: 5px;
   border-style:solid;
-  border-color: var(--detail_color_highlight);
+  border-color: black;
   border-radius: 4px;
 }
 
