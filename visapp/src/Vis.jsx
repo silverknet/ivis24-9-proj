@@ -45,7 +45,18 @@ function Vis(){
 		"Blake Shelton": false,
 		"Jack Nicklaus": false
 	  };
-	
+    const celebColors = {
+        "Taylor Swift": "#E57373", // Soft Red
+        "Drake": "#81C784", // Green
+        "Floyd Mayweather": "#64B5F6", // Light Blue
+        "Jay-Z": "#FFD54F", // Yellow
+        "Kim Kardashian": "#BA68C8", // Purple
+        "A-Rod": "#4DB6AC", // Teal
+        "Steven Spielberg": "#FF8A65", // Coral
+        "Mark Wahlberg": "#90A4AE", // Blue Grey
+        "Blake Shelton": "#AED581", // Lime Green
+        "Jack Nicklaus": "#FFB74D" // Orange
+    };
 	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
 
     
@@ -305,7 +316,7 @@ function Vis(){
             }
     
             const delta = event.clientY - y_scale_start_value.current;
-            setYMaxState(Math.max(1,y_scale_old_max.current + (delta * Settings.rescale_speed * (yMaxState > 200 ? yMaxState/100 : 1))));
+            setYMaxState(Math.max(1,y_scale_old_max.current + (delta * Settings.rescale_speed * (yMaxState > 100 ? yMaxState/20 : 1))));
         };
     
         document.addEventListener('mousemove', handleMouseMove);
@@ -474,7 +485,7 @@ function Vis(){
 
         const barTooltip = select('#barTooltip');
 
-
+        // celeb rects
         const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
 
         svg.selectAll('.celeb').data(activeCelebs).join(
@@ -485,7 +496,7 @@ function Vis(){
         .attr('height', d => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg))))
         .attr("x", (d, i) => celebOffset + (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i + Settings.border + ((absolute_bar_width * 0.8) / 2) - (absolute_bar_width / 2))
         .attr("y", d => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg))) - Settings.border)
-        .attr('fill', '#c44e52')
+        .attr('fill', d => `${celebColors[d.celebrity]}`)
         .on('mouseover', (e, d) => {
             barTooltip.select(".tooltipCountry").text(d.celebrity);
             barTooltip.style("display", "block").style("top", `${e.clientY - 100}px`).style("left", `${e.clientX - 80}px`);
@@ -641,6 +652,7 @@ function Vis(){
                         policyState={policyState}
 						toggleCeleb={toggleCeleb}
 						celebStatus={celebStatus}
+                        celebColors={celebColors}
                     />
                 )}
             </div>
