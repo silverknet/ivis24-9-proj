@@ -285,7 +285,7 @@ function Vis() {
 					transportco2 = transportco2 / row["2022"];
 				}
 
-				reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["electric"]);
+				reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["transport"]);
 				if (meatco2 + flightco2 + transportco2 > 1) {
 					reductionDict[c] = 1;
 				}
@@ -301,6 +301,59 @@ function Vis() {
 
 		setFilteredCountryData(filteredData);
 	}, [activeContinents, filterRange, allDataLoaded]);
+
+	useEffect(() => {
+		if (countryData.length === 0) {
+			return;
+		}
+		const splitData = countryData
+			.map((row) => {
+				if (allDataLoaded && activeContinents[row["continent"]] && row["2022"] <= filterRange.max && row["2022"] >= filterRange.min) {
+					const c = row["country"];
+					// TODO: if the country isn't in the list, use values of continent instead
+					var meatco2 = coEmissions["meat"];
+					var flightco2 = coEmissions["flight"];
+					var transportco2 = coEmissions["electric"];
+					if (meatData[c] !== undefined) {
+						meatco2 =
+							(meatData[c][0] * foodData["Poultry"] +
+								meatData[c][1] * foodData["Beef (beef herd)"] +
+								meatData[c][2] * foodData["Mutton"] +
+								meatData[c][3] * foodData["Pork"] +
+								meatData[c][5] * foodData["Fish (farmed)"]) *
+							0.001;
+					}
+
+					if (flightData[c] !== undefined) {
+						flightco2 = flightData[c] * 0.001;
+					}
+
+					if (transportData[c] !== undefined) {
+						transportco2 = transportData[c];
+					}
+
+					return row["2022"] - (meatco2 + flightco2 + transportco2) > 0
+						? {
+								other: row["2022"] - (meatco2 + flightco2 + transportco2),
+								meat: meatco2,
+								flight: flightco2,
+								transport: transportco2,
+						  }
+						: {
+								other: row["2022"],
+								meat: 0,
+								flight: 0,
+								transport: 0,
+						  };
+				}
+			})
+			.filter(Boolean);
+
+		if (splitData.length > 0) {
+			// const stackedData = stack().keys(Object.keys(splitData[0]))(splitData);
+			setSplitData(splitData);
+		}
+	}, [policyState, activeContinents, filterRange, allDataLoaded]);
 
 	// update on rescale
 	useEffect(() => {
@@ -503,7 +556,7 @@ function Vis() {
 				select(this).attr("fill", "blue");
 			});
 
-				const absolute_bar_width = Math.min(
+		const absolute_bar_width = Math.min(
 			Settings.maxBarSize,
 			Math.max(0, (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * Settings.bar_size)
 		);
@@ -557,41 +610,46 @@ function Vis() {
 					})
 			: svg.selectAll(".first").remove();
 
-		const barTooltip = select("#barTooltip");
+		// const barTooltip = select("#barTooltip");
 
 		// celeb rects
 		const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
 
-		svg
-			.selectAll(".celeb")
-			.data(activeCelebs)
-			.join(
-				(enter) => enter.append("rect").attr("class", "celeb"),
-				(update) => update,
-				(exit) => exit.remove()
-			)
-			.attr("width", absolute_bar_width)
-			.attr("height", (d) => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))))
-			.attr(
-				"x",
-				(d, i) =>
-					celebOffset +
-					(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-					Settings.border +
-					(absolute_bar_width * 0.8) / 2 -
-					absolute_bar_width / 2
-			)
-			.attr("y", (d) => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))) - Settings.border)
-			.attr("fill", (d) => `${celebColors[d.celebrity]}`)
-			.on("mouseover", (e, d) => {
-				barTooltip.select(".tooltipCountry").text(d.celebrity);
-				barTooltip
-					.style("display", "block")
-					.style("top", `${e.clientY - 100}px`)
-					.style("left", `${e.clientX - 80}px`)
-			.on("mouseleave", () => {
-				barTooltip.style("display", "none");
-			});
+		!continentORstacked
+			? svg
+					.selectAll(".celeb")
+					.data(activeCelebs)
+					.join(
+						(enter) => enter.append("rect").attr("class", "celeb"),
+						(update) => update,
+						(exit) => exit.remove()
+					)
+					.attr("width", absolute_bar_width)
+					.attr("height", (d) => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))))
+					.attr(
+						"x",
+						(d, i) =>
+							celebOffset +
+							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+							Settings.border +
+							(absolute_bar_width * 0.8) / 2 -
+							absolute_bar_width / 2
+					)
+					.attr("y", (d) => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))) - Settings.border)
+					.attr("fill", (d) => `${celebColors[d.celebrity]}`)
+					.on("mouseover", (e, d) => {
+						barTooltip.select(".tooltipCountry").text(d.celebrity);
+						barTooltip
+							.style("display", "block")
+							.style("top", `${e.clientY - 100}px`)
+							.style("left", `${e.clientX - 80}px`);
+					})
+					.on("mouseleave", () => {
+						barTooltip.style("display", "none");
+					})
+			: svg.selectAll(".celeb").remove(),
+			toggleCeleb("");
+
 		// svg
 		// 	.selectAll(".first")
 		// 	.data(filteredCountryData)
@@ -659,7 +717,12 @@ function Vis() {
 		// Assuming 'svg' is already defined and appended to the DOM
 		// Assuming 'stackedData' is your data array ready for use
 
-		if (splitData.length > 0 && Object.values(activeContinents).some((x) => x === true) && filteredCountryData.length > 0) {
+		if (
+			splitData.length > 0 &&
+			Object.values(activeContinents).some((x) => x === true) &&
+			filteredCountryData.length > 0 &&
+			continentORstacked === 1
+		) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
 			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
@@ -789,7 +852,6 @@ function Vis() {
 			.attr("x2", bar_window_size.width + Settings.border) // Ending x-coordinate
 			.attr("y2", Settings.border + reverse_y_scale(2.3)) // Ending y-coordinate
 			.raise();
-			
 	}, [continentORstacked, svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState, celebStatus]);
 
 	return (
