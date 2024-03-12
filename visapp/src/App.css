@@ -236,6 +236,7 @@ VIS
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: calc(100vh - 100px - 50px);
 }
 .SideBar .Menu{
   display: flex;
@@ -351,7 +352,8 @@ Middle SideBar
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
   background-color: var(--element_color);
 }
 .ElementComponent{
@@ -659,6 +661,46 @@ Footer
   text-align: center;
   margin: 0;
 }
+
+/*celeb selector*/
+.celebFlexbox {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 10px;
+}
+
+.celebSelector {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  cursor: pointer;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  padding-right: 10px;
+  width: 180px; 
+  background-color: #80c19230;
+  border-radius: 35px;
+  box-shadow: 3px 3px 5px rgb(0 0 0 / 0.2);
+}
+
+.celebSelector img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 8px;
+  border-radius: 100%;
+}
+
+.celebSelector p {
+  flex: 1;
+  margin: 0;
+  font-family: 'Poppins', 'sans-serif';
+}
+
+.celebSelector.selected {
+  background-color: var(--detail_color);
+}
+
 
 @media only screen and (max-width: 600px) {
 }

@@ -20,9 +20,23 @@ function SideBarBottom(props) {
 				{Object.keys(checkBoxData).map((key) => (
 					<label key={key}>
 						<input type="checkbox" onChange={() => handleToggle(key)} name={key} checked={props.policyState[key]} className="checkboxColor" />
-						{checkBoxData[key]}
+						<span className="checkBoxLabel">{checkBoxData[key]}</span>
 					</label>
 				))}
+			</div>
+			<div className="ElementComponent">
+				<div className="celebFlexbox">
+					{Object.entries(props.celebrityData).map(([key, d]) => (
+						<div
+							className={`celebSelector ${props.celebStatus[d.celebrity] ? "selected" : ""}`}
+							style={{ backgroundColor: props.celebStatus[d.celebrity] ? props.celebColors[d.celebrity] : `${props.celebColors[d.celebrity]}33` }}
+							onClick={() => props.toggleCeleb(d.celebrity)}
+						>
+							<img className="image" src={d.image} alt={d.celebrity} />
+							<p key={key}>{d.celebrity}</p>
+						</div>
+					))}
+				</div>
 			</div>
 		</div>
 	);
