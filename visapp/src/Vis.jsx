@@ -27,13 +27,70 @@ function Vis() {
 	const [isFoodDataLoaded, setIsFoodDataLoaded] = useState(false);
 	const [isFlightDataLoaded, setIsFlightDataLoaded] = useState(false);
 	const [isTransportDataLoaded, setIsTransportDataLoaded] = useState(false);
+	const [isCelebrityDataLoaded, setIsCelebrityDataLoaded] = useState(false);
 	const [allDataLoaded, setAllDataLoaded] = useState(false);
 
 	const rescaleModeRef = useRef(false);
-	const [yMaxState, setYMaxState] = useState(30);
+	const [yMaxState, setYMaxState] = useState(300);
+	const celebs = [
+		"Taylor Swift",
+		"Drake",
+		"Floyd Mayweather",
+		"Jay-Z",
+		"Kim Kardashian",
+		"A-Rod",
+		"Steven Spielberg",
+		"Mark Wahlberg",
+		"Blake Shelton",
+		"Jack Nicklaus",
+	];
+	const initialCelebActive = {
+		"Taylor Swift": false,
+		Drake: false,
+		"Floyd Mayweather": false,
+		"Jay-Z": false,
+		"Kim Kardashian": false,
+		"A-Rod": false,
+		"Steven Spielberg": false,
+		"Mark Wahlberg": false,
+		"Blake Shelton": false,
+		"Jack Nicklaus": false,
+	};
+	const celebColors = {
+		"Taylor Swift": "#E57373", // Soft Red
+		Drake: "#81C784", // Green
+		"Floyd Mayweather": "#64B5F6", // Light Blue
+		"Jay-Z": "#FFD54F", // Yellow
+		"Kim Kardashian": "#BA68C8", // Purple
+		"A-Rod": "#4DB6AC", // Teal
+		"Steven Spielberg": "#FF8A65", // Coral
+		"Mark Wahlberg": "#90A4AE", // Blue Grey
+		"Blake Shelton": "#AED581", // Lime Green
+		"Jack Nicklaus": "#FFB74D", // Orange
+	};
+
+	const [continentORstacked, setcontinentORstacked] = useState(0);
+
+	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
+
+	const toggleVisState = (newstate) => {
+		console.log(newstate);
+		setcontinentORstacked(newstate);
+	};
+
+	let activeCelebs = [];
+
+	const toggleCeleb = (celebName) => {
+		setCelebStatus((prevStatus) => ({
+			...prevStatus,
+			[celebName]: !prevStatus[celebName],
+		}));
+	};
+
+	const celebrityDataRef = useRef([]);
 
 	useEffect(() => {
-		if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded && isTransportDataLoaded) {
+		if (isCountryDataLoaded && isMeatDataLoaded && isFoodDataLoaded && isFlightDataLoaded && isTransportDataLoaded && isCelebrityDataLoaded) {
 			setAllDataLoaded(true);
 		}
 	}, [isCountryDataLoaded, isMeatDataLoaded, isFoodDataLoaded, isFlightDataLoaded, isTransportDataLoaded]);
@@ -77,12 +134,12 @@ function Vis() {
 		Oceania: false,
 	});
 	const continentColors = {
-		Europe: "#6A8CAF",
-		Asia: "#EAB464",
-		Africa: "#9CBFA7",
+		Europe: "#8CB4D0",
+		Asia: "#F8CA86",
+		Africa: "#B3A6D6",
 		"North America": "#C68B8B",
-		"South America": "#F2D096",
-		Oceania: "#92B4A7",
+		"South America": "#99BD8D",
+		Oceania: "#81C8B3",
 	};
 
 	const handleSearch = (query) => {
@@ -99,13 +156,23 @@ function Vis() {
 	useEffect(() => {
 		csv("/data/co2_pcap_cons.csv")
 			.then((data2) => {
-				console.log(data2);
 				const filteredAndSorted = data2.filter((d) => Number(d["2022"]) > 0).sort((a, b) => Number(a["2022"]) - Number(b["2022"]));
 				setCountryData(filteredAndSorted);
 				setIsCountryDataLoaded(true); // Update loading state
 				setSelectedCountry(filteredAndSorted[169]);
 			})
 			.catch((error) => console.error("Error loading the COUNTRY file:", error));
+	}, []);
+
+	// Load Celebrity data
+	useEffect(() => {
+		csv("/data/celebrity-data.csv")
+			.then((data2) => {
+				const updatedData = data2.slice(0, -1);
+				celebrityDataRef.current = updatedData;
+				setIsCelebrityDataLoaded(true);
+			})
+			.catch((error) => console.error("Error loading the Celebrity file:", error));
 	}, []);
 
 	// Load meat data
@@ -191,68 +258,39 @@ function Vis() {
 
 	useEffect(() => {
 		const reductionDict = {};
-
-		if (countryData.length === 0) {
-			return;
-		}
-		const splitData = countryData.map((row) => {
+		countryData.forEach((row) => {
 			if (allDataLoaded) {
 				const c = row["country"];
 				// TODO: if the country isn't in the list, use values of continent instead
 				var meatco2 = coEmissions["meat"];
 				var flightco2 = coEmissions["flight"];
 				var transportco2 = coEmissions["electric"];
-
-				let meatco2Reduction = 0;
-				let flightco2Reduction = 0;
-				let transportco2Reduction = 0;
-
 				if (meatData[c] !== undefined) {
 					meatco2 =
-						(meatData[c][0] * foodData["Poultry"] +
-							meatData[c][1] * foodData["Beef (beef herd)"] +
-							meatData[c][2] * foodData["Mutton"] +
-							meatData[c][3] * foodData["Pork"] +
-							meatData[c][5] * foodData["Fish (farmed)"]) *
-						0.001;
-
-					meatco2Reduction = meatco2 / row["2022"];
+						meatData[c][0] * foodData["Poultry"] +
+						meatData[c][1] * foodData["Beef (beef herd)"] +
+						meatData[c][2] * foodData["Mutton"] +
+						meatData[c][3] * foodData["Pork"] +
+						meatData[c][5] * foodData["Fish (farmed)"];
+					meatco2 = (meatco2 * 0.001) / row["2022"];
 				}
 
 				if (flightData[c] !== undefined) {
-					flightco2 = flightData[c] * 0.001;
-					flightco2Reduction = flightco2 / row["2022"];
+					flightco2 = flightData[c];
+					flightco2 = (flightco2 * 0.001) / row["2022"];
 				}
 
 				if (transportData[c] !== undefined) {
 					transportco2 = transportData[c];
-					transportco2Reduction = transportco2 / row["2022"];
+					transportco2 = transportco2 / row["2022"];
 				}
 
-				if (meatco2Reduction + flightco2Reduction + transportco2Reduction > 1) {
+				reductionDict[c] = 1 - (meatco2 * policyState["meat"] + flightco2 * policyState["flight"] + transportco2 * policyState["transport"]);
+				if (meatco2 + flightco2 + transportco2 > 1) {
 					reductionDict[c] = 1;
-					meatco2 = 0;
-					flightco2 = 0;
-					transportco2 = 0;
-				} else {
-					reductionDict[c] =
-						1 -
-						(meatco2Reduction * policyState["meat"] + flightco2Reduction * policyState["flight"] + transportco2Reduction * policyState["transport"]);
 				}
-				// if (row["2022"] - (meatco2 + flightco2 + transportco2) < 0) {
-				// 	console.log(c);
-				// }
-				return {
-					other: row["2022"] - (meatco2 + flightco2 + transportco2),
-					meat: meatco2,
-					flight: flightco2,
-					transport: transportco2,
-				};
 			}
 		});
-
-		// setSplitData(splitData);
-
 		setReduction(reductionDict);
 	}, [policyState, allDataLoaded]);
 
@@ -364,7 +402,7 @@ function Vis() {
 			}
 
 			const delta = event.clientY - y_scale_start_value.current;
-			setYMaxState(Math.max(1, y_scale_old_max.current + delta * Settings.rescale_speed * (yMaxState > 200 ? yMaxState / 100 : 1)));
+			setYMaxState(Math.max(1, y_scale_old_max.current + delta * Settings.rescale_speed * (yMaxState > 100 ? yMaxState / 20 : 1)));
 		};
 
 		document.addEventListener("mousemove", handleMouseMove);
@@ -384,8 +422,24 @@ function Vis() {
 	useEffect(() => {
 		const svg = select(svgRef.current);
 
+		activeCelebs = [];
+		for (const [celebName, isActive] of Object.entries(celebStatus)) {
+			if (isActive) {
+				const celebObject = celebrityDataRef.current.find((celebrity) => celebrity.celebrity === celebName);
+				if (celebObject) {
+					activeCelebs.push(celebObject);
+				}
+			}
+		}
+		activeCelebs.sort((a, b) => a.co2kg - b.co2kg);
+		if (activeCelebs.length > 0) {
+			setYMaxState(310);
+		} else setYMaxState(35);
+
+		//console.log(activeCelebs);
+
 		const bar_window_size = { width: svgSize.width - Settings.border * 2, height: svgSize.height - Settings.border * 2 };
-		const bar_width = bar_window_size.width / filteredCountryData.length;
+		const bar_width = bar_window_size.width / (filteredCountryData.length + activeCelebs.length);
 		const y_scale = scaleLinear([0, yMaxState], [0, bar_window_size.height]);
 		const reverse_y_scale = scaleLinear([0, yMaxState], [bar_window_size.height, 0]);
 
@@ -502,50 +556,100 @@ function Vis() {
 				select(this).attr("fill", "blue");
 			});
 
-		// Rectangles
-		const absolute_bar_width = Math.min(Settings.maxBarSize, Math.max(0, (bar_window_size.width / filteredCountryData.length) * Settings.bar_size));
+		const absolute_bar_width = Math.min(
+			Settings.maxBarSize,
+			Math.max(0, (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * Settings.bar_size)
+		);
 
-		svg
-			.selectAll(".first")
-			.data(filteredCountryData)
-			.join(
-				(enter) => enter.append("rect").attr("class", "first"),
-				(update) => update,
-				(exit) => exit.remove()
-			)
-			.attr("width", () => {
-				return absolute_bar_width;
-			})
-			.attr("height", function (d) {
-				return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d["2022"])) * reduction[d["country"]]);
-			})
-			.attr("x", function (d, i) {
-				return (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2;
-			})
-			.attr("y", (d) => {
-				return y_scale(d["2022"]) * reduction[d["country"]] >= svgSize.height - Settings.border * 2
-					? Settings.border
-					: y_scale(yMaxState - d["2022"] * reduction[d["country"]]) + Settings.border;
-			})
-			.attr("fill", (d) => {
-				return d === selectedCountry ? "#7e7e7e" : continentColors[d["continent"]];
-			})
-			.style("opacity", "0.7")
-			.on("click", (p_e, d) => {
-				setSelectedCountry(d);
-				setRightDisplay(1); //open up middle display when selecting country
-			})
-			.on("mouseover", (e, d) => {
-				//console.log(e, d)
-				barTooltip.select(".tooltipCountry").text(d.country);
-				barTooltip
-					.style("display", "block")
-					.style("top", `${e.screenY - 100}px`)
-					.style("left", `${e.screenX - 80}px`);
-			})
-			.on("mouseleave", () => {
-				barTooltip.style("display", "none");
-			});
+		// Rectangles
+		!continentORstacked
+			? svg
+					.selectAll(".first")
+					.data(filteredCountryData)
+					.join(
+						(enter) => enter.append("rect").attr("class", "first"),
+						(update) => update,
+						(exit) => exit.remove()
+					)
+					.attr("width", () => {
+						return absolute_bar_width;
+					})
+					.attr("height", function (d) {
+						return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d["2022"])) * reduction[d["country"]]);
+					})
+					.attr("x", function (d, i) {
+						return (
+							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+							Settings.border +
+							(bar_width * 0.8) / 2 -
+							absolute_bar_width / 2
+						);
+					})
+					.attr("y", (d) => {
+						return y_scale(d["2022"]) * reduction[d["country"]] >= svgSize.height - Settings.border * 2
+							? Settings.border
+							: y_scale(yMaxState - d["2022"] * reduction[d["country"]]) + Settings.border;
+					})
+					.attr("fill", (d) => {
+						return d === selectedCountry ? "#7e7e7e" : continentColors[d["continent"]];
+					})
+					.on("click", (p_e, d) => {
+						setSelectedCountry(d);
+						setRightDisplay(1); //open up middle display when selecting country
+					})
+					.on("mouseover", (e, d) => {
+						//console.log(e, d)
+						barTooltip.select(".tooltipCountry").text(d.country);
+						barTooltip
+							.style("display", "block")
+							.style("top", `${e.screenY - 100}px`)
+							.style("left", `${e.screenX - 80}px`);
+					})
+					.on("mouseleave", () => {
+						barTooltip.style("display", "none");
+					})
+			: svg.selectAll(".first").remove();
+
+		// const barTooltip = select("#barTooltip");
+
+		// celeb rects
+		const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
+
+		!continentORstacked
+			? svg
+					.selectAll(".celeb")
+					.data(activeCelebs)
+					.join(
+						(enter) => enter.append("rect").attr("class", "celeb"),
+						(update) => update,
+						(exit) => exit.remove()
+					)
+					.attr("width", absolute_bar_width)
+					.attr("height", (d) => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))))
+					.attr(
+						"x",
+						(d, i) =>
+							celebOffset +
+							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+							Settings.border +
+							(absolute_bar_width * 0.8) / 2 -
+							absolute_bar_width / 2
+					)
+					.attr("y", (d) => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))) - Settings.border)
+					.attr("fill", (d) => `${celebColors[d.celebrity]}`)
+					.on("mouseover", (e, d) => {
+						barTooltip.select(".tooltipCountry").text(d.celebrity);
+						barTooltip
+							.style("display", "block")
+							.style("top", `${e.clientY - 100}px`)
+							.style("left", `${e.clientX - 80}px`);
+					})
+					.on("mouseleave", () => {
+						barTooltip.style("display", "none");
+					})
+			: svg.selectAll(".celeb").remove(),
+			toggleCeleb("");
+
 		// svg
 		// 	.selectAll(".first")
 		// 	.data(filteredCountryData)
@@ -613,7 +717,12 @@ function Vis() {
 		// Assuming 'svg' is already defined and appended to the DOM
 		// Assuming 'stackedData' is your data array ready for use
 
-		if (splitData.length > 0 && Object.values(activeContinents).some((x) => x === true) && filteredCountryData.length > 0) {
+		if (
+			splitData.length > 0 &&
+			Object.values(activeContinents).some((x) => x === true) &&
+			filteredCountryData.length > 0 &&
+			continentORstacked === 1
+		) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
 			const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
@@ -704,7 +813,7 @@ function Vis() {
 			.enter()
 			.append("text")
 			.attr("class", "targetText")
-			.attr("fill", "green")
+			.attr("fill", "#7c7c7c")
 			.style("cursor", "pointer")
 			.style("z-order", "-1")
 			.on("mouseover", showTooltip)
@@ -734,16 +843,16 @@ function Vis() {
 			.enter()
 			.append("line")
 			.attr("class", "co2_line")
-			.attr("stroke", "green") // Line color
+			.attr("stroke", "#7c7c7c") // Line color
 			.attr("stroke-width", 2) // Line thickness
-			.attr("stroke-dasharray", "5 5") // Dashed line style
+			.attr("stroke-dasharray", "5 3") // Dashed line style
 			.merge(co2_line) // Merge enter and update selections
 			.attr("x1", Settings.border) // Starting x-coordinate
 			.attr("y1", Settings.border + reverse_y_scale(2.3)) // Starting y-coordinate
 			.attr("x2", bar_window_size.width + Settings.border) // Ending x-coordinate
 			.attr("y2", Settings.border + reverse_y_scale(2.3)) // Ending y-coordinate
 			.raise();
-	}, [policyState, svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
+	}, [continentORstacked, svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState, celebStatus]);
 
 	return (
 		// <Router>
@@ -778,6 +887,7 @@ function Vis() {
 						filterRange={filterRange}
 						setFilterRange={setFilterRange}
 						handleSearch={handleSearch}
+						toggleVisState={toggleVisState}
 					/>
 				)}
 				{rightDisplay === 1 && (
@@ -790,7 +900,16 @@ function Vis() {
 						transportData={transportData}
 					/>
 				)}
-				{rightDisplay === 2 && <SideBarBottom setPolicyState={setPolicyState} policyState={policyState} />}
+				{rightDisplay === 2 && (
+					<SideBarBottom
+						celebrityData={celebrityDataRef.current}
+						setPolicyState={setPolicyState}
+						policyState={policyState}
+						toggleCeleb={toggleCeleb}
+						celebStatus={celebStatus}
+						celebColors={celebColors}
+					/>
+				)}
 			</div>
 			<div id="barTooltip">
 				<div className="tooltipCountry"></div>

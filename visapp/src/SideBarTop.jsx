@@ -34,7 +34,8 @@ function SideBarTop(props) {
     return (
         <div className='TopContainer Container'>
             <div className="ElementComponent">
-                <h1>Filter</h1>
+                <div style={{backgroundColor:'#82BD8C'}} onClick={() => props.toggleVisState(0)}>Show Continents</div>
+                <div style={{backgroundColor:'#82BD8C'}} onClick={() => props.toggleVisState(1)}>Show Stacks</div>
             </div>
             <div className="ElementComponent">
                 <h2>Filter by continent</h2>
