@@ -6,9 +6,18 @@ const checkBoxData = {
 	transport: "Remove other personal transportation",
 };
 
+
 function SideBarBottom(props) {
 	const handleToggle = (key) => {
 		props.setPolicyState((prevState) => ({ ...prevState, [key]: !prevState[key] }));
+	};
+
+	const [hoverStyle, setHoverStyle] = useState({});
+	const handleMouseEnter = (color) => {
+		setHoverStyle({
+			backgroundColor: color, 
+			cursor: 'pointer',
+		});
 	};
 
 	return (
@@ -17,14 +26,22 @@ function SideBarBottom(props) {
 				<h1>Apply restrictions</h1>
 			</div>
 			<div className="ElementComponent">
-				{Object.keys(checkBoxData).map((key) => (
-					<label key={key}>
-						<input type="checkbox" onChange={() => handleToggle(key)} name={key} checked={props.policyState[key]} className="checkboxColor" />
-						<span className="checkBoxLabel">{checkBoxData[key]}</span>
-					</label>
-				))}
+				<div className="policyCheckboxes">
+					{Object.keys(checkBoxData).map((key) => (
+						<label 
+						key={key} 
+						style={hoverStyle} 
+						onMouseEnter={() => handleMouseEnter(key)} 
+						onMouseLeave={()=> {return false}}
+						>
+							<input type="checkbox" onChange={() => handleToggle(key)} name={key} checked={props.policyState[key]} className="checkboxColor" />
+							<span className="checkBoxLabel">{checkBoxData[key]}</span>
+						</label>
+					))}
+				</div>
 			</div>
 			<div className="ElementComponent">
+				<h2>Add a celebrity</h2>
 				<div className="celebFlexbox">
 					{Object.entries(props.celebrityData).map(([key, d]) => (
 						<div

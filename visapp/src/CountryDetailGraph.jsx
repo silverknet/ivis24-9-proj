@@ -137,7 +137,7 @@ function CountryDetailGraph(props) {
             .attr("class", "line")
             .attr("d", myLine)
             .attr("fill", "none")
-            .attr("stroke", "#82BD8C")
+            .attr("stroke", "#FFFFFF") //82BD8C
             .attr("stroke-width", 3),
             update => update.call(update => update.transition() // Start a transition for a smooth update
             .attr("d", myLine) // Update the line path

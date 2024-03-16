@@ -249,13 +249,18 @@ VIS
 
 /*SIDEBAR*/
 .ElementComponent h1{
+  font-size: 35px;
+  font-family: "Outfit", sans-serif;
+}
+.ElementComponent h2{
   font-size: 25px;
+  font-family: "Outfit", sans-serif;
 }
 .SideBar{
   width: 450px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 4px;
   height: calc(100vh - 100px - 50px);
 }
 .SideBar .Menu{
@@ -265,6 +270,7 @@ VIS
   width: 100%;
 }
 .SideBar .SelectBox{
+  font-family: "Outfit", sans-serif;
   flex: 1;
   height: 60px;
   background-color: var(--detail_color);
@@ -272,13 +278,16 @@ VIS
   align-items: center;
   justify-content: center;
   color:#ffffff;
-  font-weight: 800;
-  font-size: 25px;
-  border-radius: 5px;
+  font-weight: 700;
+  font-size: 19px;
+  border-radius: 3px;
+  background: linear-gradient(18deg, rgba(130,189,140,1) 13%, rgb(152, 209, 161) 100%);
+  transition: ease;
+  transition-duration: 0.2s;
 }
 .Menu .selected{
   background-color: #007bff00;
-  color: var(--detail_color);
+  box-shadow: inset 0 0 50.9px -5px rgba(0, 0, 0, 0.178);
 }
 
 .SideBar .SelectBox:hover {
@@ -291,7 +300,7 @@ VIS
 .searchContainer {
   width: 80%; /* Adjust width as needed */
   margin: 0 auto;
-  padding: 25px;
+  padding: 0px;
 }
 
 .searchContainer input[type="text"] {
@@ -318,9 +327,106 @@ VIS
   height: 20;
 }
 
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.toggleViewContainer{
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 30px;
+}
+.toggleViewContainer h3{
+  font-family: "Outfit", open-sans;
+  margin: 0px;
+}
+
+/*
+Bottom SideBar
+*/
+
+.policyCheckboxes{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  font-size: 60px;
+}
+.policyCheckboxes label{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
 /*
 Middle SideBar
 */
+.MiddleContainer{
+  background: rgb(130,189,140);
+  background: linear-gradient(18deg, rgba(130,189,140,1) 13%, rgba(212,238,216,1) 100%);
+  font-family: 'Outfit', 'Open sans', sans-serif;
+  color: white;
+  box-shadow: inset 0 0 100.9px -5px rgba(0, 0, 0, 0.175);
+}
 #tooltip {
   border: 1px solid #ccc;
   position: absolute;
@@ -332,41 +438,116 @@ Middle SideBar
 }
 
 .SideBar .DetailsFlag{
-  width: 150px;  
-  height: 100px; 
+  width: 200px;  
+  height: 130px; 
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 15px;
   order: 0;
   filter: drop-shadow(5px 5px 0 #00000008);
+  margin-left: 40px;
   
 }
-.SideBar .PageHeader{
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
- 
-  /* padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 20px;
-  padding-bottom: 20px; */
-  width: 100%;
-  height: 150px;
+.SideBar .countryNameText{
+  width: fit-content;
+  line-height: 40px;
+  text-align: left;
+  font-size: 50px;
+  font-family:'Outfit', sans-serif;
+}
+.SideBar .continentText{
+  line-height: 35px;
+  text-align: right;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 200;
 }
 
-
 .SideBar .PageHeader{
+  width: calc(100% - 80px);
+  margin-top: 20px;
+  margin-bottom: 15px;
+  align-items:start;
+  flex-wrap: wrap;
+  display: flex;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
-.PageHeader span{
-  font-size: 40px;
-  order: 1;
-  margin: 0px;
-  min-width: 150px;
-  font-weight: bold;
+.PageHeader h3{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.PageHeader p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.SideBar .flagElement{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 50px;
+}
+.SideBar .countryEmission{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: 57px;
+}
+.SideBar .numberBox{
+  box-shadow: inset 0 0 20.9px -5px rgba(0, 0, 0, 0.175);
+  background-color: #82BD8C;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 6px;
+}
+.numberBox p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 23px;
+  font-family: 'Oxanium', sans-serif;
+}
+.SideBar .tc{
+  margin-left: 10px;
+  font-size: 20px;
+
+}
+.SideBar .infoRow{
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  
+}
+.infoRow h3{
+  font-weight: 400;
+  font-size: 23px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.infoRow .yellow{
+  color: #FBFF39;
+  margin-left: 4px;
+  font-weight: 800;
+}
+.infoRow  .green{
+  color: #006484;
+  margin-left: 4px;
+  font-weight: 800;
 }
 
 .Container{
@@ -376,7 +557,15 @@ Middle SideBar
   height: 100%;
   overflow-y: scroll;
   background-color: var(--element_color);
+  border-radius: 7px;
+  border: 1px solid #D1D1D1;
 }
+.TopContainer{
+  border-style: none;
+  background: linear-gradient(18deg, var(--element_color) 13%, rgb(242, 242, 242) 100%);
+}
+
+
 .ElementComponent{
   display: flex;
   justify-content: space-evenly;
@@ -385,26 +574,40 @@ Middle SideBar
   gap: 15px;
   width: 100%;
 
-  padding-top: 10px;
-  padding-bottom: 10px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
 
-  border-top: none;
+  /* border-top: none;
   border-right: none; 
   border-left: none; 
-  border-bottom: 1px solid #00000020; 
+  border-bottom: 1px solid #00000020;  */
 }
-.ElementComponent h3{
+/* .ElementComponent h3{
   margin: 0px;
   font-size: 18px;
-}
+} */
 
 .ElementComponent h2{
-  font-size: 18px;
+  font-size: 20px;
+  color: #006484;
+  margin-top: 40px;
+  margin-bottom: 0px;
 }
 
 
 .partEmissions{
+  font-family: "Outfit", sans-serif;
   font-size: 12px;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.partEmissions .outOfThe{
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 20px;
 }
 
 .BottomContainer .checkboxColor {
@@ -418,6 +621,7 @@ Middle SideBar
 }
 
 .TopContainer .continentFilter{
+  font-family: "Outfit", sans-serif;
   width: 100%;
   display: flex;
   flex-wrap:wrap;
@@ -472,10 +676,10 @@ Middle SideBar
   width: 100%;
   font-size: 16px;
 }
-.SideBar h2{
+/* .SideBar h2{
   margin-top: 0px;
   margin-bottom: 0px;
-}
+} */
 
 
 
@@ -483,6 +687,8 @@ Middle SideBar
 Small details graph
 */
 .CountryDetailGraph{
+  margin-top: 20px;
+  margin-bottom: 20px;
   width: 90%;
   height: 240px;
   border-radius: 10px;
@@ -642,38 +848,77 @@ Footer
 }
 
 .percentContainer{
-  display: grid;
-  grid-auto-columns: minmax(0, 1fr);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom:35px;
+  
+  /* grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
   padding: 5px;
   column-gap: 10px;
-  width: 100%;
+  width: 70%; */
 }
 
 .percentBox {
+  background-color: white;
+  padding: 5px;
+  padding-top: 20px;
   color: black;
-  width: 100%;
-  height: 130px;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  border-style:solid;
-  border-color: black;
-  border-radius: 4px;
+  width: 100px;
+  height: 170px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Centered drop shadow */
+
+}
+.percentage{
+
+}
+.comesFrom{
+  margin: 0px;
+  line-height: 18px;
+  font-weight: 400;
+}
+.tons{
+  margin:0px;
 }
 
 .dataFaultBox {
-  width: 100%;
-  border-style: groove;
-  border-color: var(--detail_color_highlight);
+  border-radius: 8px;
+  width: 100px;
+  padding: 5px;
+  /*border-style: groove;*/
+  /*border-color: var(--detail_color_highlight);*/
   background-color: #ffcfcf;
   /* border-radius: 1px; */
   display: grid;
   align-items: center;
-    text-align: center;
+  text-align: center;
+}
+.dataFaultBox2 {
+  border-radius: 0px;
+  width: 300px;
+  padding-right: 5px;
+  padding-left: 5px;
+  /*border-style: groove;*/
+  /*border-color: var(--detail_color_highlight);*/
+  background-color: #ffcfcf;
+  /* border-radius: 1px; */
+  display: grid;
+  align-items: center;
+  text-align: center;
+}
+.dataFaultBox2 h1 {
+  font-size:40px;
+  margin:0px;
 }
 
 .dataFaultBox h2 {
-  font-size:x-large;
+  font-size:20px;
   margin:auto;
 }
 
@@ -689,19 +934,21 @@ Footer
 /*celeb selector*/
 .celebFlexbox {
   display: flex;
-  flex-wrap: wrap;
-  padding-left: 10px;
+  flex-direction: column; 
+  color: white;
+  font-weight: 800;
+  margin-bottom: 30px;
 }
 
 .celebSelector {
+  text-align: center;
   display: flex;
   align-items: center;
   justify-content: start;
   cursor: pointer;
   margin-bottom: 10px;
-  margin-left: 10px;
   padding-right: 10px;
-  width: 180px; 
+  width: 250px; 
   background-color: #80c19230;
   border-radius: 35px;
   box-shadow: 3px 3px 5px rgb(0 0 0 / 0.2);

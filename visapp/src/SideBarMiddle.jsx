@@ -17,6 +17,7 @@ function SideBarMiddle(props) {
   var flightBool = false;
   var transportBool = false;
   var showBool = true;
+  
 
   if(props.meatData[c] !== undefined){
     meatco2 = props.meatData[c][0]*props.foodData["Poultry"] + props.meatData[c][1]*props.foodData["Beef (beef herd)"] + props.meatData[c][2]*props.foodData["Mutton"] + props.meatData[c][3]*props.foodData["Pork"] + props.meatData[c][5]*props.foodData["Fish (farmed)"];
@@ -62,43 +63,49 @@ function SideBarMiddle(props) {
  }
 
  function colorBox(val){
-  if(val == 0) return {backgroundColor: '#C6A0DA'};
-  if(val == 1) return {backgroundColor: '#E37C7C'};
-  if(val == 2){return {backgroundColor: '#A2E7DC'}}
+  if(val == 0) return {color: '#C6A0DA'};
+  if(val == 1) return {color: '#E37C7C'};
+  if(val == 2){return {color: '#A2E7DC'}}
  }
   return ( 
     <div className='MiddleContainer Container'>
       <div className="ElementComponent">
         <div className='PageHeader '>
-          <span>
-            {c}
-          </span>
-          <img
+          <h3 className="countryNameText">{props.selectedCountry.country.toUpperCase()}</h3>
+          <p className="continentText">{props.selectedCountry.continent.toUpperCase()}</p>
+        </div>
+      </div>
+      <div className="ElementComponent">
+        <div className="flagElement">
+        <img
             className="DetailsFlag"
             src={props.selectedCountry.Code ? `https://flagcdn.com/${props.selectedCountry.Code.toLowerCase()}.svg` : noflag}
             alt={c}
           />
+          <div className="countryEmission">
+            <div className="numberBox">
+              <p className="emissionNumber">{props.selectedCountry['2022']}</p>
+            </div>
+            <p className="tc">t/c</p>
+          </div>
         </div>
-        
       </div>
       <div className="ElementComponent">
-        <h3>Continent: {props.selectedCountry.continent}</h3>
-        <h3>Population: {props.selectedCountry['population_2022']}</h3>
-        <h3>GDP per capita: ${props.selectedCountry['GDP_2022']}</h3>
+        <div className="infoRow"><h3>POPULATION |  </h3><h3 className="yellow">{props.selectedCountry['population_2022']}</h3></div>
+        <div className="infoRow"><h3>GDP per capita |  </h3><h3 className="green">${props.selectedCountry['GDP_2022']}</h3></div>
       </div>
-
       <div className="ElementComponent">
         <CountryDetailGraph countryData={props.countryData} selectedCountry={props.selectedCountry}/>
       </div>
       {showBool &&(
       <div className="partEmissions">
-        <h2>Out of these carbon emissions:</h2>
+        <h2 className="outOfThe">Out of the total Co2 emitted</h2>
         <div className="percentContainer">
           {meatBool &&(
-          <div className="percentBox" style={colorBox(0)}>
-            <h1>{meatPercent}%</h1>
-            <h3>comes from <br></br>meat consumption</h3>
-            <h3>({meatco2} tons)</h3>
+          <div className="percentBox" >
+            <h1 className="percentage" style={colorBox(0)}>{meatPercent}%</h1>
+            <h3 className="comesFrom">comes from <br></br>meat consumption</h3>
+            <h3 className="tons" style={colorBox(0)}>({meatco2} tons)</h3>
           </div>)}
           {!meatBool &&(
             <div className="dataFaultBox">
@@ -106,10 +113,10 @@ function SideBarMiddle(props) {
             </div>
           )}
           {flightBool &&(
-          <div className="percentBox" style={colorBox(1)}> 
-            <h1>{flightPercent}%</h1>
-            <h3>comes from <br></br>flying</h3>
-            <h3>({flightco2} tons)</h3>
+          <div className="percentBox" > 
+            <h1 className="percentage" style={colorBox(1)}>{flightPercent}%</h1>
+            <h3 className="comesFrom">comes from <br></br>flying</h3>
+            <h3 className="tons" style={colorBox(1)}>({flightco2} tons)</h3>
           </div>)}
           {!flightBool &&(
             <div className="dataFaultBox">
@@ -117,10 +124,10 @@ function SideBarMiddle(props) {
             </div>
           )}
           {transportBool && (
-          <div className="percentBox" style={colorBox(2)}>
-            <h1>{transportPercent}%</h1>
-            <h3>comes from <br></br>other transport</h3>
-            <h3>({transportco2} tons)</h3>
+          <div className="percentBox">
+            <h1 className="percentage" style={colorBox(2)}>{transportPercent}%</h1>
+            <h3 className="comesFrom">comes from <br></br>other transport</h3>
+            <h3 className="tons" style={colorBox(2)}>({transportco2} tons)</h3>
           </div>)}
           {!transportBool &&(
             <div className="dataFaultBox">
@@ -132,7 +139,7 @@ function SideBarMiddle(props) {
 
       {!showBool&&(
         <div className="partEmissions">
-          <div className="dataFaultBox">
+          <div className="dataFaultBox2">
             <h1>Insufficient data</h1>
           </div>
           <h2>(We can't accurately tell where these emissions come from. Sorry!)</h2>

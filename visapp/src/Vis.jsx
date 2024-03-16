@@ -68,8 +68,13 @@ function Vis() {
 		"Blake Shelton": "#AED581", // Lime Green
 		"Jack Nicklaus": "#FFB74D", // Orange
 	};
+	const policyColors = {
+		meat: '#C6A0DA',
+		flight: '#E37C7C',
+		transport: '#A2E7DC'
+	}
 
-	const [continentORstacked, setcontinentORstacked] = useState(0);
+	const [continentORstacked, setcontinentORstacked] = useState(1);
 
 	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
 
@@ -156,6 +161,7 @@ function Vis() {
 	useEffect(() => {
 		csv("/data/co2_pcap_cons.csv")
 			.then((data2) => {
+				
 				const filteredAndSorted = data2.filter((d) => Number(d["2022"]) > 0).sort((a, b) => Number(a["2022"]) - Number(b["2022"]));
 				setCountryData(filteredAndSorted);
 				setIsCountryDataLoaded(true); // Update loading state
@@ -420,6 +426,7 @@ function Vis() {
 
 	// *** MAIN UPDATE USEEFFECT ***
 	useEffect(() => {
+		console.log("update");
 		const svg = select(svgRef.current);
 
 		activeCelebs = [];
@@ -865,7 +872,7 @@ function Vis() {
 			.attr("x2", bar_window_size.width + Settings.border) // Ending x-coordinate
 			.attr("y2", Settings.border + reverse_y_scale(2.3)) // Ending y-coordinate
 			.raise();
-	}, [continentORstacked, svgSize, rightDisplay, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState, celebStatus]);
+	}, [continentORstacked, svgSize, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
 
 	return (
 		// <Router>
@@ -901,9 +908,10 @@ function Vis() {
 						setFilterRange={setFilterRange}
 						handleSearch={handleSearch}
 						toggleVisState={toggleVisState}
+						continentORstacked={continentORstacked}
 					/>
 				)}
-				{rightDisplay === 1 && (
+				{rightDisplay === 1 && allDataLoaded && (
 					<SideBarMiddle
 						selectedCountry={selectedCountry}
 						countryData={countryData}
@@ -921,6 +929,7 @@ function Vis() {
 						toggleCeleb={toggleCeleb}
 						celebStatus={celebStatus}
 						celebColors={celebColors}
+						policyColors={policyColors}
 					/>
 				)}
 			</div>
