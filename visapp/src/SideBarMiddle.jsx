@@ -63,10 +63,11 @@ function SideBarMiddle(props) {
  }
 
  function colorBox(val){
-  if(val == 0) return {color: '#C6A0DA'};
-  if(val == 1) return {color: '#E37C7C'};
-  if(val == 2){return {color: '#A2E7DC'}}
- }
+  if(val == 0) return {color: '#edb4d4'};
+  if(val == 1) return {color: '#bbe7ed'};
+  if(val == 2) {return {color: '#edac6f'};}
+};
+
   return ( 
     <div className='MiddleContainer Container'>
       <div className="ElementComponent">

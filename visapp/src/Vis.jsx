@@ -116,7 +116,7 @@ function Vis() {
 		transport: false,
 	});
 	// state for which right side menu item is visible
-	const [rightDisplay, setRightDisplay] = useState(1);
+	const [rightDisplay, setRightDisplay] = useState(2);
 
 	// data needed for stacked rectangles
 	const [splitData, setSplitData] = useState([]);
@@ -734,7 +734,7 @@ function Vis() {
 		) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
 
-			const colorsStackedRectangles = ["#FFC88A", "#C6A0DA", "#E37C7C", "#A2E7DC"].filter((_, i) => Object.values(policyState)[i] === false);
+			const colorsStackedRectangles = ["#a6a3a1", "#edb4d4", "#bbe7ed","#edac6f"].filter((_, i) => Object.values(policyState)[i] === false);
 
 			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
 			// const stackedData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
