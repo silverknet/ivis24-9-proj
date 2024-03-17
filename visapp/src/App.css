@@ -132,30 +132,22 @@ ABOUT PAGE
 .aboutTextContainer {
   width: 80%; /* Adjust width as needed */
   margin: 0 auto;
-  padding: 25px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(11, 0, 0, 0.213);
+  padding: 5px;
+  /* border: 1px solid #ccc;
+  border-radius: 5px; */
+  /* box-shadow: 0 2px 5px rgba(11, 0, 0, 0.213); */
 }
 
 .aboutMainText{
   width: 100%;
   font-family: Dosis;
-  font-size: 24px;
+  font-size: 16px;
   line-height: 25px;
   letter-spacing: 1px;
   font-size: 200;
   height: fit-content;
   text-align: center;
   align-self: center;
-}
-.aboutPeople{
-  display: flex;
-  font-size: 40px;
-  font-weight: Bold;
-  color: #82BD8C;
-  align-self: Center;
-  margin-bottom: 20px;
 }
 
 .peopleRow{
@@ -224,25 +216,40 @@ ABOUT PAGE
 .TopSection {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 }
 
 .leftpane {
-  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
   padding: 0 10px; /* Adjust padding as needed */
 }
-.rightpane {
-  width: 30%;
+.righttpane {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 0 10px; /* Adjust padding as needed */
 }
 
 /*
 HOW TO PAGE
 */
+
+.howToTextContainer{
+  width:40%;
+}
 .HowToUseContainer{
 
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin: 40px;
 }
 /*
@@ -781,8 +788,8 @@ Footer
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px; /* Adjust margin as needed */
-  margin-top:20px;
+  margin-bottom: 60px; /* Adjust margin as needed */
+  margin-top:60px;
 }
 
 
@@ -837,7 +844,7 @@ Footer
   font-size: 40px;
   font-weight: bold;
   color: #82BD8C;
-  margin-bottom: 20px;
+  margin-top: 40px;
   align-self: center;
 }
 
