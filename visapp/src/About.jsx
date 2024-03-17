@@ -119,7 +119,10 @@ function About() {
 				<div className="aboutPeople">This tool was made by</div>
 				<div className="peopleRow">
 					<div className="peopleDiv">
-						<span className="aboutSpan">Amanda Hallstedt</span>
+						<div className="nameAndLinkDiv">
+							<span className="nameSpan">Amanda Hallstedt</span>
+							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+						</div>
 						<span className="aboutSpan">
 							<img src={amanda}></img>
 						</span>
@@ -143,13 +146,20 @@ function About() {
 					<div className="peopleDiv">
 						<span className="aboutSpan">
 							<img src={dante}></img>
-						</span>
-						<span className="aboutSpan">Dante Sangregorio</span>
+						</span>{" "}
+						<div className="nameAndLinkDiv">
+							<span className="nameSpan">Dante Sangregorio</span>
+							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+						</div>
 					</div>
 				</div>
 				<div className="peopleRow">
 					<div className="peopleDiv">
-						<span className="aboutSpan">Martin Håkansson</span>
+						{" "}
+						<div className="nameAndLinkDiv">
+							<span className="nameSpan">Martin Håkansson</span>
+							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+						</div>
 						<span className="aboutSpan">
 							<img src={martin}></img>
 						</span>
@@ -164,22 +174,26 @@ function About() {
 				</div>
 				<div className="peopleRow">
 					<span className="peopleText">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis dictum erat, vitae dictum ipsum bibendum quis. Aenean ipsum
-						ante, volutpat quis leo at, rutrum venenatis orci. Aliquam iaculis neque erat, nec aliquam nibh volutpat eu. Ut vehicula dolor sed dapibus
-						iaculis. Fusce mollis pretium consequat. Ut bibendum ipsum nec libero iaculis, in eleifend sapien fringilla. In hac habitasse platea
-						dictumst. Maecenas blandit posuere libero ullamcorper venenatis. Pellentesque et ex non nisi condimentum elementum. Donec volutpat, nunc
-						in dictum fermentum, velit mi egestas massa, ut dapibus augue justo id tortor.
+						As a frontend developer for this project, my role has focused on bringing the website to life by translating design concepts and UX ideas
+						into a functional and visually appealing web interface. Much of my work has been to explore functionality of the D3 library and enable
+						extended data manipulation for the user.
 					</span>
 					<div className="peopleDiv">
 						<span className="aboutSpan">
 							<img src={patrik}></img>
 						</span>
-						<span className="aboutSpan">Patrik Lundqvist</span>
+						<div className="nameAndLinkDiv">
+							<span className="nameSpan">Patrik Lundqvist</span>
+							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+						</div>
 					</div>
 				</div>
 				<div className="peopleRow">
 					<div className="peopleDiv">
-						<span className="aboutSpan">Saga Jonasson</span>
+						<div className="nameAndLinkDiv">
+							<span className="nameSpan">Saga Jonasson</span>
+							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+						</div>
 						<span className="aboutSpan">
 							<img src={saga}></img>
 						</span>
