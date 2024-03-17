@@ -111,7 +111,7 @@ function Vis() {
 		transport: false,
 	});
 	// state for which right side menu item is visible
-	const [rightDisplay, setRightDisplay] = useState(1);
+	const [rightDisplay, setRightDisplay] = useState(2);
 
 	// data needed for stacked rectangles
 	const [splitData, setSplitData] = useState([]);
