@@ -34,6 +34,15 @@ function SideBarTop(props) {
     return (
         <div className='TopContainer Container'>
             <div className="ElementComponent">
+                <div className='toggleViewContainer'>
+                    <h3 className='toggleStackedViewText'>Toggle stacked view</h3>
+                    <label class="switch">
+                        <input type="checkbox" checked={props.continentORstacked} onClick={() => props.toggleVisState(props.continentORstacked === 0 ? 1 : 0)}/>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div className="ElementComponent">
                 <h2>Filter by continent</h2>
                 <div className='continentFilter'>
                     {Object.keys(props.activeContinents).map(key => (
@@ -96,15 +105,7 @@ function SideBarTop(props) {
                     </div>
                 </div>
             </div>
-            <div className="ElementComponent">
-                <div className='toggleViewContainer'>
-                    <h3 className='toggleStackedViewText'>Toggle stacked view</h3>
-                    <label class="switch">
-                        <input type="checkbox" checked={props.continentORstacked} onClick={() => props.toggleVisState(props.continentORstacked === 0 ? 1 : 0)}/>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
+            
         </div>
     );
 }

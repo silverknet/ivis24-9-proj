@@ -31,7 +31,7 @@ function Vis() {
 	const [allDataLoaded, setAllDataLoaded] = useState(false);
 
 	const rescaleModeRef = useRef(false);
-	const [yMaxState, setYMaxState] = useState(300);
+	const [yMaxState, setYMaxState] = useState(30);
 	const celebs = [
 		"Taylor Swift",
 		"Drake",
@@ -74,7 +74,7 @@ function Vis() {
 		transport: '#A2E7DC'
 	}
 
-	const [continentORstacked, setcontinentORstacked] = useState(1);
+	const [continentORstacked, setcontinentORstacked] = useState(0);
 
 	const [celebStatus, setCelebStatus] = useState(initialCelebActive);
 
@@ -408,7 +408,7 @@ function Vis() {
 			}
 
 			const delta = event.clientY - y_scale_start_value.current;
-			setYMaxState(Math.max(1, y_scale_old_max.current + delta * Settings.rescale_speed * (yMaxState > 100 ? yMaxState / 20 : 1)));
+			setYMaxState(Math.min(3500,Math.max(1, y_scale_old_max.current + delta * Settings.rescale_speed * (yMaxState > 50 ? yMaxState / 50 : 1))));
 		};
 
 		document.addEventListener("mousemove", handleMouseMove);
@@ -439,9 +439,6 @@ function Vis() {
 			}
 		}
 		activeCelebs.sort((a, b) => a.co2kg - b.co2kg);
-		if (activeCelebs.length > 0) {
-			setYMaxState(310);
-		} else setYMaxState(35);
 
 		//console.log(activeCelebs);
 
@@ -535,7 +532,7 @@ function Vis() {
 				)
 				.attr(
 					"x",
-					(d, i) => (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2
+					(d, i) => (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2
 				)
 				.attr("y", bar_window_size.height + Settings.border + 10)
 				.attr("width", flagWidth)
@@ -624,40 +621,37 @@ function Vis() {
 		// celeb rects
 		const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
 
-		!continentORstacked || continentORstacked
-			? svg
-					.selectAll(".celeb")
-					.data(activeCelebs)
-					.join(
-						(enter) => enter.append("rect").attr("class", "celeb"),
-						(update) => update,
-						(exit) => exit.remove()
-					)
-					.attr("width", absolute_bar_width)
-					.attr("height", (d) => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))))
-					.attr(
-						"x",
-						(d, i) =>
-							celebOffset +
-							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-							Settings.border +
-							(absolute_bar_width * 0.8) / 2 -
-							absolute_bar_width / 2
-					)
-					.attr("y", (d) => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))) - Settings.border)
-					.attr("fill", (d) => `${celebColors[d.celebrity]}`)
-					.on("mouseover", (e, d) => {
-						barTooltip.select(".tooltipCountry").text(d.celebrity);
-						barTooltip
-							.style("display", "block")
-							.style("top", `${e.clientY - 100}px`)
-							.style("left", `${e.clientX - 80}px`);
-					})
-					.on("mouseleave", () => {
-						barTooltip.style("display", "none");
-					})
-			: svg.selectAll(".celeb").remove(),
-			toggleCeleb("");
+		svg
+			.selectAll(".celeb")
+			.data(activeCelebs)
+			.join(
+				(enter) => enter.append("rect").attr("class", "celeb"),
+				(update) => update,
+				(exit) => exit.remove()
+			)
+			.attr("width", absolute_bar_width)
+			.attr("height", (d) => Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))))
+			.attr(
+				"x",
+				(d, i) =>
+					celebOffset +
+					(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+					Settings.border +
+					(absolute_bar_width * 0.8) / 2 -
+					absolute_bar_width / 2
+			)
+			.attr("y", (d) => svgSize.height - Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d.co2kg / 1000))) - Settings.border)
+			.attr("fill", (d) => `${celebColors[d.celebrity]}`)
+			.on("mouseover", (e, d) => {
+				barTooltip.select(".tooltipCountry").text(d.celebrity);
+				barTooltip
+					.style("display", "block")
+					.style("top", `${e.clientY - 100}px`)
+					.style("left", `${e.clientX - 80}px`);
+			})
+			.on("mouseleave", () => {
+				barTooltip.style("display", "none");
+			});
 
 		// svg
 		// 	.selectAll(".first")
@@ -872,7 +866,7 @@ function Vis() {
 			.attr("x2", bar_window_size.width + Settings.border) // Ending x-coordinate
 			.attr("y2", Settings.border + reverse_y_scale(2.3)) // Ending y-coordinate
 			.raise();
-	}, [continentORstacked, svgSize, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState]);
+	}, [continentORstacked, svgSize, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState, celebStatus]);
 
 	return (
 		// <Router>
@@ -897,7 +891,7 @@ function Vis() {
 						Country
 					</div>
 					<div className={`SelectBox ${rightDisplay === 2 ? "selected" : ""}`} onClick={() => setRightDisplay(2)}>
-						Restrictions
+						Explore
 					</div>
 				</div>
 				{rightDisplay === 0 && (

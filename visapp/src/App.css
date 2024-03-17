@@ -315,7 +315,7 @@ VIS
   font-weight: 700;
   font-size: 19px;
   border-radius: 3px;
-  background: linear-gradient(18deg, rgba(130,189,140,1) 13%, rgb(152, 209, 161) 100%);
+  background: linear-gradient(18deg, rgb(166 219 161) 13%, rgb(178 228 169) 100%);
   transition: ease;
   transition-duration: 0.2s;
 }
@@ -444,11 +444,16 @@ Bottom SideBar
   align-items: start;
   gap: 10px;
   font-size: 60px;
+  margin-top: 20px;
 }
 .policyCheckboxes label{
   display: flex;
   flex-direction: row;
   gap: 20px;
+}
+.celebExplText{
+  margin-top: 0px;
+  width:60%;
 }
 
 /*
@@ -456,7 +461,7 @@ Middle SideBar
 */
 .MiddleContainer{
   background: rgb(130,189,140);
-  background: linear-gradient(18deg, rgba(130,189,140,1) 13%, rgba(212,238,216,1) 100%);
+  background: linear-gradient(18deg, rgba(130,189,140,1) 13%, rgb(189 240 176) 100%);
   font-family: 'Outfit', 'Open sans', sans-serif;
   color: white;
   box-shadow: inset 0 0 100.9px -5px rgba(0, 0, 0, 0.175);
