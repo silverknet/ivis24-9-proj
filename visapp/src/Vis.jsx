@@ -900,6 +900,7 @@ function Vis() {
 						setActiveContinents={setActiveContinents}
 						filterRange={filterRange}
 						setFilterRange={setFilterRange}
+						setYMaxState={setYMaxState}
 						handleSearch={handleSearch}
 						toggleVisState={toggleVisState}
 						continentORstacked={continentORstacked}

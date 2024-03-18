@@ -36,9 +36,9 @@ function SideBarTop(props) {
             <div className="ElementComponent">
                 <div className='toggleViewContainer'>
                     <h3 className='toggleStackedViewText'>Toggle stacked view</h3>
-                    <label class="switch">
+                    <label className="switch">
                         <input type="checkbox" checked={props.continentORstacked} onClick={() => props.toggleVisState(props.continentORstacked === 0 ? 1 : 0)}/>
-                        <span class="slider round"></span>
+                        <span className="slider round"></span>
                     </label>
                 </div>
             </div>
@@ -104,6 +104,9 @@ function SideBarTop(props) {
                         />
                     </div>
                 </div>
+            </div>
+            <div className="ElementComponent">
+                <button className="viewButton" tabIndex="0" onClick={() => props.setYMaxState(30)}>Reset Y-axis</button>
             </div>
             
         </div>

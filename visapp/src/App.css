@@ -441,6 +441,22 @@ input:checked + .slider:before {
   margin: 0px;
 }
 
+.viewButton{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: "Outfit", open-sans;
+    font-size: x-large;
+}
+
+.viewButton:hover{
+  background-color: rgb(213, 213, 213);
+}
+
+.viewButton:active{
+  background-color: var(--detail_color)
+}
+
 /*
 Bottom SideBar
 */
