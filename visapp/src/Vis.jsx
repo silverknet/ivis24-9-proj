@@ -12,7 +12,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const Settings = {
 	bar_size: 0.8, // bar fill percentage
-	border: 50,
+	border: 67,
 	y_max: 30,
 	partitions: 3,
 	percentage: [0.2, 0.44, 0.36],
@@ -469,18 +469,22 @@ function Vis() {
 
 		const gx = svg.selectAll(".x-axis").data([null]);
 
-		// Add y-axis label
-		svg
+		var textSelection = svg.selectAll(".target.y-axis-label").data([0]);
+
+		textSelection.enter()
 			.append("text")
-			.attr("class", "target")
-			.attr(
-				"fill",
-				window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)"
-			)
-			.attr("font-size", "10px") // Add font-size property
-			.text("Consumption based co2 emissions per capita (Tons)")
-			.attr("x", Settings.border - 50)
-			.attr("y", Settings.border - 20);
+			.merge(textSelection)
+				.attr("class", "target y-axis-label")
+				.attr("fill", window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)")
+				.attr("font-size", "10px")
+				.text("Consumption based CO2 emissions per capita (Tons)")
+				.attr("x", -svgSize.height / 2 - Settings.border)
+				.attr("y", Settings.border - 10)
+				.attr("transform", `rotate(-90, ${Settings.border - 50}, ${Settings.border - 20})`);
+
+		textSelection.exit().remove();
+
+
 		// gx.enter()
 		// .append("g")
 		//     .attr("class", "x-axis")
