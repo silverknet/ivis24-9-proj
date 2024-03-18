@@ -69,10 +69,10 @@ function Vis() {
 		"Jack Nicklaus": "#FFB74D", // Orange
 	};
 	const policyColors = {
-		meat: '#C6A0DA',
-		flight: '#E37C7C',
-		transport: '#A2E7DC'
-	}
+		meat: "#C6A0DA",
+		flight: "#E37C7C",
+		transport: "#A2E7DC",
+	};
 
 	const [continentORstacked, setcontinentORstacked] = useState(0);
 
@@ -161,7 +161,6 @@ function Vis() {
 	useEffect(() => {
 		csv("/data/co2_pcap_cons.csv")
 			.then((data2) => {
-				
 				const filteredAndSorted = data2.filter((d) => Number(d["2022"]) > 0).sort((a, b) => Number(a["2022"]) - Number(b["2022"]));
 				setCountryData(filteredAndSorted);
 				setIsCountryDataLoaded(true); // Update loading state
@@ -408,7 +407,7 @@ function Vis() {
 			}
 
 			const delta = event.clientY - y_scale_start_value.current;
-			setYMaxState(Math.min(3500,Math.max(1, y_scale_old_max.current + delta * Settings.rescale_speed * (yMaxState > 50 ? yMaxState / 50 : 1))));
+			setYMaxState(Math.min(3500, Math.max(1, y_scale_old_max.current + delta * Settings.rescale_speed * (yMaxState > 50 ? yMaxState / 50 : 1))));
 		};
 
 		document.addEventListener("mousemove", handleMouseMove);
@@ -471,19 +470,22 @@ function Vis() {
 
 		var textSelection = svg.selectAll(".target.y-axis-label").data([0]);
 
-		textSelection.enter()
+		textSelection
+			.enter()
 			.append("text")
 			.merge(textSelection)
-				.attr("class", "target y-axis-label")
-				.attr("fill", window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)")
-				.attr("font-size", "10px")
-				.text("Consumption based CO2 emissions per capita (Tons)")
-				.attr("x", -svgSize.height / 2 - Settings.border)
-				.attr("y", Settings.border - 10)
-				.attr("transform", `rotate(-90, ${Settings.border - 50}, ${Settings.border - 20})`);
+			.attr("class", "target y-axis-label")
+			.attr(
+				"fill",
+				window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)"
+			)
+			.attr("font-size", "10px")
+			.text("Consumption based CO2 emissions per capita (Tons)")
+			.attr("x", -svgSize.height / 2 - Settings.border)
+			.attr("y", Settings.border - 10)
+			.attr("transform", `rotate(-90, ${Settings.border - 50}, ${Settings.border - 20})`);
 
 		textSelection.exit().remove();
-
 
 		// gx.enter()
 		// .append("g")
@@ -536,7 +538,10 @@ function Vis() {
 				)
 				.attr(
 					"x",
-					(d, i) => (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i + Settings.border + (bar_width * Settings.bar_size - flagWidth) / 2
+					(d, i) =>
+						(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+						Settings.border +
+						(bar_width * Settings.bar_size - flagWidth) / 2
 				)
 				.attr("y", bar_window_size.height + Settings.border + 10)
 				.attr("width", flagWidth)
@@ -606,14 +611,12 @@ function Vis() {
 						setRightDisplay(1); //open up middle display when selecting country
 					})
 					.on("mouseover", (e, d) => {
-						console.log()
+						console.log();
 						barTooltip.select(".tooltipCountry").text(d.country);
 						barTooltip
 							.style("display", "block")
 							.style("top", `${svgSize.height - 70}px`)
-							.style("left", `${
-								e.pageX
-							}px`);
+							.style("left", `${e.pageX}px`);
 					})
 					.on("mouseleave", () => {
 						barTooltip.style("display", "none");
@@ -653,9 +656,7 @@ function Vis() {
 				barTooltip
 					.style("display", "block")
 					.style("top", `${svgSize.height - 70}px`)
-					.style("left", `${
-								e.pageX
-							}px`);
+					.style("left", `${e.pageX}px`);
 			})
 			.on("mouseleave", () => {
 				barTooltip.style("display", "none");
@@ -735,100 +736,89 @@ function Vis() {
 			continentORstacked === 1
 		) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
-		
+
 			const colorsStackedRectangles = ["#a6a3a1", "#edb4d4", "#add6db", "#edac6f"].filter((_, i) => Object.values(policyState)[i] === false);
-		
+
 			// Define legend data
 			const legendData = Object.keys(policyState).filter((key) => policyState[key] === false);
-			
+
 			// Define legend position
 			const legendX = 100; // Initial x position
 			const legendY = 40; // Initial y position
 			const legendPadding = 5; // Padding between rectangle and text
-			
+
 			// Create legend
-			const legend = svg.selectAll(".legend")
+			const legend = svg
+				.selectAll(".legend")
 				.data(legendData)
-				.enter().append("g")
+				.enter()
+				.append("g")
 				.attr("class", "legend")
 				.attr("transform", (d, i) => `translate(${legendX}, ${legendY + i * 30})`);
-			
+
 			// Add legend colored rectangles
-			legend.append("circle")
+			legend
+				.append("circle")
 				.attr("cx", 10) // x position of the center of the circle
 				.attr("cy", 7.5) // y position of the center of the circle
 				.attr("r", 7.5) // radius of the circle
 				.style("fill", (d, i) => colorsStackedRectangles[i]);
-			
+
 			// Add legend text
-			legend.append("text")
+			legend
+				.append("text")
 				.attr("x", 24) // Adjusted position
 				.attr("y", 9)
 				.attr("dy", ".35em")
 				.text((d) => d);
-			
-		
+
 			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
 			// const stackedData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
 			// Bind the stacked data to the group elements
 			const seriesGroups = svg.selectAll(".stacked").data(stackedData, (d) => d.key); // Use a unique identifier for each series
-		
+
 			// Enter selection for the groups
 			const enteredSeriesGroups = seriesGroups
 				.enter()
 				.append("g")
 				.attr("class", "stacked")
 				.attr("fill", (d, i) => colorsStackedRectangles[i % 4]); // Set the fill color here
-		
+
 			seriesGroups.attr("fill", (d, i) => colorsStackedRectangles[i % 4]);
-		
+
 			seriesGroups.exit().remove();
-		
-			enteredSeriesGroups.merge(seriesGroups).each(function(seriesData) {
+
+			enteredSeriesGroups.merge(seriesGroups).each(function (seriesData) {
 				const rects = select(this)
 					.selectAll("rect")
 					.data(seriesData, (d) => d.data.key)
 					.style("pointer-events", "none"); // Assuming each data point has a unique 'key' property
-		
+
 				rects
 					.enter()
 					.append("rect")
+					.attr("class", "stacked")
 					.attr(
 						"x",
 						(d, i) =>
-						(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-						Settings.border +
-						(bar_width * 0.8) / 2 -
-						absolute_bar_width / 2
+							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+							Settings.border +
+							(bar_width * 0.8) / 2 -
+							absolute_bar_width / 2
 					)
 					.attr("y", (d) => y_scale_stacked(d[1]) + Settings.border)
 					.attr("width", absolute_bar_width)
 					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]))
 					.style("pointer-events", "none");
-		
-				rects
-					.attr(
-						"x",
-						(d, i) =>
-						(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-						Settings.border +
-						(bar_width * 0.8) / 2 -
-						absolute_bar_width / 2
-					)
-					.attr("y", (d) => y_scale_stacked(d[1]))
-					.attr("width", absolute_bar_width)
-					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]))
-					.style("pointer-events", "none");
-		
+
 				rects.exit().remove();
 			});
-		
+
 			// selectAll(".first").raise();
 		} else {
 			selectAll(".stacked").remove();
 			selectAll(".legend").remove(); // Remove legend when condition is false
 		}
-		
 
 		const barTooltip = select("#barTooltip");
 
@@ -847,15 +837,7 @@ function Vis() {
 		const backgroundHeight = 20;
 		const textBackground = svg.selectAll(".textBackground").data([null]);
 
-		const legend = svg.append("g")
-    .attr("class", "legend")
-    .attr("transform", "translate(10, 10)");
-
-
-	
-
-
-
+		const legend = svg.append("g").attr("class", "legend").attr("transform", "translate(10, 10)");
 
 		// Text background
 		textBackground
