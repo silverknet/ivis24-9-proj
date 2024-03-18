@@ -456,6 +456,7 @@ input:checked + .slider:before {
     font-family: "Outfit", open-sans;
     font-size: 16px;
     margin-top: 40px;
+    background-color: var(--element_color);
     margin-bottom: 50px;
 }
 
@@ -502,6 +503,8 @@ Middle SideBar
   font-family: 'Outfit', 'Open sans', sans-serif;
   color: white;
   box-shadow: inset 0 0 100.9px -5px rgba(0, 0, 0, 0.175);
+  border-radius: 7px;
+  border: 1px solid #D1D1D1;
 }
 #tooltip {
   border: 1px solid #ccc;
@@ -634,12 +637,11 @@ Middle SideBar
   height: 100%;
   overflow-y: scroll;
   background-color: var(--element_color);
-  border-radius: 7px;
-  border: 1px solid #D1D1D1;
+  
 }
 .TopContainer{
   border-style: none;
-  background: linear-gradient(18deg, var(--element_color) 13%, rgb(242, 242, 242) 100%);
+  /* background: linear-gradient(18deg, var(--element_color) 13%, rgb(242, 242, 242) 100%); */
 }
 
 
@@ -738,7 +740,7 @@ Middle SideBar
   border-style: solid;
   border-width: 0.5px;
   border-radius: 5px;
-  background-color: #ebebeb;
+  background-color: var(--element_color);
 }
 .toggleAll:hover {
   background-color: #c9c8c8;
