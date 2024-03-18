@@ -575,55 +575,53 @@ function Vis() {
 		);
 
 		// Rectangles
-		!continentORstacked
-			? svg
-					.selectAll(".first")
-					.data(filteredCountryData)
-					.join(
-						(enter) => enter.append("rect").attr("class", "first"),
-						(update) => update,
-						(exit) => exit.remove()
-					)
-					.attr("width", () => {
-						return absolute_bar_width;
-					})
-					.attr("height", function (d) {
-						return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d["2022"])) * reduction[d["country"]]);
-					})
-					.attr("x", function (d, i) {
-						return (
-							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-							Settings.border +
-							(bar_width * 0.8) / 2 -
-							absolute_bar_width / 2
-						);
-					})
-					.attr("y", (d) => {
-						return y_scale(d["2022"]) * reduction[d["country"]] >= svgSize.height - Settings.border * 2
-							? Settings.border
-							: y_scale(yMaxState - d["2022"] * reduction[d["country"]]) + Settings.border;
-					})
-					.attr("fill", (d) => {
-						return d === selectedCountry ? "#7e7e7e" : continentColors[d["continent"]];
-					})
-					.on("click", (p_e, d) => {
-						setSelectedCountry(d);
-						setRightDisplay(1); //open up middle display when selecting country
-					})
-					.on("mouseover", (e, d) => {
-						console.log();
-						barTooltip.select(".tooltipCountry").text(d.country);
-						barTooltip
-							.style("display", "block")
-							.style("top", `${svgSize.height - 70}px`)
-							.style("left", `${e.pageX}px`);
-					})
-					.on("mouseleave", () => {
-						barTooltip.style("display", "none");
-					})
-					.style("pointer-events", "all")
-					.attr("opacity", "1")
-			: svg.selectAll(".first").attr("opacity", "0");
+		svg
+			.selectAll(".first")
+			.data(filteredCountryData)
+			.join(
+				(enter) => enter.append("rect").attr("class", "first"),
+				(update) => update,
+				(exit) => exit.remove()
+			)
+			.attr("width", () => {
+				return absolute_bar_width;
+			})
+			.attr("height", function (d) {
+				return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d["2022"])) * reduction[d["country"]]);
+			})
+			.attr("x", function (d, i) {
+				return (
+					(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+					Settings.border +
+					(bar_width * 0.8) / 2 -
+					absolute_bar_width / 2
+				);
+			})
+			.attr("y", (d) => {
+				return y_scale(d["2022"]) * reduction[d["country"]] >= svgSize.height - Settings.border * 2
+					? Settings.border
+					: y_scale(yMaxState - d["2022"] * reduction[d["country"]]) + Settings.border;
+			})
+			.attr("fill", (d) => {
+				return d === selectedCountry ? "#7e7e7e" : continentColors[d["continent"]];
+			})
+			.on("click", (p_e, d) => {
+				setSelectedCountry(d);
+				setRightDisplay(1); //open up middle display when selecting country
+			})
+			.on("mouseover", (e, d) => {
+				console.log();
+				barTooltip.select(".tooltipCountry").text(d.country);
+				barTooltip
+					.style("display", "block")
+					.style("top", `${svgSize.height - 70}px`)
+					.style("left", `${e.pageX}px`);
+			})
+			.on("mouseleave", () => {
+				barTooltip.style("display", "none");
+			})
+			.style("pointer-events", "all")
+			.attr("opacity", !continentORstacked ? "1" : "0");
 
 		// const barTooltip = select("#barTooltip");
 
