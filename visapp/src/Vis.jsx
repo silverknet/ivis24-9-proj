@@ -606,11 +606,10 @@ function Vis() {
 						setRightDisplay(1); //open up middle display when selecting country
 					})
 					.on("mouseover", (e, d) => {
-						//console.log(e, d)
 						barTooltip.select(".tooltipCountry").text(d.country);
 						barTooltip
 							.style("display", "block")
-							.style("top", `${e.screenY - 100}px`)
+							.style("top", `${svgSize.height - 70}px`)
 							.style("left", `${e.screenX - 80}px`);
 					})
 					.on("mouseleave", () => {
