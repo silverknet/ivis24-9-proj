@@ -1012,12 +1012,16 @@ Footer
   flex: 1;
   margin: 0;
   font-family: 'Poppins', 'sans-serif';
+  color: var(--detail_color_highlight);
 }
 
 .celebSelector.selected {
   background-color: var(--detail_color);
 }
 
+.celebSelector.selected p {
+  color: white;
+}
 
 @media only screen and (max-width: 600px) {
 }

@@ -7,11 +7,11 @@ import noflag from "./assets/noflag.png";
 function SideBarMiddle(props) {
   const c = props.selectedCountry.country;
   var meatco2 = "";
-  var meatPercent = 0;
+  var meatPercent = 100;
   var flightco2 = "";
-  var flightPercent = 0;
+  var flightPercent = 100;
   var transportco2 = "";
-  var transportPercent = 0;
+  var transportPercent = 100;
 
   var meatBool = false;
   var flightBool = false;
@@ -25,7 +25,7 @@ function SideBarMiddle(props) {
     meatco2 = (meatco2*0.001).toFixed(3)
   }
 
-  if(meatPercent != "" && meatPercent< 100){
+  if(meatPercent< 100){
     meatBool = true;
   }
 
@@ -35,7 +35,7 @@ function SideBarMiddle(props) {
       flightco2 = (flightco2*0.001).toFixed(3)
   }
 
-  if(flightPercent != "" && flightPercent < 100){
+  if(flightPercent < 100){
     flightBool = true;
   }
 
@@ -45,7 +45,7 @@ function SideBarMiddle(props) {
       transportco2 = (transportco2*0.001).toFixed(3)
   }
 
-  if(transportPercent != "" && transportPercent < 100){
+  if(transportPercent < 100){
     transportBool = true;
   }
 
@@ -64,9 +64,9 @@ function SideBarMiddle(props) {
 
  function colorBox(val){
   if(val == 0) return {color: '#edb4d4'};
-  if(val == 1) return {color: '#bbe7ed'};
+  if(val == 1) return {color: '#99bfc4'};
   if(val == 2) {return {color: '#edac6f'};}
-};
+}
 
   return ( 
     <div className='MiddleContainer Container'>
