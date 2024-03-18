@@ -158,18 +158,14 @@ function About() {
 						{" "}
 						<div className="nameAndLinkDiv">
 							<span className="nameSpan">Martin Håkansson</span>
-							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+							<a href="https://www.linkedin.com/in/martin-h%C3%A5kansson-3329b0269/">LinkedIn</a>
 						</div>
 						<span className="aboutSpan">
 							<img src={martin}></img>
 						</span>
 					</div>
 					<span className="peopleText">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis dictum erat, vitae dictum ipsum bibendum quis. Aenean ipsum
-						ante, volutpat quis leo at, rutrum venenatis orci. Aliquam iaculis neque erat, nec aliquam nibh volutpat eu. Ut vehicula dolor sed dapibus
-						iaculis. Fusce mollis pretium consequat. Ut bibendum ipsum nec libero iaculis, in eleifend sapien fringilla. In hac habitasse platea
-						dictumst. Maecenas blandit posuere libero ullamcorper venenatis. Pellentesque et ex non nisi condimentum elementum. Donec volutpat, nunc
-						in dictum fermentum, velit mi egestas massa, ut dapibus augue justo id tortor.
+						I was the frontend lead for this project so my main task was to see that we got all the functionality in place, using prototypes/sketches made in Figma as a foundation. This included working with both React and the D3 library, along with a lot of CSS. My focus has been on developing functionality that both feel intuitive and interesting, as well as being adaptive and nice looking.
 					</span>
 				</div>
 				<div className="peopleRow">
