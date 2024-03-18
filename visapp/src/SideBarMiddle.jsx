@@ -7,11 +7,11 @@ import noflag from "./assets/noflag.png";
 function SideBarMiddle(props) {
   const c = props.selectedCountry.country;
   var meatco2 = "";
-  var meatPercent = 100;
+  var meatPercent = 0;
   var flightco2 = "";
-  var flightPercent = 100;
+  var flightPercent = 0;
   var transportco2 = "";
-  var transportPercent = 100;
+  var transportPercent = 0;
 
   var meatBool = false;
   var flightBool = false;
@@ -25,7 +25,7 @@ function SideBarMiddle(props) {
     meatco2 = (meatco2*0.001).toFixed(3)
   }
 
-  if(meatPercent< 100){
+  if(meatPercent != "" && meatPercent< 100){
     meatBool = true;
   }
 
@@ -35,7 +35,7 @@ function SideBarMiddle(props) {
       flightco2 = (flightco2*0.001).toFixed(3)
   }
 
-  if(flightPercent < 100){
+  if(flightPercent != "" && flightPercent < 100){
     flightBool = true;
   }
 
@@ -45,11 +45,11 @@ function SideBarMiddle(props) {
       transportco2 = (transportco2*0.001).toFixed(3)
   }
 
-  if(transportPercent < 100){
+  if(transportPercent != "" && transportPercent < 100){
     transportBool = true;
   }
 
-  if (meatPercent +flightPercent+transportPercent>100){
+  if (meatPercent +flightPercent+transportPercent>100 || (!meatBool && !flightBool && !transportBool)){
     showBool = false;
   }
 
