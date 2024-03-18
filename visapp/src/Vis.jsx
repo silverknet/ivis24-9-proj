@@ -652,8 +652,10 @@ function Vis() {
 				barTooltip.select(".tooltipCountry").text(d.celebrity);
 				barTooltip
 					.style("display", "block")
-					.style("top", `${e.clientY - 100}px`)
-					.style("left", `${e.clientX - 80}px`);
+					.style("top", `${svgSize.height - 70}px`)
+					.style("left", `${
+								e.pageX
+							}px`);
 			})
 			.on("mouseleave", () => {
 				barTooltip.style("display", "none");
