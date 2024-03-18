@@ -129,14 +129,14 @@ function About() {
 							<img src={amanda}></img>
 						</span>
 					</div>
-					<span className="peopleText">
+					<span className="peopleText r">
 						I was the lead in UI/UX for this project, so I spent some time with the figma protoype and the general look/feel of our application.
 						On the frontend side of it all my main focus was understanding the D3 library. Some focus went in to adding multiple visualsations in the same view, 
 						like the celebrity bars, but most of it went into adding interactivity to our visualization and the different data manipulation features.
 					</span>
 				</div>
 				<div className="peopleRow">
-					<span className="peopleText">
+					<span className="peopleText l">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis dictum erat, vitae dictum ipsum bibendum quis. Aenean ipsum
 						ante, volutpat quis leo at, rutrum venenatis orci. Aliquam iaculis neque erat, nec aliquam nibh volutpat eu. Ut vehicula dolor sed dapibus
 						iaculis. Fusce mollis pretium consequat. Ut bibendum ipsum nec libero iaculis, in eleifend sapien fringilla. In hac habitasse platea
@@ -164,12 +164,12 @@ function About() {
 							<img src={martin}></img>
 						</span>
 					</div>
-					<span className="peopleText">
+					<span className="peopleText r">
 						I was the frontend lead for this project so my main task was to see that we got all the functionality in place, using prototypes/sketches made in Figma as a foundation. This included working with both React and the D3 library, along with a lot of CSS. My focus has been on developing functionality that both feel intuitive and interesting, as well as being adaptive and nice looking.
 					</span>
 				</div>
 				<div className="peopleRow">
-					<span className="peopleText">
+					<span className="peopleText l ">
 						As a frontend developer for this project, my role has focused on bringing the website to life by translating design concepts and UX ideas
 						into a functional and visually appealing web interface. Much of my work has been to explore functionality of the D3 library and enable
 						extended data manipulation for the user.
@@ -194,7 +194,7 @@ function About() {
 							<img src={saga}></img>
 						</span>
 					</div>
-					<span className="peopleText">
+					<span className="peopleText r">
 						My role within the project has been lead data handler and processor. I searched for and gathered data which was suitable for our project, 
 						trimmed and filtered them according to the project's needs, and handled discrepencies between datasets. I also worked with bringing data-based 
 						features, such as allowing the user to see and remove certain "slices" of emissions from the total, to life. 
