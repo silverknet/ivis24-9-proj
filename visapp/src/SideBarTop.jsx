@@ -30,7 +30,11 @@ function SideBarTop(props) {
         if(col == "South America") return {backgroundColor: continentColors['South America']};
         return {backgroundColor: continentColors['Oceania']};
     }
-  
+
+    function showExplanation(){
+        document.getElementById("explanationTip").style.display = "block"
+    }
+
     return (
         <div className='TopContainer Container'>
             <div className="ElementComponent">
@@ -40,6 +44,12 @@ function SideBarTop(props) {
                         <input type="checkbox" checked={props.continentORstacked} onClick={() => props.toggleVisState(props.continentORstacked === 0 ? 1 : 0)}/>
                         <span className="slider round"></span>
                     </label>
+                    <div style={{fontSize:"20px", textAlign:"right", fontWeight:"bold"}} >
+                        <span onMouseOver={()=>{showExplanation()}} onMouseLeave={()=>{document.getElementById("explanationTip").style.display ="none"}}>?</span>
+                    </div>
+                </div>
+                <div id="explanationTip" style={{display:"none"}}>
+                    The stacked view shows the bars divided up into<br/>emission sectors instead of continents.<br/>For info on which color corresponds to<br/>which sector, see "Country" tab.
                 </div>
             </div>
             <div className="ElementComponent">

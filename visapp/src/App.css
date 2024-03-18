@@ -435,6 +435,7 @@ input:checked + .slider:before {
   border-radius: 5px;
   padding: 20px;
   margin-top: 30px;
+  padding-bottom: 0px;
 }
 .toggleViewContainer h3{
   font-family: "Outfit", open-sans;
