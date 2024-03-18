@@ -721,10 +721,11 @@ Middle SideBar
   font-weight: bold;
   width: 70px;
   padding: 2px;
-  border-color: #959595;
+  border-color: #c9c8c8;
   border-style: solid;
   border-width: 0.5px;
   border-radius: 5px;
+  background-color: #ebebeb;
 }
 .toggleAll:hover {
   background-color: #c9c8c8;
