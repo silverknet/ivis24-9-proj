@@ -869,17 +869,6 @@ function Vis() {
 	}, [continentORstacked, svgSize, filteredCountryData, reduction, activeContinents, selectedCountry, yMaxState, celebStatus]);
 
 	return (
-		// <Router>
-		// 	<MenuBar/>
-		// 	<div className="mainWindow">
-		// 		<Routes>
-		// 			<Route path="/" element={<Vis />} />
-		// 			<Route path="/about" element={<About />} />
-		// 			<Route path="/howtouse" element={<HowToUse />} />
-		// 		</Routes>
-		// 	</div>
-		// 	<Footer />
-		// </Router>
 		<div className="VisContainer">
 			<svg className="SvgBarGraph" ref={svgRef}></svg>
 			<div className="SideBar">

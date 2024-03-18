@@ -35,12 +35,19 @@ function SideBarTop(props) {
         document.getElementById("explanationTip").style.display = "block"
     }
 
+    function toggleAllContinents(){
+        Object.keys(props.activeContinents).forEach(element => {
+            if(!props.activeContinents[element])
+                handleToggle(element)
+        });
+    }
+
     return (
         <div className='TopContainer Container'>
             <div className="ElementComponent">
                 <div className='toggleViewContainer'>
                     <h3 className='toggleStackedViewText'>Toggle stacked view</h3>
-                    <label className="switch">
+                    <label className="switch" style={{filter: 'grayscale(1)'}}>
                         <input type="checkbox" checked={props.continentORstacked} onClick={() => props.toggleVisState(props.continentORstacked === 0 ? 1 : 0)}/>
                         <span className="slider round"></span>
                     </label>
@@ -54,6 +61,7 @@ function SideBarTop(props) {
             </div>
             <div className="ElementComponent">
                 <h2>Filter by continent</h2>
+                <div className='toggleAll' onClick={()=>{toggleAllContinents()}}>Select all</div>
                 <div className='continentFilter'>
                     {Object.keys(props.activeContinents).map(key => (
                         <div key={key} className="continent-item">

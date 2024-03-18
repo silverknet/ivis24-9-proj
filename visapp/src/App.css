@@ -697,6 +697,7 @@ Middle SideBar
   align-items: center;
   width: 70%;
   font-size: 24px;
+  padding-left: 20px;
 }
 .continent-item {
   margin-bottom: 5px;  
@@ -714,6 +715,19 @@ Middle SideBar
   padding: 2px;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.toggleAll {
+  font-weight: bold;
+  width: 70px;
+  padding: 2px;
+  border-color: #959595;
+  border-style: solid;
+  border-width: 0.5px;
+  border-radius: 5px;
+}
+.toggleAll:hover {
+  background-color: #c9c8c8;
 }
 
 .TopContainer .emissionFilter{
