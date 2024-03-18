@@ -482,6 +482,10 @@ Bottom SideBar
   width:60%;
 }
 
+.celeb:hover {
+  filter: saturate(80);
+}
+
 /*
 Middle SideBar
 */
