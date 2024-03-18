@@ -801,7 +801,7 @@ function Vis() {
 						(bar_width * 0.8) / 2 -
 						absolute_bar_width / 2
 					)
-					.attr("y", (d) => y_scale_stacked(d[1]) + 50)
+					.attr("y", (d) => y_scale_stacked(d[1]) + Settings.border)
 					.attr("width", absolute_bar_width)
 					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]))
 					.style("pointer-events", "none");
