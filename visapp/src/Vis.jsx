@@ -735,68 +735,100 @@ function Vis() {
 			continentORstacked === 1
 		) {
 			const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
-
-			const colorsStackedRectangles = ["#a6a3a1", "#edb4d4", "#add6db","#edac6f"].filter((_, i) => Object.values(policyState)[i] === false);
-
+		
+			const colorsStackedRectangles = ["#a6a3a1", "#edb4d4", "#add6db", "#edac6f"].filter((_, i) => Object.values(policyState)[i] === false);
+		
+			// Define legend data
+			const legendData = Object.keys(policyState).filter((key) => policyState[key] === false);
+			
+			// Define legend position
+			const legendX = 100; // Initial x position
+			const legendY = 40; // Initial y position
+			const legendPadding = 5; // Padding between rectangle and text
+			
+			// Create legend
+			const legend = svg.selectAll(".legend")
+				.data(legendData)
+				.enter().append("g")
+				.attr("class", "legend")
+				.attr("transform", (d, i) => `translate(${legendX}, ${legendY + i * 30})`);
+			
+			// Add legend colored rectangles
+			legend.append("circle")
+				.attr("cx", 10) // x position of the center of the circle
+				.attr("cy", 7.5) // y position of the center of the circle
+				.attr("r", 7.5) // radius of the circle
+				.style("fill", (d, i) => colorsStackedRectangles[i]);
+			
+			// Add legend text
+			legend.append("text")
+				.attr("x", 24) // Adjusted position
+				.attr("y", 9)
+				.attr("dy", ".35em")
+				.text((d) => d);
+			
+		
 			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
 			// const stackedData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
 			// Bind the stacked data to the group elements
 			const seriesGroups = svg.selectAll(".stacked").data(stackedData, (d) => d.key); // Use a unique identifier for each series
-
+		
 			// Enter selection for the groups
 			const enteredSeriesGroups = seriesGroups
 				.enter()
 				.append("g")
 				.attr("class", "stacked")
 				.attr("fill", (d, i) => colorsStackedRectangles[i % 4]); // Set the fill color here
-
+		
 			seriesGroups.attr("fill", (d, i) => colorsStackedRectangles[i % 4]);
-
+		
 			seriesGroups.exit().remove();
-
-			enteredSeriesGroups.merge(seriesGroups).each(function (seriesData) {
+		
+			enteredSeriesGroups.merge(seriesGroups).each(function(seriesData) {
 				const rects = select(this)
 					.selectAll("rect")
 					.data(seriesData, (d) => d.data.key)
 					.style("pointer-events", "none"); // Assuming each data point has a unique 'key' property
-
+		
 				rects
 					.enter()
 					.append("rect")
 					.attr(
 						"x",
 						(d, i) =>
-							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-							Settings.border +
-							(bar_width * 0.8) / 2 -
-							absolute_bar_width / 2
+						(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+						Settings.border +
+						(bar_width * 0.8) / 2 -
+						absolute_bar_width / 2
 					)
 					.attr("y", (d) => y_scale_stacked(d[1]) + 50)
 					.attr("width", absolute_bar_width)
 					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]))
 					.style("pointer-events", "none");
-
+		
 				rects
 					.attr(
 						"x",
 						(d, i) =>
-							(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-							Settings.border +
-							(bar_width * 0.8) / 2 -
-							absolute_bar_width / 2
+						(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+						Settings.border +
+						(bar_width * 0.8) / 2 -
+						absolute_bar_width / 2
 					)
 					.attr("y", (d) => y_scale_stacked(d[1]))
 					.attr("width", absolute_bar_width)
 					.attr("height", (d) => y_scale_stacked(d[0]) - y_scale_stacked(d[1]))
 					.style("pointer-events", "none");
-
+		
 				rects.exit().remove();
 			});
-
+		
 			// selectAll(".first").raise();
 		} else {
 			selectAll(".stacked").remove();
+			selectAll(".legend").remove(); // Remove legend when condition is false
 		}
+		
 
 		const barTooltip = select("#barTooltip");
 
@@ -814,6 +846,16 @@ function Vis() {
 		const backgroundWidth = 430;
 		const backgroundHeight = 20;
 		const textBackground = svg.selectAll(".textBackground").data([null]);
+
+		const legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", "translate(10, 10)");
+
+
+	
+
+
+
 
 		// Text background
 		textBackground
