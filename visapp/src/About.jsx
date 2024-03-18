@@ -32,7 +32,7 @@ function About() {
 				<button onClick={toggleLimitations} className="limitationsButton">
 					{showLimitations ? "Hide Full Data Sources" : "Show Full Data Sources"}
 				</button>
-			</div>
+			</div>  
 			{showLimitations && (
 				<div className="dataTableContainer">
 					<table className="dataTable">
