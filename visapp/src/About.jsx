@@ -103,8 +103,8 @@ function About() {
 								each country's emissions should therefore only be considered estimates.
 							</p>
 							<p>
-								There is also no way of calculating the exact impact of different systemic changes. For example, banning personal flights outright
-								would likely lead to other problems, such as more emissions from people being forced to travel through energy inefficient means.
+								There is also no way of calculating the exact impact of different systemic changes. For example, banning personal flights would likely lead
+								to an increase in other transport methods.
 							</p>
 							<p>
 								This feature is intended to be used to better understand where emissions come from and how they can be reduced, not as a measure of
