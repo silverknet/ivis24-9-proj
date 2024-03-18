@@ -497,6 +497,7 @@ Middle SideBar
   display: none;
   pointer-events: none;
   border-radius: 5px;
+  color:#006484;
 }
 
 .SideBar .DetailsFlag{
