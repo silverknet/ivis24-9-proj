@@ -28,28 +28,7 @@ function About() {
 					</div>
 				</div>
 
-				<div className="righttpane">
-					<div className="aboutPeople">Limitations</div>
-					<div className="aboutTextContainer">
-						<p className="aboutMainText">
-							<p>
-								The data is gathered from different sources. There is therefore no guarantee that emissions correlate between datasets. What goes into
-								each country's emissions should therefore only be considered estimates.
-							</p>
-							<p>
-								There is also no way of calculating the exact impact of different systemic changes. For example, banning personal flights outright
-								would likely lead to other problems, such as more emissions from people being forced to travel through energy inefficient means.
-							</p>
-							<p>
-								This feature is intended to be used to better understand where emissions come from and how they can be reduced, not as a measure of
-								what different changes would do for the world.
-							</p>
-						</p>
-					</div>
-				</div>
-			</div>
-
-			<div className="limitationsButtonContainer">
+				<div className="limitationsButtonContainer">
 				<button onClick={toggleLimitations} className="limitationsButton">
 					{showLimitations ? "Hide Full Data Sources" : "Show Full Data Sources"}
 				</button>
@@ -114,6 +93,29 @@ function About() {
 					</table>
 				</div>
 			)}
+
+				<div className="righttpane">
+					<div className="aboutPeople">Limitations</div>
+					<div className="aboutTextContainer">
+						<p className="aboutMainText">
+							<p>
+								The data is gathered from different sources. There is therefore no guarantee that emissions correlate between datasets. What goes into
+								each country's emissions should therefore only be considered estimates.
+							</p>
+							<p>
+								There is also no way of calculating the exact impact of different systemic changes. For example, banning personal flights outright
+								would likely lead to other problems, such as more emissions from people being forced to travel through energy inefficient means.
+							</p>
+							<p>
+								This feature is intended to be used to better understand where emissions come from and how they can be reduced, not as a measure of
+								what different changes would do for the world.
+							</p>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			
 
 			<div className="BottomSection">
 				<div className="aboutPeople">This tool was made by</div>
@@ -192,18 +194,16 @@ function About() {
 					<div className="peopleDiv">
 						<div className="nameAndLinkDiv">
 							<span className="nameSpan">Saga Jonasson</span>
-							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+							<a href="https://www.linkedin.com/in/saga-jonasson-8485772ab/">LinkedIn</a>
 						</div>
 						<span className="aboutSpan">
 							<img src={saga}></img>
 						</span>
 					</div>
 					<span className="peopleText">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis dictum erat, vitae dictum ipsum bibendum quis. Aenean ipsum
-						ante, volutpat quis leo at, rutrum venenatis orci. Aliquam iaculis neque erat, nec aliquam nibh volutpat eu. Ut vehicula dolor sed dapibus
-						iaculis. Fusce mollis pretium consequat. Ut bibendum ipsum nec libero iaculis, in eleifend sapien fringilla. In hac habitasse platea
-						dictumst. Maecenas blandit posuere libero ullamcorper venenatis. Pellentesque et ex non nisi condimentum elementum. Donec volutpat, nunc
-						in dictum fermentum, velit mi egestas massa, ut dapibus augue justo id tortor.
+						My role within the project has been lead data handler and processor. I searched for and gathered data which was suitable for our project, 
+						trimmed and filtered them according to the project's needs, and handled discrepencies between datasets. I also worked with bringing data-based 
+						features, such as allowing the user to see and remove certain "slices" of emissions from the total, to life. 
 					</span>
 				</div>
 			</div>
