@@ -123,18 +123,16 @@ function About() {
 					<div className="peopleDiv">
 						<div className="nameAndLinkDiv">
 							<span className="nameSpan">Amanda Hallstedt</span>
-							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+							<a href="https://www.linkedin.com/in/amandahallstedt/">LinkedIn</a>
 						</div>
 						<span className="aboutSpan">
 							<img src={amanda}></img>
 						</span>
 					</div>
 					<span className="peopleText">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis dictum erat, vitae dictum ipsum bibendum quis. Aenean ipsum
-						ante, volutpat quis leo at, rutrum venenatis orci. Aliquam iaculis neque erat, nec aliquam nibh volutpat eu. Ut vehicula dolor sed dapibus
-						iaculis. Fusce mollis pretium consequat. Ut bibendum ipsum nec libero iaculis, in eleifend sapien fringilla. In hac habitasse platea
-						dictumst. Maecenas blandit posuere libero ullamcorper venenatis. Pellentesque et ex non nisi condimentum elementum. Donec volutpat, nunc
-						in dictum fermentum, velit mi egestas massa, ut dapibus augue justo id tortor.
+						I was the lead in UI/UX for this project, so I spent some time with the figma protoype and the general look/feel of our application.
+						On the frontend side of it all my main focus was understanding the D3 library. Some focus went in to adding multiple visualsations in the same view, 
+						like the celebrity bars, but most of it went into adding interactivity to our visualization and the different data manipulation features.
 					</span>
 				</div>
 				<div className="peopleRow">
