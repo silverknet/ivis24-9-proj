@@ -244,23 +244,6 @@ function Vis() {
 			.catch((error) => console.error("Error loading the transport file:", error));
 	}, []);
 
-	// useEffect(() => {
-	//     const handleKeyPress = (event) => {
-	//         console.log(filteredCountryData)
-	//         if (event.key === 'ArrowRight') {
-	//         setSelectedCountry(filteredCountryData[filteredCountryData.findIndex(d => d['country'] === selectedCountry['country']) + 1]);
-	//         }
-	//         if (event.key === 'ArrowLeft') {
-	//         setSelectedCountry(filteredCountryData[filteredCountryData.findIndex(d => d['country'] === selectedCountry['country']) - 1]);
-	//         }
-	//     };
-
-	//     window.addEventListener('keydown', handleKeyPress);
-	//     return () => {
-	//       window.removeEventListener('keydown', handleKeyPress);
-	//     };
-	//   }, []);
-
 	useEffect(() => {
 		const reductionDict = {};
 		countryData.forEach((row) => {
@@ -574,57 +557,6 @@ function Vis() {
 			Math.max(0, (bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * Settings.bar_size)
 		);
 
-		// Rectangles
-		svg
-			.selectAll(".first")
-			.data(filteredCountryData)
-			.join(
-				(enter) => enter.append("rect").attr("class", "first"),
-				(update) => update,
-				(exit) => exit.remove()
-			)
-			.attr("width", () => {
-				return absolute_bar_width;
-			})
-			.attr("height", function (d) {
-				return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d["2022"])) * reduction[d["country"]]);
-			})
-			.attr("x", function (d, i) {
-				return (
-					(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
-					Settings.border +
-					(bar_width * 0.8) / 2 -
-					absolute_bar_width / 2
-				);
-			})
-			.attr("y", (d) => {
-				return y_scale(d["2022"]) * reduction[d["country"]] >= svgSize.height - Settings.border * 2
-					? Settings.border
-					: y_scale(yMaxState - d["2022"] * reduction[d["country"]]) + Settings.border;
-			})
-			.attr("fill", (d) => {
-				return d === selectedCountry ? "#7e7e7e" : continentColors[d["continent"]];
-			})
-			.on("click", (p_e, d) => {
-				setSelectedCountry(d);
-				setRightDisplay(1); //open up middle display when selecting country
-			})
-			.on("mouseover", (e, d) => {
-				console.log();
-				barTooltip.select(".tooltipCountry").text(d.country);
-				barTooltip
-					.style("display", "block")
-					.style("top", `${svgSize.height - 70}px`)
-					.style("left", `${e.pageX}px`);
-			})
-			.on("mouseleave", () => {
-				barTooltip.style("display", "none");
-			})
-			.style("pointer-events", "all")
-			.attr("opacity", !continentORstacked ? "1" : "0");
-
-		// const barTooltip = select("#barTooltip");
-
 		// celeb rects
 		const celebOffset = filteredCountryData.length * (bar_window_size.width / (filteredCountryData.length + activeCelebs.length));
 
@@ -659,69 +591,6 @@ function Vis() {
 			.on("mouseleave", () => {
 				barTooltip.style("display", "none");
 			});
-
-		// svg
-		// 	.selectAll(".first")
-		// 	.data(filteredCountryData)
-		// 	.join(
-		// 		(enter) => enter.append("rect").attr("class", "first"),
-		// 		(update) => update,
-		// 		(exit) => exit.remove()
-		// 	)
-		// 	.attr("width", () => {
-		// 		return absolute_bar_width;
-		// 	})
-		// 	.attr("height", function (d) {
-		// 		return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d["2022"])) * reduction[d["country"]]);
-		// 	})
-		// 	.attr("x", function (d, i) {
-		// 		return (bar_window_size.width / filteredCountryData.length) * i + Settings.border + (bar_width * 0.8) / 2 - absolute_bar_width / 2;
-		// 	})
-		// 	.attr("y", (d) => {
-		// 		return y_scale(d["2022"]) * reduction[d["country"]] >= svgSize.height - Settings.border * 2
-		// 			? Settings.border
-		// 			: y_scale(yMaxState - d["2022"] * reduction[d["country"]]) + Settings.border;
-		// 	})
-		// 	.attr("fill", (d) => {
-		// 		return d === selectedCountry ? "#fdff80" : continentColors[d["continent"]];
-		// 	})
-		// 	.on("click", (p_e, d) => {
-		// 		setSelectedCountry(d);
-		// 		setRightDisplay(1); //open up middle display when selecting country
-		// 	});
-
-		// // stacked rectangles
-		// if (splitData.length > 0) {
-		// 	const stackedData = stack().keys(Object.keys(policyState).filter((key) => policyState[key] === false))(splitData);
-
-		// 	const colorsStackedRectangles = ["yellow", "red", "green", "blue"].filter((_, i) => Object.values(policyState)[i] === false);
-
-		// 	// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));
-		// 	// const testData = stack().keys(["other", "meat", "flight", "transport"])(testSplitData);
-		// 	svg
-		// 		.append("g")
-		// 		.selectAll(".stacked")
-		// 		.data(stackedData)
-		// 		.join("g")
-		// 		.attr("fill", (d, i) => colorsStackedRectangles[i % 4]) // Assigning colors based on index
-		// 		.selectAll("rect")
-		// 		.data((d) => d)
-		// 		.join("rect")
-		// 		.attr("x", function (d, i) {
-		// 			return (bar_window_size.width / countryData.length) * i + Settings.border;
-		// 		})
-		// 		.attr("y", (d) => {
-		// 			return y_scale_stacked(d[1]) + 10;
-		// 		})
-		// 		.attr("width", () => {
-		// 			return Math.max(0, (bar_window_size.width / countryData.length) * Settings.bar_size);
-		// 		})
-		// 		.attr("height", function (d) {
-		// 			return y_scale_stacked(d[0]) - y_scale_stacked(d[1]);
-		// 		});
-
-		// 	selectAll(".first").raise();
-		// }
 
 		// stacked rectangles
 		// Assuming 'svg' is already defined and appended to the DOM
@@ -811,12 +680,59 @@ function Vis() {
 
 				rects.exit().remove();
 			});
-
-			// selectAll(".first").raise();
 		} else {
 			selectAll(".stacked").remove();
 			selectAll(".legend").remove(); // Remove legend when condition is false
 		}
+
+		// Rectangles
+		svg
+			.selectAll(".first")
+			.data(filteredCountryData)
+			.join(
+				(enter) => enter.append("rect").attr("class", "first"),
+				(update) => update,
+				(exit) => exit.remove()
+			)
+			.attr("width", () => {
+				return absolute_bar_width;
+			})
+			.attr("height", function (d) {
+				return Math.min(svgSize.height - Settings.border * 2, Math.max(0, y_scale(d["2022"])) * reduction[d["country"]]);
+			})
+			.attr("x", function (d, i) {
+				return (
+					(bar_window_size.width / (filteredCountryData.length + activeCelebs.length)) * i +
+					Settings.border +
+					(bar_width * 0.8) / 2 -
+					absolute_bar_width / 2
+				);
+			})
+			.attr("y", (d) => {
+				return y_scale(d["2022"]) * reduction[d["country"]] >= svgSize.height - Settings.border * 2
+					? Settings.border
+					: y_scale(yMaxState - d["2022"] * reduction[d["country"]]) + Settings.border;
+			})
+			.attr("fill", (d) => {
+				return d === selectedCountry ? (!continentORstacked ? "#7e7e7e" : "white") : continentColors[d["continent"]];
+			})
+			.on("click", (p_e, d) => {
+				setSelectedCountry(d);
+				setRightDisplay(1); //open up middle display when selecting country
+			})
+			.on("mouseover", (e, d) => {
+				barTooltip.select(".tooltipCountry").text(d.country);
+				barTooltip
+					.style("display", "block")
+					.style("top", `${svgSize.height - 70}px`)
+					.style("left", `${e.pageX}px`);
+			})
+			.on("mouseleave", () => {
+				barTooltip.style("display", "none");
+			})
+			.style("pointer-events", "all")
+			.attr("opacity", (d) => (!continentORstacked ? "1" : d === selectedCountry ? "0.4" : "0"))
+			.raise();
 
 		const barTooltip = select("#barTooltip");
 
