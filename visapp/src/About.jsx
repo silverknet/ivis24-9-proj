@@ -112,7 +112,17 @@ function About() {
 							</p>
 						</p>
 					</div>
+
+					<div className="aboutPeople">Learning Goals</div>
+					<div className="aboutTextContainer">
+						<p className="aboutMainText">
+							As a group, our main focus was to expand our knowledge of data presentation and data visualization. We wanted to get better at D3, and challenge
+							ourselves in order to develop a tool that fulfilled its purpose and that we could be proud of. We have drawn inspiration from the course literature,
+							visualization studies and the D3 library to achieve the site you are currently looking at. 
+						</p>
+					</div>
 				</div>
+				
 			</div>
 
 			
