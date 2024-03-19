@@ -122,12 +122,6 @@ function Vis() {
 	const [splitData, setSplitData] = useState([]);
 	const [stackDataPolicyState, setStackedDataPolicyState] = useState([]);
 
-	//FIX LATER
-	const coEmissions = {
-		meat: 0.2,
-		flight: 0.05,
-		electric: 0.25,
-	};
 	const [reduction, setReduction] = useState({});
 
 	const [activeContinents, setActiveContinents] = useState({
@@ -249,10 +243,9 @@ function Vis() {
 		countryData.forEach((row) => {
 			if (allDataLoaded) {
 				const c = row["country"];
-				// TODO: if the country isn't in the list, use values of continent instead
-				var meatco2 = coEmissions["meat"];
-				var flightco2 = coEmissions["flight"];
-				var transportco2 = coEmissions["electric"];
+				var meatco2 = 0;
+				var flightco2 = 0;
+				var transportco2 = 0;
 				if (meatData[c] !== undefined) {
 					meatco2 =
 						meatData[c][0] * foodData["Poultry"] +
@@ -298,10 +291,9 @@ function Vis() {
 			.map((row) => {
 				if (allDataLoaded && activeContinents[row["continent"]] && row["2022"] <= filterRange.max && row["2022"] >= filterRange.min) {
 					const c = row["country"];
-					// TODO: if the country isn't in the list, use values of continent instead
-					var meatco2 = coEmissions["meat"];
-					var flightco2 = coEmissions["flight"];
-					var transportco2 = coEmissions["electric"];
+					var meatco2 = 0;
+					var flightco2 = 0;
+					var transportco2 = 0;
 					if (meatData[c] !== undefined) {
 						meatco2 =
 							(meatData[c][0] * foodData["Poultry"] +
