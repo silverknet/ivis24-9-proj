@@ -151,10 +151,9 @@ function Vis() {
 		const splitData = filteredData2
 			.map((row) => {
 				const c = row["country"];
-				// TODO: if the country isn't in the list, use values of continent instead
-				var meatco2 = coEmissions["meat"];
-				var flightco2 = coEmissions["flight"];
-				var transportco2 = coEmissions["electric"];
+				var meatco2 = 0;
+				var flightco2 = 0;
+				var transportco2 = 0;
 				if (meatData[c] !== undefined) {
 					meatco2 =
 						(meatData[c][0] * foodData["Poultry"] +
