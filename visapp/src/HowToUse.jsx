@@ -1,3 +1,5 @@
+
+
 function HowToUse(){
     return (
         <div className="HowToUseContainer">
@@ -17,6 +19,14 @@ function HowToUse(){
                     you'll find some toggle switches, where you can decide to put an end to things like meat consumption or commersial air travel. The effects
                     of your choices will be applied to the bar graph, for an easy overview of what it would take for us to reach the 1.5C goal.
                 </p>
+            </div>
+            <div className="aboutPeople">Demo</div>
+            <div className="video">
+                 <a href="https://youtu.be/TAwIMjSiC20">Youtube Link</a>
+                 <div id="video">
+                 <iframe title='Demo vid' width='640' height='390' src='https://youtube.com/embed/TAwIMjSiC20' frameborder='0' allowFullScreen></iframe>
+                 </div>
+                
             </div>
         </div>
     );
