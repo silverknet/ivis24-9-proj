@@ -18,6 +18,9 @@
 
 }
 
+em {
+  font-size:small;
+}
 
 @media (prefers-color-scheme: dark) {
   #root {
@@ -35,6 +38,11 @@
   .co2_line{
     stroke: white;
   }
+
+  .legend {
+    fill: white;
+  }
+
 }
 
 

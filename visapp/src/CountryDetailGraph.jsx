@@ -68,7 +68,7 @@ function CountryDetailGraph(props) {
             .merge(xAxisLabel) 
             .attr("x", Settings.width / 2)
             .attr("y", 30)
-            .attr("fill", "currentColor")
+            .attr("fill", "white")
             .style("text-anchor", "middle")
             .text("Year");
 
@@ -110,7 +110,7 @@ function CountryDetailGraph(props) {
             .attr("class", "y-axis-label")
             .merge(yAxisLabel)
             .attr("transform", `translate(${-18}, ${Settings.border - 20})`)
-            .attr("fill", "currentColor")
+            .attr("fill", "white")
             .style("text-anchor", "middle")
             .text("Co2 (Tons)");
             

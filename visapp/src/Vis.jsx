@@ -623,7 +623,7 @@ function Vis() {
 				.attr("class", "legend")
 				.attr("transform", (d, i) => `translate(${legendX}, ${legendY + i * 30})`);
 
-			// Add legend colored rectangles
+			// Add legend colored circles
 			legend
 				.append("circle")
 				.attr("cx", 10) // x position of the center of the circle
@@ -637,6 +637,7 @@ function Vis() {
 				.attr("x", 24) // Adjusted position
 				.attr("y", 9)
 				.attr("dy", ".35em")
+				.attr("fill", "--detail_color_highlight")
 				.text((d) => d);
 
 			// const testSplitData = Array.from({ length: 68 }, () => ({ other: 10, meat: 10, flight: 10, transport: 10 }));

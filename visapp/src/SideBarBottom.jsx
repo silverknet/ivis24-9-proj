@@ -42,7 +42,7 @@ function SideBarBottom(props) {
 			</div>
 			<div className="ElementComponent">
 				<h2>Add a celebrity</h2>
-				<p className="celebExplText">Add a celebrity to directly compare their CO2 emissions to the average person's. PS. you might need to rescale the graph a bit.</p>
+				<p className="celebExplText">Add a celebrity to directly compare their CO2 emissions to the average person's.<em><br></br><br></br>PS: You may need to rescale the graph.</em></p>
 				<div className="celebFlexbox">
 					{Object.entries(props.celebrityData).map(([key, d]) => (
 						<div
