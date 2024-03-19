@@ -147,11 +147,9 @@ function About() {
 				</div>
 				<div className="peopleRow">
 					<span className="peopleText l">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis dictum erat, vitae dictum ipsum bibendum quis. Aenean ipsum
-						ante, volutpat quis leo at, rutrum venenatis orci. Aliquam iaculis neque erat, nec aliquam nibh volutpat eu. Ut vehicula dolor sed dapibus
-						iaculis. Fusce mollis pretium consequat. Ut bibendum ipsum nec libero iaculis, in eleifend sapien fringilla. In hac habitasse platea
-						dictumst. Maecenas blandit posuere libero ullamcorper venenatis. Pellentesque et ex non nisi condimentum elementum. Donec volutpat, nunc
-						in dictum fermentum, velit mi egestas massa, ut dapibus augue justo id tortor.
+						For this project I was in charge of user testing, I conducted a few test user tests with participants from our target demographic. Furtermore i asisted with
+						and worked with setting up the base for the visualisation, some of the design and UI/UX elements aswell as some the backend. I also worked on alot of the intial
+						prototyping for the projec tin figma. one of my main focuses was implemeting changes or features that where discoved desireble in user testing. 
 					</span>
 					<div className="peopleDiv">
 						<span className="aboutSpan">
@@ -159,7 +157,7 @@ function About() {
 						</span>{" "}
 						<div className="nameAndLinkDiv">
 							<span className="nameSpan">Dante Sangregorio</span>
-							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+							<a href="https://www.linkedin.com/in/dante-sangregorio-bb3043236/">LinkedIn</a>
 						</div>
 					</div>
 				</div>
