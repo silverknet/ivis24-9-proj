@@ -147,6 +147,52 @@ function Vis() {
 		);
 		const filteredData2 = filteredData.filter((country) => country.country.toLowerCase().includes(query.toLowerCase()));
 		setFilteredCountryData(filteredData2);
+
+		const splitData = filteredData2
+			.map((row) => {
+				const c = row["country"];
+				// TODO: if the country isn't in the list, use values of continent instead
+				var meatco2 = coEmissions["meat"];
+				var flightco2 = coEmissions["flight"];
+				var transportco2 = coEmissions["electric"];
+				if (meatData[c] !== undefined) {
+					meatco2 =
+						(meatData[c][0] * foodData["Poultry"] +
+							meatData[c][1] * foodData["Beef (beef herd)"] +
+							meatData[c][2] * foodData["Mutton"] +
+							meatData[c][3] * foodData["Pork"] +
+							meatData[c][5] * foodData["Fish (farmed)"]) *
+						0.001;
+				}
+
+				if (flightData[c] !== undefined) {
+					flightco2 = flightData[c] * 0.001;
+				}
+
+				if (transportData[c] !== undefined) {
+					transportco2 = transportData[c];
+				}
+
+				return row["2022"] - (meatco2 + flightco2 + transportco2) > 0
+					? {
+							other: row["2022"] - (meatco2 + flightco2 + transportco2),
+							meat: meatco2,
+							flight: flightco2,
+							transport: transportco2,
+					  }
+					: {
+							other: row["2022"],
+							meat: 0,
+							flight: 0,
+							transport: 0,
+					  };
+			})
+			.filter(Boolean);
+
+		if (splitData.length > 0) {
+			// const stackedData = stack().keys(Object.keys(splitData[0]))(splitData);
+			setSplitData(splitData);
+		}
 	};
 
 	const svgRef = useRef();
@@ -792,18 +838,19 @@ function Vis() {
 
 		const yaxisExplainer = svg.selectAll(".yAxisQuestionmark").data([null]);
 		yaxisExplainer
-			.enter().append("text")
+			.enter()
+			.append("text")
 			.attr("x", `${20}px`)
 			.attr("y", `${30}px`)
 			.text("?")
 			.attr("fill", "#9c9c9c")
 			.attr("width", "20px")
 			.attr("height", "20px")
-			.on("mouseover", ()=>{
+			.on("mouseover", () => {
 				yAxisTooltip.text("If you want to scale the Y axis, simply click and drag it out!");
 				yAxisTooltip.style("display", "block").style("top", `${130}px`).style("left", `${Settings.border}px`);
 			})
-			.on("mouseout", ()=>{
+			.on("mouseout", () => {
 				yAxisTooltip.style("display", "none");
 			});
 
@@ -879,8 +926,8 @@ function Vis() {
 				<div className="tooltipCountry"></div>
 			</div>
 			<div id="yaxtooltip">
-            <div className='explainer'></div>
-       	 	</div>
+				<div className="explainer"></div>
+			</div>
 		</div>
 	);
 }
