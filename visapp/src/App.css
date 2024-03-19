@@ -295,6 +295,17 @@ VIS
   cursor: pointer;
 }
 
+#yaxtooltip {
+    border: 1px solid #ccc;
+    position: absolute;
+    padding: 3px;
+    background-color: #fff;
+    display: none;
+    pointer-events: none;
+    border-radius: 5px;
+    color:#006484; 
+}
+
 /*SIDEBAR*/
 .ElementComponent h1{
   font-size: 35px;

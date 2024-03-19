@@ -879,6 +879,25 @@ function Vis() {
 			tooltip.style("display", "none");
 		}
 
+		const yAxisTooltip = select("#yaxtooltip");
+
+		const yaxisExplainer = svg.selectAll(".yAxisQuestionmark").data([null]);
+		yaxisExplainer
+			.enter().append("text")
+			.attr("x", `${20}px`)
+			.attr("y", `${30}px`)
+			.text("?")
+			.attr("fill", "#9c9c9c")
+			.attr("width", "20px")
+			.attr("height", "20px")
+			.on("mouseover", ()=>{
+				yAxisTooltip.text("If you want to scale the Y axis, simply click and drag it out!");
+				yAxisTooltip.style("display", "block").style("top", `${130}px`).style("left", `${Settings.border}px`);
+			})
+			.on("mouseout", ()=>{
+				yAxisTooltip.style("display", "none");
+			});
+
 		// Bind a single-element array to prepare for the enter-update-exit pattern
 		var co2_line = svg.selectAll(".co2_line").data([null]);
 
@@ -950,6 +969,9 @@ function Vis() {
 			<div id="barTooltip">
 				<div className="tooltipCountry"></div>
 			</div>
+			<div id="yaxtooltip">
+            <div className='explainer'></div>
+       	 	</div>
 		</div>
 	);
 }
