@@ -256,6 +256,11 @@ ABOUT PAGE
 HOW TO PAGE
 */
 
+.video video {
+  width: 600px;
+  height: 300px;
+}
+
 .howToTextContainer{
   width:40%;
 }
