@@ -147,11 +147,10 @@ function About() {
 				</div>
 				<div className="peopleRow">
 					<span className="peopleText l">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis dictum erat, vitae dictum ipsum bibendum quis. Aenean ipsum
-						ante, volutpat quis leo at, rutrum venenatis orci. Aliquam iaculis neque erat, nec aliquam nibh volutpat eu. Ut vehicula dolor sed dapibus
-						iaculis. Fusce mollis pretium consequat. Ut bibendum ipsum nec libero iaculis, in eleifend sapien fringilla. In hac habitasse platea
-						dictumst. Maecenas blandit posuere libero ullamcorper venenatis. Pellentesque et ex non nisi condimentum elementum. Donec volutpat, nunc
-						in dictum fermentum, velit mi egestas massa, ut dapibus augue justo id tortor.
+						During this project I have contributed to many different parts of the frontend development. I focused a lot on getting better at D3,
+						letting me parttake in many of the different features. One thing i worked on was for example the search feature, for finding/toggling
+						a single country out of the dataset. I was also the lead for user testing, so I held a couple of test sessions at different points to help us better understand
+						the usability of our app, and also see how people interacted with it and if they enjoyed it.
 					</span>
 					<div className="peopleDiv">
 						<span className="aboutSpan">
@@ -159,7 +158,7 @@ function About() {
 						</span>{" "}
 						<div className="nameAndLinkDiv">
 							<span className="nameSpan">Dante Sangregorio</span>
-							<a href="https://www.linkedin.com/in/patrikhanslundqvist">LinkedIn</a>
+							<a href="https://www.linkedin.com/in/dante-sangregorio-bb3043236/">LinkedIn</a>
 						</div>
 					</div>
 				</div>
