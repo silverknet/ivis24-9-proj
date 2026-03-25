@@ -7,6 +7,7 @@ import About from "./About";
 import HowToUse from "./HowToUse";
 import Vis from "./Vis";
 import Footer from "./Footer";
+import Testing from "./DantesTesting"; // Ensure this component is used or remove this import
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -19,6 +20,8 @@ function App() {
 					<Route path="/" element={<Vis />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/howtouse" element={<HowToUse />} />
+					<Route path="/DantesTesting" element={<Testing />} />
+					
 				</Routes>
 			</div>
 			<Footer />

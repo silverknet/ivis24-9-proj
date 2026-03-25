@@ -11,6 +11,7 @@ function MenuBar(){
             <div className="ItemContainer">
                 <div className="Item" onClick={() => navigate('/about')}><p>About</p></div>
                 <div className="Item" onClick={() => navigate('/howtouse')}><p>How to use</p></div>
+                <div className="Item" onClick={() => navigate('/DantesTesting')}><p>DantesTesting</p></div>
             </div>
         </div>
     );
